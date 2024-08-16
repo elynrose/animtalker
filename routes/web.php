@@ -1,4 +1,16 @@
 <?php
+Route::get('optimize-clear', function () {
+    Artisan::call('optimize:clear');
+});
+Route::get('storage-link', function () {
+    Artisan::call('storage:link');
+});
+Route::get('composer-update', function () {
+    shell_exec('composer update');
+});
+Route::get('key-generate', function () {
+    shell_exec('key:generate');
+});
 
 Route::view('/', 'welcome');
 Route::post('/getVideoStatus', 'VideoWebHookController@getVideoStatus')->name('videoStatus');
