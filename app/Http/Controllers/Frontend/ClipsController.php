@@ -55,7 +55,10 @@ class ClipsController extends Controller
         $imagePath = $request->input('image_path');
 
         $clip = new  Clip;
+        $clip->character_id = $request->input('character_id');
+        $clip->voice = $voice;
         $clip->audio_path = $mp3Path;
+        $clip->script = $text;
         $clip->save();
         
         //Send reques to d:id api to generate video
@@ -65,17 +68,13 @@ class ClipsController extends Controller
         dd($video_result);
 
         //attach audio and video file to the request
-        
-        $clip = Clip::create(
-            [
-                'character_id' => $request->input('character_id'),
-                'script' => $text,
-                'voice' => $voice,
-                'audio_path' => $mp3Path,
-               // 'cost' => $request->input('cost'),
-            ]
-        );
 
+        $clip->video_id = $video_result['video_id'];
+        $clip->video_path = $video_result['video_path'];
+        $clip->status = 'Processing';
+        $clip->save();
+        
+      
         if ($request->input('music_layer', false)) {
             $clip->addMedia(storage_path('tmp/uploads/' . basename($request->input('music_layer'))))->toMediaCollection('music_layer');
         }
