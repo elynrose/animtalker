@@ -272,6 +272,13 @@
 @section('scripts')
 <script>
     $(document).ready(function(){
+
+        //if button data-value is empty, hide it
+        $('button').each(function(){
+            if($(this).data('value') == ''){
+                $(this).hide();
+            }
+        });
         // Ensure all buttons that aren't meant to submit the form have type="button"
         $('button').not('[type="submit"]').attr('type', 'button');
 
