@@ -53,9 +53,11 @@ class ClipsController extends Controller
 
     //give me the full image path including the http://localhost:8000
         $imagePath = $request->input('image_path');
-        
-      //  dd($imagePath. ' ' . $mp3Path);
 
+        $clip = new  Clip;
+        $clip->audio_path = $mp3Path;
+        $clip->save();
+        
         //Send reques to d:id api to generate video
         $video = new GenerateVideo;
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path);
