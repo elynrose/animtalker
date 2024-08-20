@@ -12,7 +12,6 @@
                     </div>
                 </div>
             @endcan
-
             <div class="row">
                 @foreach($characters as $character)
                     <div class="col-md-3">
@@ -20,9 +19,9 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $character->name ?? '' }}</h5>
                              
-                                @if($character->avatar)
+                                       @if($character->avatar)
                                             <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}" target="_blank">
-                                                <img src="{{ $character->avatar->getUrl('preview) }}" class="img-responsive" width="100%">
+                                                <img src="{{ $character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
                                             </a>
                                         @endif  
                                 <p class="card-text mt-2">
