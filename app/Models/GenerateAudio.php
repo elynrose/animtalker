@@ -38,15 +38,13 @@ class GenerateAudio extends Model
 
         if ($response->getStatusCode() == 200) {
             $audioBinary = $response->getBody();
-
-          //Save the file as a media attachment for clip->audio_file
+          
+            //Save the file as a media attachment for clip->audio_file
             $fileName = 'audio/'. uniqid() . '.mp3';
             Storage::disk('public')->put($fileName, $audioBinary);
-
             $mp3Path = url('storage/' . $fileName);
-
-
-             return $mp3Path;
+            
+            return $mp3Path;
     
         } else {
             return response()->json(['error' => 'Failed to generate audio'], 500);

@@ -9,6 +9,7 @@
                 </div>
 
                 <div class="card-body">
+                    <div class="alert alert-danger error" style="display:none;"></div>
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
@@ -26,7 +27,7 @@
                         <div id="accordion">
 
                             <!-- Scene Section -->
-                            <div class="card">
+                            <div class="card mb-3">
                                 <div class="card-header" id="sceneHeading">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link" data-toggle="collapse" data-target="#sceneCollapse" aria-expanded="true" aria-controls="sceneCollapse">
@@ -45,7 +46,7 @@
                             </div>
 
                             <!-- Character Details Section -->
-                            <div class="card">
+                            <div class="card mb-3">
                                 <div class="card-header" id="characterDetailsHeading">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#characterDetailsCollapse" aria-expanded="false" aria-controls="characterDetailsCollapse">
@@ -80,7 +81,7 @@
                             </div>
 
                             <!-- Appearance Section -->
-                            <div class="card">
+                            <div class="card mb-3">
                                 <div class="card-header" id="appearanceHeading">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#appearanceCollapse" aria-expanded="false" aria-controls="appearanceCollapse">
@@ -157,7 +158,7 @@
                             </div>
 
                             <!-- Expressions Section -->
-                            <div class="card">
+                            <div class="card mb-3">
                                 <div class="card-header" id="expressionsHeading">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#expressionsCollapse" aria-expanded="false" aria-controls="expressionsCollapse">
@@ -185,7 +186,7 @@
                             </div>
 
                             <!-- Clothing Section -->
-                            <div class="card">
+                            <div class="card mb-3">
                                 <div class="card-header" id="clothingHeading">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#clothingCollapse" aria-expanded="false" aria-controls="clothingCollapse">
@@ -220,7 +221,7 @@
                             </div>
 
                             <!-- Posture and Zoom Section -->
-                            <div class="card">
+                            <div class="card mb-3">
                                 <div class="card-header" id="postureZoomHeading">
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#postureZoomCollapse" aria-expanded="false" aria-controls="postureZoomCollapse">
@@ -251,7 +252,7 @@
 
                         <div class="form-group mt-4">
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                            <button class="btn btn-danger" id="save" type="submit">
+                            <button class="btn btn-danger btn-block" id="save" type="submit">
                                 {{ trans('global.save') }}
                             </button>
                         </div>
@@ -260,9 +261,10 @@
             </div>
         </div>
         <div class="col-md-4 text-center">
-            <div class="card">
+            <div>
                 <div class="card-body sprite">
-            <p><img src="{{asset('images/loading.webp')}}" width="100%"  alt="Generated Image" id="image"></p>
+            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
+            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
             <div id="prompt mt-4"></div>
         </div></div></div>
     </div>
@@ -339,10 +341,14 @@
         toggleMultipleSelections('.dress-color-btn', 'dress_colors');
         toggleMultipleSelections('.props-btn', 'props');
 
+        $('#img_wrap, .error, #loading').hide();
+
         // Handle form submission
         $('#save').on('click', function(e) {
             e.preventDefault(); // Prevent the default form submission
+
             // Check if the required fields are provided
+
             var name = $('#name').val();
             var sceneId = $('#scene_id').val();
             var genderId = $('#gender_id').val();
@@ -350,15 +356,18 @@
 
             if (name.trim() === '' || sceneId.trim() === '' || genderId.trim() === '' || ageGroupId.trim() === '') {
                 // Flash an error message
-                alert('Please fill in all required fields.');
+                $('.error').text('Scene and Character detail sections are required.').show();
                 return;
             }
+            $('.error').hide();
 
             // Continue with form submission
             // Get the form data
             var formData = $('form').serialize();
-
+            $('#loading').show();
             // Send the form data using AJAX
+            $('#save').attr(disabled, true);
+
             $.ajax({
                 url: "{{ route('frontend.characters.store') }}",
                 type: "POST",
@@ -373,10 +382,17 @@
                     // Display the image and prompt
                     $('#image').attr('src', image);
                     $('#prompt').text(prompt);
-
+                    $('#img_wrap').show();
+                    $('#loading').hide();
+                    $('#save').attr(disabled, false);
                 },
                 error: function(xhr, status, error) {
                     // Handle the error response
+                    //alert error message
+                    $('#save').attr(disabled, false);
+                    $('#img_wrap').hide();
+                    $('#loading').hide();
+                    alert('An error occurred. Please try again.');
                     console.log(xhr.responseText);
                 }
             });

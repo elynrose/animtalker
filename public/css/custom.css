@@ -156,7 +156,7 @@ body {
   }
   
   .navbar-light .navbar-nav .nav-link:hover {
-    color: #66ccff;
+    color: #ffffff;
   }
   
   /* Buttons */
@@ -180,7 +180,7 @@ body {
   .form-control:focus {
     background-color: #1e1e1e;
     color: #e0e0e0;
-    border-color: #0099ff; /* Bright blue border on focus */
+    border-color: #ffffff; /* Bright blue border on focus */
   }
   
   /* Cards */
@@ -222,11 +222,47 @@ body {
     transition: background 0.3s ease; /* Smooth transition on hover */
   }
   
+  
   .btn-primary:hover {
     background: linear-gradient(45deg, #ff4500, #ff8c00); /* Inverted gradient on hover */
     color: #ffffff; /* Keep the text color white on hover */
   }
 
+  .btn-link, .btn-link:hover {
+    font-weight: 400;
+    color: #ffffff;
+    background-color: transparent;
+    font-size:1.1 rem;
+    text-decoration: none;
+}
+
+.card-header button {
+ text-decoration: none;;
+}
+.card h6,label {
+  font-size:1.1rem;
+  margin-top:10px;
+
+}
+
+.card-header {
+  font-size:1.3rem;z
+}
+
+.btn-outline-primary {
+  color: #ff4500;
+  background-color: transparent;
+  background-image: none;
+  border-color: #ff4500;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle  {
+  color: #ffffff;
+  background-color: #ff4500;
+  background-image: none;
+  border-color: #ff4500;
+  box-shadow: #ff4500;
+}
 
   .accordion-link {
     color: #ff4500;
@@ -244,5 +280,5 @@ body {
     color: #ff8c00;
   }
 
-  
+
 

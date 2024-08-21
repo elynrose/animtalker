@@ -118,6 +118,7 @@ class CharacterController extends Controller
             }
         }
 
+
         $new_character  = new GenerateCharacter;
         $avatar = $new_character->generate($character->id);
 
@@ -146,7 +147,10 @@ class CharacterController extends Controller
             return response()->json(['error' => 'Failed to generate character'], 500);
             //delete the character that was created
             $character->delete();
+            //delete photo from media collection
+            $character->avatar->delete();
             
+
         }
        
 
