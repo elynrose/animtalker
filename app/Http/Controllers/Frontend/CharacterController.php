@@ -133,7 +133,7 @@ class CharacterController extends Controller
 
         //Save the prompt and image to the character
         if ($image) {
-            $character->addMediaFromUrl($image)->toMediaCollection('avatar');
+            Storage::disk('s3')->put('animshorts/images', file_get_contents($image));
         }
 
 
