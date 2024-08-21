@@ -368,7 +368,11 @@
             $('#loading').show();
             // Send the form data using AJAX
             $('#save').attr('disabled', true);
-
+            $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
             $.ajax({
                 url: "{{ route('frontend.characters.store') }}",
                 type: "POST",

@@ -34,6 +34,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\GenerateCharacter;
+use Illuminate\Support\Facades\Storage;
 
 class CharacterController extends Controller
 {
@@ -149,7 +150,6 @@ class CharacterController extends Controller
             $character->delete();
             //delete photo from media collection
             $character->avatar->delete();
-            
 
         }
        
