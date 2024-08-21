@@ -131,9 +131,9 @@ class CharacterController extends Controller
         $prompt = $avatarData->prompt;
         $image = $avatarData->dalle_response->data[0]->url;
 
-        //Save the prompt and image to the character
+        // Save the prompt and image to the character
         if ($image) {
-            $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3');
+            $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'animshorts/images');
         }
 
 
