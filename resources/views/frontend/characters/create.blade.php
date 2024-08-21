@@ -367,7 +367,7 @@
             var formData = $('form').serialize();
             $('#loading').show();
             // Send the form data using AJAX
-            $('#save').attr(disabled, true);
+            $('#save').attr('disabled', true);
 
             $.ajax({
                 url: "{{ route('frontend.characters.store') }}",
@@ -385,12 +385,12 @@
                     $('#prompt').text(prompt);
                     $('#img_wrap').show();
                     $('#loading').hide();
-                    $('#save').attr(disabled, false);
+                    $('#save').attr('disabled', false);
                 },
                 error: function(xhr, status, error) {
                     // Handle the error response
                     //alert error message
-                    $('#save').attr(disabled, false);
+                    $('#save').attr('disabled', false);
                     $('#img_wrap').hide();
                     $('#loading').hide();
                     alert('An error occurred. Please try again.');
