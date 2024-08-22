@@ -40,11 +40,11 @@ class ClipsController extends Controller
             return redirect()->route('frontend.characters.index');
         }
 
-        $image = Storage::disk('s3')->get($character->avatar_url);
 
         //get the character id from the request
         $character = Character::find($request->segment(2));
 
+        $image = Storage::disk('s3')->get($character->avatar_url);
 
         return view('frontend.clips.create', compact('character', 'image'));
     }
