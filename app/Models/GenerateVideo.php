@@ -14,22 +14,20 @@ class GenerateVideo extends Model
     use HasFactory;
     public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
-
-        
         // Prepare the payload
         $payload = [
             "script" => [
-            "type" => "audio",
-            "subtitles" => "false",
-            "provider" => [
                 "type" => "audio",
-                'audio_path' => $mp3Path,
-            ],
-            "input" => $text
+                "subtitles" => false,
+                "provider" => [
+                    "type" => "audio",
+                    "audio_path" => $mp3Path,
+                ],
+                "input" => $text
             ],
             "config" => [
-            "fluent" => "false",
-            "pad_audio" => "0.0"
+                "fluent" => false,
+                "pad_audio" => 0.0
             ],
             "source_url" => $imagePath
         ];
@@ -38,11 +36,11 @@ class GenerateVideo extends Model
         $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request("POST", "https://api.d-id.com/talks", [
-            "headers" => [
-                "Content-Type" => "application/json",
-                "Authorization" => "Basic ". env("DID_API_KEY"),
-            ],
-            "json" => $payload,
+                "headers" => [
+                    "Content-Type" => "application/json",
+                    "Authorization" => "Basic " . env("DID_API_KEY"),
+                ],
+                "json" => $payload,
             ]);
 
             if ($response->getStatusCode() == 200) {
@@ -54,7 +52,7 @@ class GenerateVideo extends Model
                 } else {
                     return response()->json(['error' => 'Invalid response from API'], 500);
                 }
-                $clip->status = 'Processing'; // Processing
+                $clip->status = 'Processing';
                 $clip->save();
             } else {
                 // Handle errors
