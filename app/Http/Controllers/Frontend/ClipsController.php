@@ -15,7 +15,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\GenerateAudio;
 use App\Models\GenerateVideo;
-use Illuminate\Support\Facades\Storage;
 
 class ClipsController extends Controller
 {
@@ -33,20 +32,15 @@ class ClipsController extends Controller
     public function create(Request $request)
     {
         abort_if(Gate::denies('clip_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        
         
         if($request->segment(2) == null) {
             return redirect()->route('frontend.characters.index');
         }
-
-
         //get the character id from the request
         $character = Character::find($request->segment(2));
 
-        $image = Storage::disk('s3')->get($character->avatar_url);
 
-        return view('frontend.clips.create', compact('character', 'image'));
+        return view('frontend.clips.create', compact('character'));
     }
 
     public function store(StoreClipRequest $request)
