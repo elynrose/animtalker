@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Clip;
 
 
 class GenerateAudio extends Model
@@ -37,14 +38,21 @@ class GenerateAudio extends Model
         ]);
 
         if ($response->getStatusCode() == 200) {
+            
             $audioBinary = $response->getBody();
           
-            //Save the file as a media attachment for clip->audio_file
+            $clip = new Clip(); // Create a new instance of the Clip model
             $fileName = 'audio/'. uniqid() . '.mp3';
-            Storage::disk('public')->put($fileName, $audioBinary);
-            $mp3Path = url('storage/' . $fileName);
-            
-            return $mp3Path;
+
+            // Save the file as a media attachment for clip->audio_file
+            $path = Storage::disk('s3')->put($fileName, $audioBinary);
+
+            if ($path) {
+                $mp3Path = Storage::disk('s3')->url($fileName);
+                return $mp3Path;
+            } else {
+                return response()->json(['error' => 'Failed to save audio file'], 500);
+            }
     
         } else {
             return response()->json(['error' => 'Failed to generate audio'], 500);
