@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use App\Models\Clip;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+use 
 
 
 class GenerateVideo extends Model
@@ -69,22 +72,18 @@ class GenerateVideo extends Model
             if ($response->getStatusCode() == 200) {
                 // Handle successful response
                 $responseData = json_decode($response->getBody()->getContents(), true);
-                $videoId = $responseData['id'];
-                $clip->video_id = $videoId;
+                if (is_array($responseData) && isset($responseData['id'])) {
+                    $videoId = $responseData['id'];
+                    $clip->video_id = $videoId;
+                } else {
+                    return response()->json(['error' => 'Invalid response from API'], 500);
+                }
                 $clip->status = 'Processing'; // Processing
                 $clip->save();
             } else {
                 // Handle errors
                 return response()->json(['error' => 'Failed to generate video'], 500);
             }
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            // Handle client errors
-            return response()->json(['error' => $e->getMessage()], 400);
-        } catch (\GuzzleHttp\Exception\ServerException $e) {
-            // Handle server errors
-            return response()->json(['error' => $e->getMessage()], 500);
-        } 
-    }
        
 }
 
