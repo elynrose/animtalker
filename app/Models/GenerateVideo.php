@@ -17,12 +17,11 @@ class GenerateVideo extends Model
         // Prepare the payload
         $payload = [
             "script" => [
-                "type" => "audio",
-                "audio" => ".$mp3Path.", // Use the URL of the MP3 file
+            "type" => "audio",
+            "audio" => $mp3Path, // Use the URL of the MP3 file
             ],
-            "source_url" => ".$imagePath.", // URL of the image to be used as the avatar
-            "text" => ".$text.", // The text to be displayed in the video
-
+            "source_url" => $imagePath, // URL of the image to be used as the avatar
+            "text" => $text, // The text to be displayed in the video
         ];
 
         // Make the request to D-ID's API using Guzzle
