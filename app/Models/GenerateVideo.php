@@ -38,11 +38,11 @@ class GenerateVideo extends Model
         $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request("POST", "https://api.d-id.com/talks", [
-                "headers" => [
-                    "Content-Type" => "application/json",
-                    "Authorization" => "Basic ". env("DID_API_KEY"),
-                ],
-                "body" => $payload,
+            "headers" => [
+                "Content-Type" => "application/json",
+                "Authorization" => "Basic ". env("DID_API_KEY"),
+            ],
+            "json" => $payload,
             ]);
 
             if ($response->getStatusCode() == 200) {
