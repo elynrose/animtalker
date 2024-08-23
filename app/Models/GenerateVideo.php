@@ -14,37 +14,6 @@ class GenerateVideo extends Model
     use HasFactory;
     public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
-
-     /*   $client = new \GuzzleHttp\Client();
-
-        $response = $client->request('POST', 'https://api.d-id.com/talks', [
-          'body' => '{
-            "script": {
-                "type": "text",
-                "subtitles": "false",
-                "text": "'.$text.'",
-                 "source_url": "'.$imagePath.'",
-                "provider": {
-                    "type": "audio",
-                    "audio_url": "'.$mp3Path.'",
-                    "audio_type": "mp3",
-                },
-                }
-            },
-            "config": {
-                "fluent": "false",
-                "pad_audio": "0.0"
-            }
-        }',
-          'headers' => [
-            'accept' => 'application/json',
-            'authorization' => 'Basic '.env('DID_API_KEY'),
-            'content-type' => 'application/json',
-          ],
-        ]);
-        
-        echo $response->getBody();
-*/
         // Prepare the payload
         $payload = [
             "script" => [
@@ -87,4 +56,5 @@ class GenerateVideo extends Model
         }
     }
 }
+
 
