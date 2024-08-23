@@ -8,7 +8,6 @@ use App\Models\Clip;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
-use 
 
 
 class GenerateVideo extends Model
