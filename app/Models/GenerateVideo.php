@@ -14,15 +14,24 @@ class GenerateVideo extends Model
     use HasFactory;
     public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
+
         
         // Prepare the payload
         $payload = [
             "script" => [
             "type" => "audio",
-            "audio" => $mp3Path, // Use the URL of the MP3 file
+            "subtitles" => "false",
+            "provider" => [
+                "type" => "audio",
+                'audio_path' => $mp3Path,
             ],
-            "source_url" => $imagePath, // URL of the image to be used as the avatar
-            "text" => $text, // The text to be displayed in the video
+            "input" => $text
+            ],
+            "config" => [
+            "fluent" => "false",
+            "pad_audio" => "0.0"
+            ],
+            "source_url" => $imagePath
         ];
 
         // Make the request to D-ID's API using Guzzle
@@ -33,7 +42,7 @@ class GenerateVideo extends Model
                     "Content-Type" => "application/json",
                     "Authorization" => "Basic ". env("DID_API_KEY"),
                 ],
-                "json" => $payload,
+                "body" => $payload,
             ]);
 
             if ($response->getStatusCode() == 200) {
