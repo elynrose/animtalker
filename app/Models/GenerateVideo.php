@@ -14,7 +14,7 @@ class GenerateVideo extends Model
     use HasFactory;
     public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
-        dd($imagePath.' | '. $mp3Path.' | '.$text);
+        
         // Prepare the payload
         $payload = [
             "script" => [
