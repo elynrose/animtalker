@@ -38,6 +38,10 @@ class StoreCharacterRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'avatar_url' => [
+                'string',
+                'nullable',
+            ],
             'user_id' => [
                 'required',
                 'integer',

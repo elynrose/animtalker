@@ -48,6 +48,7 @@ class Character extends Model implements HasMedia
         'character_zoom_id',
         'caption',
         'custom_prompt',
+        'avatar_url',
         'user_id',
         'created_at',
         'updated_at',

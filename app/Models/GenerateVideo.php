@@ -36,7 +36,8 @@ class GenerateVideo extends Model
                     "Content-Type" => "application/json",
                     "Authorization" => "Basic " . env("DID_API_KEY"),
                 ],
-                "json" => json_encode($payload),
+                "json" =>$payload,
+                
             ]);
 
             if ($response->getStatusCode() == 200) {
