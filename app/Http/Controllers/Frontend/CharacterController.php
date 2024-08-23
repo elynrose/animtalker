@@ -119,11 +119,10 @@ class CharacterController extends Controller
             }
         }
 
-
         $new_character  = new GenerateCharacter;
         $avatar = $new_character->generate($character->id);
 
-
+        
         //Get the image from dalle response
         $avatarData = $avatar->getData();
         
@@ -131,20 +130,18 @@ class CharacterController extends Controller
         $prompt = $avatarData->prompt;
         $image = $avatarData->dalle_response->data[0]->url;
 
-        // Save the prompt and image to the character
+        //Save the prompt and image to the character
         if ($image) {
-            //$character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', '/animshorts/images');
-            //Get image from url
-            $imageName = basename($image);
-            //Set the path to save the image, add extension to the image name
-            $path = "images/".$imageName;
-            //Save image to s3
-            $t = Storage::disk('s3')->put($path, file_get_contents($image));
-            //Save the image path to the character
+            //$character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'animshorts/images');
+
+            //image is a url from dalle api, save it into amazon s3 images folder
+           // $image = Storage::disk('s3')->url('animshorts/images/' . basename($image));
+            $path = $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'images')->getUrl();
             $character->avatar_url = $path;
             $character->save();
+        
         }
-
+    
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $character->id]);
@@ -155,15 +152,10 @@ class CharacterController extends Controller
         } else {
             //return error message in json format
             return response()->json(['error' => 'Failed to generate character'], 500);
-            //delete the character that was created
-            $character->delete();
-            //delete photo from media collection
-            $character->avatar->delete();
-
         }
        
 
-        return redirect()->route('frontend.characters.show', $character->id);
+     //   return redirect()->route('frontend.characters.show', $character->id);
     }
 
     public function edit(Character $character)
