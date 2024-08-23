@@ -66,9 +66,8 @@ class ClipsController extends Controller
         $video = new GenerateVideo;
         dd($imagePath.' | '. $mp3Path.' | '.$text);
 
-        $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text);
+        $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
 
-        dd($video_result);
 
         //attach audio and video file to the request
 

@@ -11,8 +11,39 @@ use GuzzleHttp\Client;
 class GenerateVideo extends Model
 {
     use HasFactory;
-    public function generateTalkingHead($imagePath, $mp3Path, $text)
+    public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
+
+     /*   $client = new \GuzzleHttp\Client();
+
+        $response = $client->request('POST', 'https://api.d-id.com/talks', [
+          'body' => '{
+            "script": {
+                "type": "text",
+                "subtitles": "false",
+                "text": "'.$text.'",
+                 "source_url": "'.$imagePath.'",
+                "provider": {
+                    "type": "audio",
+                    "audio_url": "'.$mp3Path.'",
+                    "audio_type": "mp3",
+                },
+                }
+            },
+            "config": {
+                "fluent": "false",
+                "pad_audio": "0.0"
+            }
+        }',
+          'headers' => [
+            'accept' => 'application/json',
+            'authorization' => 'Basic '.env('DID_API_KEY'),
+            'content-type' => 'application/json',
+          ],
+        ]);
+        
+        echo $response->getBody();
+*/
         // Prepare the payload
         $payload = [
             'script' => [
@@ -30,7 +61,7 @@ class GenerateVideo extends Model
             $response = $client->request('POST', 'https://api.d-id.com/talks', [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer '. env('DID_API_KEY'),
+                    'Authorization' => 'Basic '. env('DID_API_KEY'),
                 ],
                 'json' => $payload,
             ]);
@@ -39,7 +70,6 @@ class GenerateVideo extends Model
                 // Handle successful response
                 $responseData = json_decode($response->getBody()->getContents(), true);
                 $videoId = $responseData['id'];
-                $clip = new Clip(); // Create a new instance of the Clip model
                 $clip->video_id = $videoId;
                 $clip->status = 'Processing'; // Processing
                 $clip->save();
@@ -53,7 +83,8 @@ class GenerateVideo extends Model
         } catch (\GuzzleHttp\Exception\ServerException $e) {
             // Handle server errors
             return response()->json(['error' => $e->getMessage()], 500);
-        }
+        } 
     }
+       
 }
 
