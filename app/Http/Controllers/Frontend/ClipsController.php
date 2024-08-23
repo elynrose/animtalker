@@ -64,7 +64,7 @@ class ClipsController extends Controller
         
         //Send reques to d:id api to generate video
         $video = new GenerateVideo;
-        dd($imagePath.' | '. $mp3Path.' | '.$text);
+        //dd($imagePath.' | '. $mp3Path.' | '.$text);
 
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
 
