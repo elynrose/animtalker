@@ -25,9 +25,6 @@ class GenerateVideo extends Model
                     "type" => "audio",
                     "audio_url" => "https://animshorts.s3.us-east-2.amazonaws.com/audio/66c8ea935a449.mp3"
                 ],
-                "face" => [
-                    "size" => 1024
-                ],
             ]),
             'headers' => [
                 'accept' => 'application/json',
