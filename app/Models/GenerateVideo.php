@@ -18,29 +18,25 @@ class GenerateVideo extends Model
         $payload = [
             "script" => [
                 "type" => "audio",
-                "subtitles" => false,
                 "provider" => [
                     "type" => "audio",
                     "audio_path" => $mp3Path,
                 ],
-                "input" => $text
-            ],
-            "config" => [
-                "fluent" => false,
-                "pad_audio" => 0.0
             ],
             "source_url" => $imagePath
         ];
 
         // Make the request to D-ID's API using Guzzle
         $client = new \GuzzleHttp\Client();
+
         try {
             $response = $client->request("POST", "https://api.d-id.com/talks", [
                 "headers" => [
+                    'accept' => 'application/json',
                     "Content-Type" => "application/json",
                     "Authorization" => "Basic " . env("DID_API_KEY"),
                 ],
-                "json" => $payload,
+                "json" => json_encode($payload),
             ]);
 
             if ($response->getStatusCode() == 200) {
