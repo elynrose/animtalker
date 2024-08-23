@@ -65,9 +65,11 @@ class ClipsController extends Controller
         //Send reques to d:id api to generate video
         $video = new GenerateVideo;
         //dd($imagePath.' | '. $mp3Path.' | '.$text);
-
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
 
+        if ($video_result instanceof \Illuminate\Http\JsonResponse) {
+            return $video_result;
+        }
 
         //attach audio and video file to the request
 
@@ -75,7 +77,6 @@ class ClipsController extends Controller
         $clip->video_path = $video_result['video_path'];
         $clip->status = 'Processing';
         $clip->save();
-        
       
         if ($request->input('music_layer', false)) {
             $clip->addMedia(storage_path('tmp/uploads/' . basename($request->input('music_layer'))))->toMediaCollection('music_layer');
