@@ -20,23 +20,14 @@ class GenerateVideo extends Model
     
         $response = $client->request('POST', 'https://api.d-id.com/talks', [
             'body' => json_encode([
+                "source_url" => "https://animshorts.s3.us-east-2.amazonaws.com/28/img-gL15XuQqbAGG5XU1Qtb9clvE.png",
                 "script" => [
-                    "type" => "text",
-                    "subtitles" => "false",
-                    "provider" => [
-                        "type" => "microsoft",
-                        "voice_id" => "en-US-JennyNeural"
-                    ],
+                    "type" => "audio",
                     "audio_url" => "https://animshorts.s3.us-east-2.amazonaws.com/audio/66c8ea935a449.mp3"
-                ],
-                "config" => [
-                    "fluent" => "false",
-                    "pad_audio" => "0.0"
                 ],
                 "face" => [
                     "size" => 1024
                 ],
-                "source_url" => "https://animshorts.s3.us-east-2.amazonaws.com/28/img-gL15XuQqbAGG5XU1Qtb9clvE.png"
             ]),
             'headers' => [
                 'accept' => 'application/json',
