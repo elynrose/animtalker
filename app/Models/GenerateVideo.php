@@ -25,6 +25,8 @@ class GenerateVideo extends Model
                     "type" => "audio",
                     "audio_url" => "https://animshorts.s3.us-east-2.amazonaws.com/audio/66c8ea935a449.mp3"
                 ],
+
+               // "webhook" => "{{ route('frontend.clips.webhook') }}",
             ]),
             'headers' => [
                 'accept' => 'application/json',
@@ -32,6 +34,8 @@ class GenerateVideo extends Model
                 'content-type' => 'application/json',
             ],
         ]);
+
+        dd($response);
     
         if ($response->getStatusCode() != 200) {
             return response()->json(['error' => 'Failed to generate video'], 500);
