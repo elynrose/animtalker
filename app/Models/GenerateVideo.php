@@ -14,50 +14,30 @@ class GenerateVideo extends Model
     use HasFactory;
     public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
-        // Prepare the payload
-        $payload = [
-            "script" => [
-                "type" => "audio",
-                "provider" => [
-                    "type" => "audio",
-                    "audio_path" => $mp3Path,
-                ],
-            ],
-            "source_url" => $imagePath
-        ];
+      
 
-        // Make the request to D-ID's API using Guzzle
         $client = new \GuzzleHttp\Client();
 
-        try {
-            $response = $client->request("POST", "https://api.d-id.com/talks", [
-                "headers" => [
-                    'accept' => 'application/json',
-                    "Content-Type" => "application/json",
-                    "Authorization" => "Basic " . env("DID_API_KEY"),
-                ],
-                "json" =>$payload,
-                
-            ]);
+        $response = $client->request('POST', 'https://api.d-id.com/talks', [
+          'body' => '{"script":{"type":"text","subtitles":"false","provider":{"type":"microsoft","voice_id":"en-US-JennyNeural"},"audio_url":"https://animshorts.s3.us-east-2.amazonaws.com/audio/66c8ea935a449.mp3"},"config":{"fluent":"false","pad_audio":"0.0"},"face":{"size":1024},"source_url":"https://animshorts.s3.us-east-2.amazonaws.com/28/img-gL15XuQqbAGG5XU1Qtb9clvE.png"}',
+          'headers' => [
+            'accept' => 'application/json',
+            'authorization' => 'Basic '.env('D_ID_KEY'),
+            'content-type' => 'application/json',
+          ],
+        ]);
 
-            if ($response->getStatusCode() == 200) {
-                // Handle successful response
-                $responseData = json_decode($response->getBody()->getContents(), true);
-                if (is_array($responseData) && isset($responseData['id'])) {
-                    $videoId = $responseData['id'];
-                    $clip->video_id = $videoId;
-                } else {
-                    return response()->json(['error' => 'Invalid response from API'], 500);
-                }
-                $clip->status = 'Processing';
-                $clip->save();
-            } else {
-                // Handle errors
-                return response()->json(['error' => 'Failed to generate video'], 500);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($data['error'])) {
+            return response()->json(['error' => $data['error']], 500);
         }
+dd($data);
+        $clip->video_id = $data['id'];
+        $clip->save();
+        
+    
+
     }
 }
 
