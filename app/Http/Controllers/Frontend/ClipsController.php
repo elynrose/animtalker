@@ -69,7 +69,7 @@ class ClipsController extends Controller
         //dd($imagePath.' | '. $mp3Path.' | '.$text);
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
 
-        if (is_array($video_result)) {
+        if ($video_result) {
             //attach audio and video file to the request
             $clip->video_id = $video_result['video_id'];
             $clip->video_path = $video_result['result_url'];
