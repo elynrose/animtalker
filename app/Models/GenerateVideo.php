@@ -26,7 +26,11 @@ class GenerateVideo extends Model
                     "audio_url" => "https://animshorts.s3.us-east-2.amazonaws.com/audio/66c8ea935a449.mp3"
                 ],
 
-               // "webhook" => "{{ route('frontend.clips.webhook') }}",
+            "config" => [
+               "stitch"=> true,
+               "driver_expressions"=>$clip->character->emotion->name,
+            ],
+
             ]),
             'headers' => [
                 'accept' => 'application/json',
