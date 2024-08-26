@@ -56,7 +56,8 @@ class GetVideo extends Command
             $clip->save();
         }
 
-        dd( $video );
+        //return $video as php array
+        return $video;
 
     }
 

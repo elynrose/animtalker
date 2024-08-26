@@ -74,7 +74,7 @@ class ClipsController extends Controller
         if ($video_result) {
             //attach audio and video file to the request
             $clip->video_path = $video_result['result_url'];
-            $clip->status = 'Pending';
+            $clip->status = 'Completed';
             $clip->save();
 
             return redirect()->route('frontend.clips.index')->with('success', 'Video generated successfully.');
