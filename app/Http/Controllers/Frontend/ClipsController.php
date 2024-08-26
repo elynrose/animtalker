@@ -75,7 +75,7 @@ class ClipsController extends Controller
 
         $clip->video_id = $video_result['video_id'];
         $clip->video_path = $video_result['video_path'];
-        $clip->status = 'Processing';
+        $clip->status = 'Pending';
         $clip->save();
       
         if ($request->input('music_layer', false)) {
