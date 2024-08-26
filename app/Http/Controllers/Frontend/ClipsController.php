@@ -184,4 +184,12 @@ class ClipsController extends Controller
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
+
+
+    public function webhook(Request $request)
+    {
+        $clip = Clip::where('video_id', $request->input('video_id'))->first();
+        $clip->status = $request->input('status');
+        $clip->save();
+    }
 }

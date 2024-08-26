@@ -62,8 +62,8 @@ class Character extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb')->fit('crop', 150, 150);
-        $this->addMediaConversion('preview')->fit('crop', 213, 213);
+        $this->addMediaConversion('thumb')->fit('crop', 519, 519);
+        $this->addMediaConversion('preview')->fit('crop', 1920, 1080);
     }
 
     public function scene()

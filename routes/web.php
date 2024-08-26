@@ -285,6 +285,7 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::post('clips/media', 'ClipsController@storeMedia')->name('clips.storeMedia');
     Route::post('clips/ckmedia', 'ClipsController@storeCKEditorImages')->name('clips.storeCKEditorImages');
     Route::resource('clips', 'ClipsController');
+    Route::get('clips/webhook', 'ClipsController@webhook')->name('clips.webhook');
     Route::get('clips/{id}/create', 'ClipsController@create')->name('myclips.create');
 
 

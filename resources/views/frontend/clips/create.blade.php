@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-md-6">
                     @if($character->avatar)
-                    <img src="{{ $character->avatar->getUrl() }}" width="100%">
+                    <img src="{{ $character->avatar->getUrl('thumb') }}" width="100%">
                     @endif
 
                     </div>
@@ -143,7 +143,7 @@
                         <div class="form-group">
                             @if(!empty(Request::segment(2)))
                             <input type="hidden" name="character_id" value="{{ Request::segment(2) }}">
-                            <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl() }}">
+                            <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl('preview') }}">
                             @endif
                             <button class="btn btn-danger btn-lg" type="submit">
                                 {{ trans('global.save') }}

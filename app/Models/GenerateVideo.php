@@ -35,13 +35,15 @@ class GenerateVideo extends Model
             ],
         ]);
 
-        dd($response);
     
-        if ($response->getStatusCode() != 200) {
+       /* if ($response->getStatusCode() != 200) {
             return response()->json(['error' => 'Failed to generate video'], 500);
         }
+        */
     
         $video = json_decode($response->getBody()->getContents(), true);
+
+        dd($video);
         
         $clip->video_id = $video['id'];
     
