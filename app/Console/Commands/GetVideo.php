@@ -33,7 +33,8 @@ class GetVideo extends Command
     public function handle()
     {
         //Get the first pending clip
-        $clip = Clip::where('status', 'pending')->first();
+        $clip = Clip::where('status', 'processing')->first();
+
         if (!$clip){
             return;
         }
