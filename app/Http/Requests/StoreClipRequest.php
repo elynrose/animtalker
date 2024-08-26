@@ -36,7 +36,7 @@ class StoreClipRequest extends FormRequest
                 'nullable',
             ],
             'video_id' => [
-                'integer',
+                'string',
                 'nullable',
             ],
             'cost' => [
