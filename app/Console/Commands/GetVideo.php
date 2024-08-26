@@ -38,6 +38,8 @@ class GetVideo extends Command
         if (!$clip){
             return;
         }
+
+        
         $client = new \GuzzleHttp\Client();
 
         $response = $client->request('GET', 'https://api.d-id.com/talks/'.$clip->video_id, [

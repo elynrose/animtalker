@@ -62,30 +62,10 @@ class ClipsController extends Controller
         $clip->voice = $voice;
         $clip->audio_path = $mp3Path;
         $clip->script = $text;
+        $clip->status = 'New';
         $clip->save();
         
-        //Move this code to a job
-        //Send reques to d:id api to generate video
-        $video = new GenerateVideo;
-        //dd($imagePath.' | '. $mp3Path.' | '.$text);
-       
-        $response = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
-        //Get the reponse json from the api
-        $final_video = json_decode($response->getBody(), true);
-
-        //Save the video id and status to the database
-        if ($response) {
-            //attach audio and video file to the request
-            $clip->video_path = $final_video['id'];
-            $clip->status = 'Processing';
-            $clip->save();
-
-            return redirect()->route('frontend.clips.index')->with('success', 'Video generated successfully.');
-        } else {
-            // Handle the case where $video_result is not an array
-            return redirect()->route('frontend.clips.index')->with('error', 'Failed to generate video.');
-        }
-      
+        
         if ($request->input('music_layer', false)) {
             $clip->addMedia(storage_path('tmp/uploads/' . basename($request->input('music_layer'))))->toMediaCollection('music_layer');
         }
