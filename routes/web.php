@@ -1,6 +1,6 @@
 <?php
 Route::get('run-video', function () {
-    Artisan::call('app:get-video');
+   return Artisan::call('app:get-video');
 });
 Route::get('optimize-clear', function () {
     Artisan::call('optimize:clear');
