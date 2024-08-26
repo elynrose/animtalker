@@ -70,10 +70,11 @@ class ClipsController extends Controller
         //dd($imagePath.' | '. $mp3Path.' | '.$text);
        
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
+        $response = json_decode($video_result, true); // true converts JSON to an associative array
 
         if ($video_result) {
             //attach audio and video file to the request
-            $clip->video_path = $video_result['result_url'];
+            $clip->video_path = $response['result_url'];
             $clip->status = 'Completed';
             $clip->save();
 
