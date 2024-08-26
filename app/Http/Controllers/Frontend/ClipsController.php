@@ -64,14 +64,15 @@ class ClipsController extends Controller
         $clip->script = $text;
         $clip->save();
         
+        //Move this code to a job
         //Send reques to d:id api to generate video
         $video = new GenerateVideo;
         //dd($imagePath.' | '. $mp3Path.' | '.$text);
+       
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
 
         if ($video_result) {
             //attach audio and video file to the request
-            $clip->video_id = $video_result['video_id'];
             $clip->video_path = $video_result['result_url'];
             $clip->status = 'Pending';
             $clip->save();
