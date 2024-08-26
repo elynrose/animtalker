@@ -52,18 +52,10 @@ class RunGenerateVideo extends Command
 
         if ($response) {
             //attach audio and video file to the request
-            $clip->video_path = $response['id'];
+            $clip->video_id = $response['id'];
             $clip->status = 'Processing';
             $clip->save();
         }
-
-        //Save the video id and status to the database
-        if ($final_video) {
-            //attach audio and video file to the request
-            $clip->video_path = $final_video['id'];
-            $clip->status = 'Processing';
-            $clip->save();
-        } 
 
     }
 }
