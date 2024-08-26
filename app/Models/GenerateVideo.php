@@ -16,7 +16,14 @@ class GenerateVideo extends Model
     use HasFactory;
     public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
     {
+        $emotionName = null;
+
+        if ($clip && $clip->character && $clip->character->emotion) {
+            $emotionName = $clip->character->emotion->name;
+        }
+        
         $client = new \GuzzleHttp\Client();
+
     
         $response = $client->request('POST', 'https://api.d-id.com/talks', [
             'body' => json_encode([
@@ -28,7 +35,7 @@ class GenerateVideo extends Model
 
             "config" => [
                "stitch"=> true,
-               "driver_expressions"=>$clip->character->emotion->name,
+               "driver_expressions"=> $emotionName ?? 'neutral',
             ],
 
             ]),
