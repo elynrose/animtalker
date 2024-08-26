@@ -42,10 +42,9 @@ class GenerateVideo extends Model
         */
     
         $video = json_decode($response->getBody()->getContents(), true);
-
-        dd($video);
         
         $clip->video_id = $video['id'];
+        $clip->status = 'processing';
     
         $clip->save();
     
