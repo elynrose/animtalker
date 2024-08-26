@@ -22,7 +22,6 @@ class GenerateVideo extends Model
             $emotionName = $clip->character->emotion->name;
         }
 
-        dd($emotionName);
         
         $client = new \GuzzleHttp\Client();
 
