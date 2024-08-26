@@ -15,6 +15,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\GenerateAudio;
 use App\Models\GenerateVideo;
+use Illuminate\Support\Facades\Http;
+
 
 class ClipsController extends Controller
 {
@@ -66,10 +68,6 @@ class ClipsController extends Controller
         $video = new GenerateVideo;
         //dd($imagePath.' | '. $mp3Path.' | '.$text);
         $video_result = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
-
-        if ($video_result instanceof \Illuminate\Http\JsonResponse) {
-            return $video_result;
-        }
 
         if (is_array($video_result)) {
             //attach audio and video file to the request
