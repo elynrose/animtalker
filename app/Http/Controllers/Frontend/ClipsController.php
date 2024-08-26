@@ -71,12 +71,18 @@ class ClipsController extends Controller
             return $video_result;
         }
 
-        //attach audio and video file to the request
+        if (is_array($video_result)) {
+            //attach audio and video file to the request
+            $clip->video_id = $video_result['video_id'];
+            $clip->video_path = $video_result['result_url'];
+            $clip->status = 'Pending';
+            $clip->save();
 
-        $clip->video_id = $video_result['video_id'];
-        $clip->video_path = $video_result['video_path'];
-        $clip->status = 'Pending';
-        $clip->save();
+            return redirect()->route('frontend.clips.index')->with('success', 'Video generated successfully.');
+        } else {
+            // Handle the case where $video_result is not an array
+            return redirect()->route('frontend.clips.index')->with('error', 'Failed to generate video.');
+        }
       
         if ($request->input('music_layer', false)) {
             $clip->addMedia(storage_path('tmp/uploads/' . basename($request->input('music_layer'))))->toMediaCollection('music_layer');

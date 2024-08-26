@@ -57,10 +57,9 @@ class GenerateVideo extends Model
         
         $clip->video_id = $video['id'];
         $clip->status = 'processing';
-    
         $clip->save();
     
-        return redirect()->route('frontend.clips.index');
+        return $video;
     }
 }
 
