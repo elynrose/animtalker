@@ -70,19 +70,14 @@ class ClipsController extends Controller
         //dd($imagePath.' | '. $mp3Path.' | '.$text);
        
         $response = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
-
-        dd($response);  
-        
         //Get the reponse json from the api
         $final_video = json_decode($response->getBody(), true);
-
-        dd( $final_video );
 
         //Save the video id and status to the database
         if ($response) {
             //attach audio and video file to the request
-            $clip->video_path = $final_video['result_url'];
-            $clip->status = 'Completed';
+            $clip->video_path = $final_video['id'];
+            $clip->status = 'Processing';
             $clip->save();
 
             return redirect()->route('frontend.clips.index')->with('success', 'Video generated successfully.');
