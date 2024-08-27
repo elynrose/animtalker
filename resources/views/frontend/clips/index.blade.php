@@ -5,15 +5,14 @@
         <div class="col-md-12">
       <h3>{{ trans('cruds.clip.title')  }} </h3>
       <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
-{{dd($clips);}}
             <div class="row">
                 @foreach($clips as $clip)
                     <div class="col-md-3">
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
-                           {{dd($clip->character->avatar); }}  
-                                       @if($clip->character->avatar)
+
+                                @if($clip->character->avatar)
                                        @if($clip->status!=='completed')
                                                 <img src="{{ $clip->character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
                                         @else
