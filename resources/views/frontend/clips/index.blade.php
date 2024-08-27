@@ -3,7 +3,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-      
+      <h3>{{ trans('cruds.clip.title')  }} </h3>
+      <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
+
             <div class="row">
                 @foreach($clips as $clip)
                     <div class="col-md-3">
@@ -12,14 +14,18 @@
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
                              
                                        @if($clip->character->avatar)
+                                       @if($clip->status!=='completed')
                                                 <img src="{{ $clip->character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
+                                        @else
+                                                <video src="{{ $clip->video_path }}" class="img-responsive" width="100%" controls></video>
+                                            @endif
                                         @endif  
-                                <p class="card-text mt-3 badge badge-primary">
-                                <i class="fas fa-clock"></i>  {{ ucfirst($clip->status) ?? '' }}<br>
+                                <p class="card-text mt-3">
+                                <i class="fas fa-clock"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
-                                <div aria-label="Character Actions">
-                                   @if($clip->video_path)
-                                   <a class="btn btn-primary btn-sm " href="{{ $clip->video_path }}">
+                                <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
+                                  
+                                   <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ $clip->video_path }}">
                                           <i class="fas fa-download"></i>  
                                         </a>
                                         
@@ -30,11 +36,8 @@
                                             <button type="submit" class="btn btn-danger btn-sm" value="{{ trans('global.delete') }}"><i class="fas fa-trash"></i></button>
                                         </form>
                                     @endcan
-                                    @else 
-                                   
-                                   
 
-                                    @endif
+                                   
 
                                   
                                 </div>
@@ -52,6 +55,45 @@
 @section('scripts')
 @parent
 <script>
+    function getStatus(){
+        $('.waiting').each(function(){
+            var id = $(this).attr('id');
+            var video_id = $(this).attr('rel');
+            var clip_status = $(this).text();
+            var ajax_url = id+"/generate-video-status";
+             //send headers
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            //make an ajax call to get the status of the clip
+            //create the url for the ajax call
+            $.ajax({
+                url: ajax_url,
+                type: 'GET',
+                data: {id: id},
+                success: function(response){
+                    console.log(response);
+                    //make #actions visible
+                    $('#actions_'+id).css('visibility','visible');
+                    //update the download link
+                    $('#download_'+id).attr('href',response.video_path);
+                    $('#'+id).text(response.status);
+                    if(response.status == 'completed'){
+                        $('#'+id).addClass('badge-success');
+                    }else if(response.status == 'pending'){
+                        $('#'+id).addClass('badge-warning');
+                    }else if(response.status == 'rejected'){
+                        $('#'+id).addClass('badge-danger');
+                    }
+                }
+            });
+        });
+    }
+
+        setInterval(getStatus, 15000);
+  
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('clip_delete')

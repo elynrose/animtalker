@@ -62,7 +62,7 @@ class ClipsController extends Controller
         $clip->voice = $voice;
         $clip->audio_path = $mp3Path;
         $clip->script = $text;
-        $clip->status = 'New';
+        $clip->status = 'new';
         $clip->save();
         
         
@@ -179,5 +179,16 @@ class ClipsController extends Controller
         $clip = Clip::where('video_id', $request->input('video_id'))->first();
         $clip->status = $request->input('status');
         $clip->save();
+    }
+
+    //Create method for generateVideoStatus
+    public function generateVideoStatus(Request $request)
+    {
+        $clip = Clip::where('id', $request->input('id'))->first();
+        if($clip) {
+            return response()->json(['status' => ucfirst($clip->status), 'video_path' => $clip->video_path]);
+        } else {
+            return response()->json(['status' => 'not found']);
+        }
     }
 }

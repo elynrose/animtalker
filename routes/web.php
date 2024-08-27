@@ -293,6 +293,8 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::resource('clips', 'ClipsController');
     Route::get('clips/webhook', 'ClipsController@webhook')->name('clips.webhook');
     Route::get('clips/{id}/create', 'ClipsController@create')->name('myclips.create');
+    Route::get('clips/{id}/generate-video-status', 'ClipsController@generateVideoStatus')->name('clips.generateVideoStatus');
+    
 
 
     // Head Shape
