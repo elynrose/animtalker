@@ -36,7 +36,13 @@ class GenerateVideo extends Model
 
             "config" => [
                "stitch"=> true,
-              // "driver_expressions"=> $emotionName && in_array($emotionName, ['neutral', 'happy', 'sad', 'angry']) ? $emotionName : 'neutral',
+              /*  "driver_expressions"=> [
+                    "expressions"=> [
+                        "expression"=> $emotionName,
+                        "start_frame"=> 0,
+                        "intensity"=> 5
+                    ],
+                ], */
             ],
 
             ]),

@@ -334,13 +334,14 @@ return [
         ],
     ],
     'character' => [
-        'title'          => 'Character',
+        'desc'    => 'Let\'s create your anime character. Select all fields that apply.',
+        'title'          => 'Characters',
         'title_singular' => 'Character',
         'fields'         => [
-            'aspect_ratio'             => 'Aspect Ratio',
+            'aspect_ratio'             => 'Select the aspect aspect ratio for your video',
             'id'                       => 'ID',
             'id_helper'                => ' ',
-            'scene'                    => 'Scene',
+            'scene'                    => 'Choose a scene',
             'scene_helper'             => ' ',
             'gender'                   => 'Gender',
             'gender_helper'            => ' ',
@@ -376,7 +377,7 @@ return [
             'deleted_at_helper'        => ' ',
             'emotion'                  => 'Emotion',
             'emotion_helper'           => ' ',
-            'name'                     => 'Name',
+            'name'                     => 'Give your anime a name',
             'name_helper'              => ' ',
             'custom_prompt'            => 'Custom Prompt',
             'custom_prompt_helper'     => ' ',
@@ -437,6 +438,7 @@ return [
         ],
     ],
     'clip' => [
+        'desc'    => 'Great! Now let\'s think about the script for your anime character whilst we work on it.',
         'title'          => 'Clips',
         'title_singular' => 'Clip',
         'fields'         => [

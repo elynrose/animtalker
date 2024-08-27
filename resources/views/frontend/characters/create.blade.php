@@ -3,9 +3,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card" id="step1">
                 <div class="card-header">
-                    {{ trans('global.create') }} {{ trans('cruds.character.title_singular') }}
+                   {{ trans('cruds.character.desc') }}
                 </div>
 
                 <div class="card-body">
@@ -17,17 +17,17 @@
                                 
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>{{ trans('cruds.character.fields.aspect_ratio') }}</h5>
+                                    <h6>{{ trans('cruds.character.fields.aspect_ratio') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                    <div class="col">
-                                    <input class="form-check-input" type="radio" name="aspect_ratio" id="aspect_ratio_1" value="9:16">
-                                    <label class="form-check-label" for="aspect_ratio_1">9:16</label>
+                                    <div class="col-md-6">
+                                    <input type="radio" name="aspect_ratio" id="aspect_ratio_1" value="9:16">
+                                    <label for="aspect_ratio_1">9:16</label>
                                     </div>
-                                    <div class="col">
-                                    <input class="form-check-input" type="radio" name="aspect_ratio" id="aspect_ratio_2" value="16:9">
-                                    <label class="form-check-label" for="aspect_ratio_2">16:9</label>
+                                    <div class="col-md-6">
+                                    <input type="radio" name="aspect_ratio" id="aspect_ratio_2" value="16:9">
+                                    <label for="aspect_ratio_2">16:9</label>
                                     </div>
                                     </div>
                                  </div>
@@ -273,15 +273,81 @@
                         <div class="form-group mt-4">
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <button class="btn btn-danger btn-block" id="save" type="submit">
-                                {{ trans('global.save') }}
+                                {{ trans('global.generate') }}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
+
+            <div class="card" id="step2">
+                <div class="card-header"> {{ trans('cruds.clip.desc') }} </div>
+                    <div class="card-body">
+                    <form method="POST" action="{{ route("frontend.clips.store") }}" enctype="multipart/form-data">
+                        @method('POST')
+                        @csrf
+                       
+                        <div class="form-group">
+                            <label class="required" for="script">{{ trans('cruds.clip.fields.script') }}</label>
+                            <textarea class="form-control" name="script" id="script" required>{{ old('script') }}</textarea>
+                            @if($errors->has('script'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('script') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.clip.fields.script_helper') }}</span>
+                        </div>
+                        <!--add voice selection -->
+
+                        <div class="form-group">
+                            <label>{{ trans('cruds.clip.fields.voice') }}</label>
+                            <select class="form-control" name="voice" id="voice">
+                                <option value disabled {{ old('voice', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                                @foreach(App\Models\Clip::VOICE as $key => $label)
+                                    <option value="{{ $key }}" {{ old('voice', 'alloy') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('voice'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('voice') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.clip.fields.status_helper') }}</span>
+                        </div>
+                    
+                        <div class="form-group">
+                            <div class="row">
+                            @foreach(App\Models\Clip::PRIVACY_RADIO as $key => $label)
+                            
+                                <div class="col-md-3">
+                                    <input type="radio" id="privacy_{{ $key }}" name="privacy" value="{{ $key }}" {{ old('privacy', '0') === (string) $key ? 'checked' : '' }}>
+                                    <label for="privacy_{{ $key }}">{{ $label }}</label>
+                                </div>
+                            @endforeach
+                            </div>
+                            @if($errors->has('privacy'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('privacy') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.clip.fields.privacy_helper') }}</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="character_id" id="character_id"  value="">
+                            <input type="hidden" name="image_path" id="image_path" value="">
+                            <button class="btn btn-danger btn-lg" type="submit">
+                                {{ trans('global.animate') }}
+                            </button>
+                        </div>
+                    </form>
+
+                    </div>
+            </div>
+
         </div>
         <div class="col-md-4 text-center">
-            <div>
+            <div class="card shadow" id="character_box">
+                <div class="card-header"> {{ trans('cruds.character.title_singular') }}</div>
                 <div class="card-body sprite">
             <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
             <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
@@ -362,7 +428,7 @@
         toggleMultipleSelections('.dress-color-btn', 'dress_colors');
         toggleMultipleSelections('.props-btn', 'props');
 
-        $('#img_wrap, .error, #loading').hide();
+        $('#img_wrap, .error, #loading, #step2').hide();
 
         // Handle form submission
         $('#save').on('click', function(e) {
@@ -375,6 +441,7 @@
             var sceneId = $('#scene_id').val();
             var genderId = $('#gender_id').val();
             var ageGroupId = $('#age_group_id').val();
+            var characterId = $('#character_id').val();
 
             if (aspectRatio == '' && name.trim() === '' || sceneId.trim() === '' || genderId.trim() === '' || ageGroupId.trim() === '') {
                 // Flash an error message
@@ -382,6 +449,8 @@
                 return;
             }
             $('.error').hide();
+            $('#step1').slideUp('slow').hide();
+            $('#step2').show();
 
             // Continue with form submission
             // Get the form data
@@ -404,13 +473,17 @@
                     //get image and prompt from response from parsed json
                     var image = response.image;
                     var prompt = response.prompt;
+                    var id = response.id;
 
                     // Display the image and prompt
                     $('#image').attr('src', image);
                     $('#prompt').text(prompt);
-                    $('#img_wrap').show();
                     $('#loading').hide();
+                    $('#image_path').val(image);
+                    $('#character_id').val(id);
+                    $('#img_wrap').show();
                     $('#save').attr('disabled', false);
+                  
                 },
                 error: function(xhr, status, error) {
                     // Handle the error response
@@ -418,7 +491,10 @@
                     $('#save').attr('disabled', false);
                     $('#img_wrap').hide();
                     $('#loading').hide();
-                    alert('An error occurred. Please try again.');
+                    $('#img_wrap', '#image').hide();
+                    $('#step1').show();
+                    $('#step2').hide();
+                    $('.error').text('An error occurred. Please try again.');
                     console.log(xhr.responseText);
                 }
             });

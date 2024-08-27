@@ -98,8 +98,15 @@ class CharacterController extends Controller
         return view('frontend.characters.create', compact('age_groups', 'body_types', 'character_zooms', 'dress_colors', 'dress_styles', 'emotions', 'eye_colors', 'eye_shapes', 'facial_expressions', 'genders', 'hair_colors', 'hair_lenghts', 'hair_styles', 'head_shapes', 'mouth_shapes', 'nose_shapes', 'postures', 'props', 'scenes', 'skin_tones', 'users'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(StoreCharacterRequest $request)
     {
+        // Create a new character
         $character = Character::create($request->except('dress_colors', 'props'));
 
         $dressColors = $request->input('dress_colors', []);
@@ -108,54 +115,44 @@ class CharacterController extends Controller
         // Insert into character_dress_color table
         if (!empty($dressColors)) {
             foreach ($dressColors as $dressColor) {
-            $character->dress_colors()->attach($dressColor);
+                $character->dress_colors()->attach($dressColor);
             }
         }
 
         // Insert into character_prop table
         if (!empty($props)) {
             foreach ($props as $prop) {
-            $character->props()->attach($prop);
+                $character->props()->attach($prop);
             }
         }
 
-        $new_character  = new GenerateCharacter;
+        // Generate character avatar
+        $new_character = new GenerateCharacter;
         $avatar = $new_character->generate($character->id);
 
-        
-        //Get the image from dalle response
+        // Get the image from dalle response
         $avatarData = $avatar->getData();
-        
-        //Get the image from dalle response and the prompt
+
+        // Get the image and prompt from dalle response
         $prompt = $avatarData->prompt;
         $image = $avatarData->dalle_response->data[0]->url;
 
-        //Save the prompt and image to the character
+        // Save the image to the character
         if ($image) {
-            //$character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'animshorts/images');
-
-            //image is a url from dalle api, save it into amazon s3 images folder
-           // $image = Storage::disk('s3')->url('animshorts/images/' . basename($image));
             $path = $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'images')->getUrl();
             $character->avatar_url = $path;
             $character->save();
-        
         }
-    
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $character->id]);
         }
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'image' => $image, 'prompt' => $prompt]);
+            return response()->json(['success' => true, 'image' => $path, 'prompt' => $prompt, 'id'=>$character->id]);
         } else {
-            //return error message in json format
             return response()->json(['error' => 'Failed to generate character'], 500);
         }
-       
-
-     //   return redirect()->route('frontend.characters.show', $character->id);
     }
 
     public function edit(Character $character)

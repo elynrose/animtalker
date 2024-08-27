@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'generate'                => 'Generate',
     'animate'                        => 'Animate',
     'actions'                        => 'Actions',
     'add'                            => 'Add',
