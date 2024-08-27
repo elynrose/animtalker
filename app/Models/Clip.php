@@ -26,6 +26,12 @@ class Clip extends Model implements HasMedia
         '0' => 'Private',
         '1' => 'Public',
     ];
+    
+    public const ASPECTRATIO = [
+        '16:9' => 'Landscape',
+        '9:16' => 'Portrait',
+    ];
+
 
     public const VOICE = [
         'alloy' => 'Alloy - Male',

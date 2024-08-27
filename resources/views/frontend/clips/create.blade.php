@@ -50,6 +50,23 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.clip.fields.status_helper') }}</span>
                         </div>
+                        
+                        <!--Add aspect ratio selection -->
+                        <div class="form-group">
+                            <label>{{ trans('cruds.clip.fields.aspectratio') }}</label>
+                            <select class="form-control" name="aspectratio" id="aspectratio">
+                                <option value disabled {{ old('aspectratio', null) === null ? 'selected' : '' }}></option>
+                                @foreach(App\Models\Clip::ASPECTRATIO as $key => $label)
+                                    <option value="{{ $key }}" {{ old('aspectratio', '16:9') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('aspectratio'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('aspectratio') }}
+                                </div>
+                            @endif
+                            <span class="help-block text-danger aspectratio error"></span>
+                        </div>
 
 
                      <!--      <div class="form-group">

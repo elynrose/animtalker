@@ -14,6 +14,7 @@ class CreateCharactersTable extends Migration
             $table->string('caption')->nullable();
             $table->longText('custom_prompt')->nullable();
             $table->string('avatar_url')->nullable();
+            $table->string('aspect_ratio')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

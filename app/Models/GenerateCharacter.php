@@ -157,8 +157,18 @@ class GenerateCharacter extends Model
         $prompt .= "The character is set against a " . strtolower($character->scene->scene) . " background, ";
         $prompt .= "with the focus on the character and the background slightly blurred to emphasize the character's features.";
         $prompt .= "The character is well-lit and the colors are vibrant. ";
-        $prompt .= "The image ratio should be a 16:9 ratio allowing the character to appear in the right perspective within the screen. Allowing the character to be the main focus of the image.";
-        return $prompt;
+        $prompt .= "The image ratio should be a ";
+        if($character->aspect_ratio == '16:9'){
+            $prompt.="16:9";
+         }
+         elseif($character->aspect_ratio == '9:16'){
+            $prompt.="9:16";
+         } 
+        $prompt .= " aspect ratio. ";
+        $prompt.="allowing the character to appear in the right perspective within the screen. Allowing the character to be the main focus of the image.";
+        
+        return $prompt;       
+
     }
     
 

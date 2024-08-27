@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:get-video');
         $schedule->command('app:run-video');
+        Log::info('Cron is working fine!');
         
     }
 
