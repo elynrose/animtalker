@@ -3,105 +3,51 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @can('clip_create')
-                <div style="margin-bottom: 10px;" class="row">
-                    <div class="col-lg-12">
-                        <a class="btn btn-success" href="{{ route('frontend.clips.create') }}">
-                            {{ trans('global.add') }} {{ trans('cruds.clip.title_singular') }}
-                        </a>
+      
+            <div class="row">
+                @foreach($clips as $clip)
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
+                             
+                                       @if($clip->character->avatar)
+                                                <img src="{{ $clip->character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
+                                        @endif  
+                                <p class="card-text mt-3 badge badge-primary">
+                                <i class="fas fa-clock"></i>  {{ ucfirst($clip->status) ?? '' }}<br>
+                                </p>
+                                <div aria-label="Character Actions">
+                                   @if($clip->video_path)
+                                   <a class="btn btn-primary btn-sm " href="{{ $clip->video_path }}">
+                                          <i class="fas fa-download"></i>  
+                                        </a>
+                                        
+                                    @can('character_delete')
+                                        <form class="mx-2" action="{{ route('frontend.characters.destroy', $clip->character->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-danger btn-sm" value="{{ trans('global.delete') }}"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    @endcan
+                                    @else 
+                                   
+                                   
+
+                                    @endif
+
+                                  
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            @endcan
-            <div class="card">
-                <div class="card-header">
-                    {{ trans('cruds.clip.title_singular') }} {{ trans('global.list') }}
-                </div>
-
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-Clip">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.clip.fields.character') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.clip.fields.audio_file') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.clip.fields.status') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.clip.fields.video') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.clip.fields.privacy') }}
-                                    </th>
-                                    <th>
-                                        &nbsp;
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($clips as $key => $clip)
-                                    <tr data-entry-id="{{ $clip->id }}">
-                                        <td>
-                                            {{ $clip->character->name ?? '' }}
-                                        </td>
-                                        <td>
-                                            @if($clip->audio_file)
-                                                <a href="{{ $clip->audio_file->getUrl() }}" target="_blank">
-                                                    {{ trans('global.view_file') }}
-                                                </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            {{ App\Models\Clip::STATUS_SELECT[$clip->status] ?? '' }}
-                                        </td>
-                                        <td>
-                                            @if($clip->video)
-                                                <a href="{{ $clip->video->getUrl() }}" target="_blank">
-                                                    {{ trans('global.view_file') }}
-                                                </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            {{ App\Models\Clip::PRIVACY_RADIO[$clip->privacy] ?? '' }}
-                                        </td>
-                                        <td>
-                                            @can('clip_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('frontend.clips.show', $clip->id) }}">
-                                                    {{ trans('global.view') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('clip_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('frontend.clips.edit', $clip->id) }}">
-                                                    {{ trans('global.edit') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('clip_delete')
-                                                <form action="{{ route('frontend.clips.destroy', $clip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                </form>
-                                            @endcan
-
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
         </div>
     </div>
 </div>
+
 @endsection
 @section('scripts')
 @parent
