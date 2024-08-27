@@ -54,10 +54,11 @@ class GetVideo extends Command
         
         if ($video['status'] == 'done'){
             //Save the video on amazon s3 
-            $videoPath = Storage::disk('s3')->put('videos', file_get_contents($video['result_url']), 'clips');
+            $videoPath = $clip->addMediaFromUrl($video['result_url'])->toMediaCollection('clip', 's3', 'videos')->getUrl();
+
 
             //Get the s3 url
-            $clip->video_path = Storage::disk('s3')->url($videoPath); 
+            $clip->video_path = $videoPath;
             $clip->status = 'completed';
             $clip->save();
 
