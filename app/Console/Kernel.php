@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
          $schedule->command('app:generate-video')->everyMinute();
-         $schedule->command('app:get-video')->everyMinute();
+         $schedule->command('app:run-video')->everyMinute();
 
     }
 
