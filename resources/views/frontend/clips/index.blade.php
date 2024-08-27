@@ -18,7 +18,7 @@
                                     <video src="{{ $clip->video_path }}" class="img-responsive" width="100%" controls></video>
                                 @endif
                                        
-                                        @endif  
+                                   
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
