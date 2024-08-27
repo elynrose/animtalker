@@ -7,6 +7,7 @@
       <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
             <div class="row">
                 @foreach($clips as $clip)
+                @if($clip->character)
                     <div class="col-md-3">
                         <div class="card mb-4">
                             <div class="card-body">
@@ -44,6 +45,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
 
