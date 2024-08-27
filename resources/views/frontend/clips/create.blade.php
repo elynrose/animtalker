@@ -144,7 +144,7 @@
                         <div class="form-group">
                             @if(!empty(Request::segment(2)))
                             <input type="hidden" name="character_id" value="{{ Request::segment(2) }}">
-                            <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl('preview') }}">
+                            <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl() }}">
                             @endif
                             <button class="btn btn-danger btn-lg" type="submit">
                                 {{ trans('global.save') }}
