@@ -53,15 +53,12 @@ class GetVideo extends Command
         $video = json_decode($response->getBody()->getContents(), true);
         
         if ($video['status'] == 'done'){
-            //Save the video on amazon s3 
-            $videoPath = $clip->addMediaFromUrl($video['result_url'])->toMediaCollection('clip', 's3', 'videos')->getUrl();
+          //  $videoPath = $clip->addMediaFromUrl($video['result_url'])->toMediaCollection('clip', 's3', 'videos')->getUrl();
 
-
-            //Get the s3 url
-            $clip->video_path = $videoPath;
             $clip->status = 'completed';
+            $clip->video_path = $video['result_url'];
             $clip->save();
-
+            
         } else if ($video['status'] == 'failed'){
             $clip->status = 'rejected';
             $clip->save();
