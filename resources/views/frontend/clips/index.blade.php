@@ -23,6 +23,7 @@
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
+                               
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
                                   
                                    <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ $clip->video_path }}">
