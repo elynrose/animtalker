@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('app:generate-video')->everyMinute();
          $schedule->command('app:run-video')->everyMinute();
-         
 
     }
 
