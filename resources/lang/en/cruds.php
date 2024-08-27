@@ -337,6 +337,7 @@ return [
         'title'          => 'Character',
         'title_singular' => 'Character',
         'fields'         => [
+            'aspect_ratio'             => 'Aspect Ratio',
             'id'                       => 'ID',
             'id_helper'                => ' ',
             'scene'                    => 'Scene',

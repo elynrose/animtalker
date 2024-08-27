@@ -13,6 +13,26 @@
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
+                        <!--Radio button for aspect ratio-->
+                                
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>{{ trans('cruds.character.fields.aspect_ratio') }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                    <div class="col">
+                                    <input class="form-check-input" type="radio" name="aspect_ratio" id="aspect_ratio_1" value="9:16">
+                                    <label class="form-check-label" for="aspect_ratio_1">9:16</label>
+                                    </div>
+                                    <div class="col">
+                                    <input class="form-check-input" type="radio" name="aspect_ratio" id="aspect_ratio_2" value="16:9">
+                                    <label class="form-check-label" for="aspect_ratio_2">16:9</label>
+                                    </div>
+                                    </div>
+                                 </div>
+                            </div>
+
                         <div class="form-group">
                             <label class="required" for="name">{{ trans('cruds.character.fields.name') }}</label>
                             <input class="form-control" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
@@ -351,13 +371,14 @@
             // Check if the required fields are provided
 
             var name = $('#name').val();
+            var aspectRatio = $('input[name="aspect_ratio"]:checked').val();
             var sceneId = $('#scene_id').val();
             var genderId = $('#gender_id').val();
             var ageGroupId = $('#age_group_id').val();
 
-            if (name.trim() === '' || sceneId.trim() === '' || genderId.trim() === '' || ageGroupId.trim() === '') {
+            if (aspectRatio == '' && name.trim() === '' || sceneId.trim() === '' || genderId.trim() === '' || ageGroupId.trim() === '') {
                 // Flash an error message
-                $('.error').text('Scene and Character detail sections are required.').show();
+                $('.error').text('Aspect ratio, scene and Character detail sections are required.').show();
                 return;
             }
             $('.error').hide();
