@@ -12,8 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:get-video');
-        $schedule->command('app:run-video');
+        $schedule->command('app:get-video')->everyMinute();
+        $schedule->command('app:run-video')->everyMinute();
+        Log::info('Cron is working fine!');
         
     }
 
