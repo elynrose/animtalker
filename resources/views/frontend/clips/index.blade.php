@@ -13,13 +13,11 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
                              
-                                       @if($clip->character->avatar)
                                        @if($clip->status!=='completed')
                                                 <img src="{{ $clip->character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
                                         @else
                                                 <video src="{{ $clip->video_path }}" class="img-responsive" width="100%" controls></video>
-                                            @endif
-                                        @endif  
+                                        @endif
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
