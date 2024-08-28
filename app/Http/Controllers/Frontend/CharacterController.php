@@ -44,7 +44,9 @@ class CharacterController extends Controller
     {
         abort_if(Gate::denies('character_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $characters = Character::with(['scene', 'gender', 'age_group', 'body_type', 'hair_color', 'hair_lenght', 'hair_style', 'head_shape', 'nose_shape', 'mouth_shape', 'eye_shape', 'eye_color', 'skin_tone', 'facial_expression', 'emotion', 'dress_style', 'dress_colors', 'props', 'posture', 'character_zoom', 'user', 'media'])->get();
+        $characters = Character::with(['scene', 'gender', 'age_group', 'body_type', 'hair_color', 'hair_lenght', 'hair_style', 'head_shape', 'nose_shape', 'mouth_shape', 'eye_shape', 'eye_color', 'skin_tone', 'facial_expression', 'emotion', 'dress_style', 'dress_colors', 'props', 'posture', 'character_zoom', 'user', 'media'])
+            ->where('user_id', auth()->id())->orderBy('id', 'desc')
+            ->get();
 
         return view('frontend.characters.index', compact('characters'));
     }
