@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'site_title' => 'clone of Animae',
+    'site_title' => 'Animshorts',
 
 ];

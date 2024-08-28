@@ -59,6 +59,11 @@ class GetVideo extends Command
             $clip->status = 'completed';
             $clip->video_path = $video['result_url'];
             $clip->save();
+
+            //Send an email to the user
+            $user = $clip->character->user_id;
+            $user->notify(new VideoReady($clip));
+
             
         } else if ($video['status'] == 'failed'){
             $clip->status = 'rejected';
