@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\GenerateAudio;
 use App\Models\GenerateVideo;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 
 class ClipsController extends Controller
@@ -195,4 +196,29 @@ class ClipsController extends Controller
             return response()->json(['status' => 'not found']);
         }
     }
+
+
+    //create an openai method to generate text with a given prompt
+    public function openai(Request $request)
+    { 
+        $prompt = "Generate ".$request->input('topic').". Limit the response to 255 characters.";
+        $client = new Client();
+        $response = $client->post('https://api.openai.com/v1/completions', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . env('OPENAI_KEY'),
+            ],
+            'json' => [
+                'model' => 'gpt-3.5-turbo-instruct',
+                'prompt' => $prompt,
+                'max_tokens' => 255,
+                'temperature' => 0.7,
+                'top_p' => 1,
+                'frequency_penalty' => 0,
+                'presence_penalty' => 0,
+            ],
+        ]);
+        $data = json_decode($response->getBody(), true);
+        return trim($data['choices'][0]['text']);
+    }
+
 }

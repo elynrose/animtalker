@@ -19,12 +19,29 @@
 
                     </div>
                     <div class="col-md-6">
+
                     <form method="POST" action="{{ route("frontend.clips.store") }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
                        
                         <div class="form-group">
                             <label class="required" for="script">{{ trans('cruds.clip.fields.script') }}</label>
+                            <!--insert a dropdown button with three anchored items-->
+                            <div class="form-group">
+                                <select class="form-control" name="gen_script" id="gen_script">
+                                    <option value="" disabled selected>Select to generate</option>
+                                    <option value="a random joke">A random joke</option>
+                                    <option value="a social media tip">A social media tip</option>
+                                    <option value="a short advise">A short advice</option>
+                                    <option value="a wise tale">A wise tale</option>
+                                </select>
+                                @if($errors->has('script'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('script') }}
+                                    </div>
+                                @endif
+                                <span class="help-block">{{ trans('cruds.clip.fields.script_helper') }}</span>
+                            </div>
                             <textarea class="form-control" name="script" id="script" required>{{ old('script') }}</textarea>
                             @if($errors->has('script'))
                                 <div class="invalid-feedback">
@@ -167,6 +184,38 @@
 @endsection
 
 @section('scripts')
+@parent
+<script>
+$(function() {
+    $('#gen_script').on('change', function() {
+        var topic = $(this).val();
+        if(topic == ''){
+            return;
+        }
+        //send headers
+        $('#script').val('Loading...');
+        $.ajax({
+            headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            url: '{{ route('frontend.clips.openai') }}',
+            type: 'POST',
+            data: {
+                topic: topic
+            },
+            success: function(response) {
+                console.log(response);
+                //parse the response and display the first choice in the textarea
+                $('#script').val(response);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+    });
+</script>
 <script>
     Dropzone.options.audioFileDropzone = {
     url: '{{ route('frontend.clips.storeMedia') }}',
@@ -315,6 +364,8 @@
 
          return _results
      }
+
+
 }
 </script>
 @endsection
