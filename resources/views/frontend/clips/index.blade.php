@@ -21,7 +21,7 @@
                                        
                                    
                                 <p class="card-text mt-3">
-                                <i class="fas fa-clock fa-spin" id="clock_{{$clip->id}}"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="badge_{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                <i class="fas fa-clock  @if($clip->status=='new') fa-spin  @endif" id="clock_{{$clip->id}}"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="badge_{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
                                
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
@@ -71,6 +71,7 @@
             });
             //make an ajax call to get the status of the clip
             //create the url for the ajax call
+            $('#clock_'+id).addClass('fa-spin');
             $.ajax({
                 url: ajax_url,
                 type: 'GET',
