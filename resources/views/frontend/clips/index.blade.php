@@ -21,7 +21,7 @@
                                        
                                    
                                 <p class="card-text mt-3">
-                                <i class="fas fa-clock  @if($clip->status=='new') fa-spin  @endif" id="clock_{{$clip->id}}"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="badge_{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="badge_{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}}</p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
