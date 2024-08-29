@@ -21,7 +21,7 @@
                                        
                                    
                                 <p class="card-text mt-3">
-                                <i class="fas fa-clock"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                <i class="fas fa-clock fa-spin" id="clock_{{$clip->id}}"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="badge_{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
                                
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
@@ -83,11 +83,12 @@
                     $('#download_'+id).attr('href',response.video_path);
                     $('#'+id).text(response.status);
                     if(response.status == 'completed'){
-                        $('#'+id).addClass('badge-success');
+                        $('#clock_'+id).removeClass('fa-spin');
+                        $('#badge_'+id).addClass('badge-success');
                     }else if(response.status == 'pending'){
-                        $('#'+id).addClass('badge-warning');
+                        $('#badge_'+id).addClass('badge-warning');
                     }else if(response.status == 'rejected'){
-                        $('#'+id).addClass('badge-danger');
+                        $('#badge_'+id).addClass('badge-danger');
                     }
                 }
             });
