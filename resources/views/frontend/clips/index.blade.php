@@ -38,7 +38,7 @@
                                         </form>
                                     @endcan
 
-                                    <a href="" class="btn btn-success"><i class="fas fa-save"></i></a>
+                                    <a href="" class="btn btn-success btn-sm"><i class="fas fa-save"></i></a>
                                    
 
                                   
