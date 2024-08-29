@@ -146,6 +146,8 @@ class CharacterController extends Controller
             $character->save();
         } else {
             return response()->json(['error' => 'Failed to generate character'], 500);
+            //delete character
+            $character->delete();
         }
 
         if ($media = $request->input('ck-media', false)) {
