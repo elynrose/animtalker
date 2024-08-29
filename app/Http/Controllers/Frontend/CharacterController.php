@@ -144,6 +144,8 @@ class CharacterController extends Controller
             $path = $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'images')->getUrl();
             $character->avatar_url = $path;
             $character->save();
+        } else {
+            return response()->json(['error' => 'Failed to generate character'], 500);
         }
 
         if ($media = $request->input('ck-media', false)) {

@@ -474,7 +474,7 @@
                     var image = response.image;
                     var prompt = response.prompt;
                     var id = response.id;
-
+                    if(image!==''){
                     // Display the image and prompt
                     $('#image').attr('src', image);
                     $('#prompt').text(prompt);
@@ -483,7 +483,9 @@
                     $('#character_id').val(id);
                     $('#img_wrap').show();
                     $('#save').attr('disabled', false);
-                  
+                } else {
+                    $('.error').text(response.error).show();
+                }
                 },
                 error: function(xhr, status, error) {
                     // Handle the error response
