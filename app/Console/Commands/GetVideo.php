@@ -7,6 +7,9 @@ use App\Models\Clip;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Mail\ClipCompleted;
+use Illuminate\Support\Facades\Mail;
+
 
 
 
@@ -62,7 +65,7 @@ class GetVideo extends Command
 
             //Send an email to the user
             $user = $clip->character->user_id;
-            $user->notify(new VideoReady($clip));
+         //   Mail::to($user->email)->send(new ClipCompleted($clip));
 
             
         } else if ($video['status'] == 'failed'){
