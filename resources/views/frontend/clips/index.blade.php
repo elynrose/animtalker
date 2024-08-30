@@ -21,7 +21,8 @@
                                        
                                    
                                 <p class="card-text mt-3">
-                                <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i> <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="badge_{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
+                                 <span class=" badge badge-primary clip_status @if($clip->status=='pending' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}}</p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
@@ -86,11 +87,11 @@
                     $('#'+id).text(response.status);
                     if(response.status == 'completed'){
                         $('#clock_'+id).removeClass('fa-spin');
-                        $('#badge_'+id).addClass('badge-success');
+                        $('#'+id).addClass('badge-success');
                     }else if(response.status == 'pending'){
-                        $('#badge_'+id).addClass('badge-warning');
+                        $('#'+id).addClass('badge-warning');
                     }else if(response.status == 'rejected'){
-                        $('#badge_'+id).addClass('badge-danger');
+                        $('#'+id).addClass('badge-danger');
                     }
                 }
             });
