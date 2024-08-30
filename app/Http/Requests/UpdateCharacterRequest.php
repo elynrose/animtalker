@@ -53,6 +53,10 @@ class UpdateCharacterRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'art_style' => [
+                'string',
+                'nullable',
+            ],
             'aspect_ratio' => [
                 'string',
                 'nullable',

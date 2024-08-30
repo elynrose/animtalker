@@ -80,12 +80,13 @@
                 data: {id: id},
                 success: function(response){
                     console.log(response);
-                    //make #actions visible
-                    $('#actions_'+id).css('visibility','visible');
+
                     //update the download link
                     $('#download_'+id).attr('href',response.video_path);
                    // $('#'+id).text(response.status);
                     if(response.status == 'completed'){
+                    //make #actions visible
+                    $('#actions_'+id).css('visibility','visible');
                         $('#clock_'+id).removeClass('fa-spin');
                         $('#'+id).addClass('badge-success').text('Completed');
                     }else if(response.status == 'processing'){

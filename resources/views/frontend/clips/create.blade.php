@@ -25,30 +25,29 @@
                         @csrf
                        
                         <div class="form-group">
-                            <label class="required" for="script">{{ trans('cruds.clip.fields.script') }}</label>
-                            <!--insert a dropdown button with three anchored items-->
-                            <div class="form-group">
-                                <select class="form-control" name="gen_script" id="gen_script">
-                                @foreach(App\Models\Clip::TIPS as $key => $label)
-                                    <option value="{{ $key }}">{{ $label }}</option>
-                                @endforeach
-                                </select>
-                                @if($errors->has('script'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('script') }}
-                                    </div>
-                                @endif
-                                <span class="help-block">{{ trans('cruds.clip.fields.script_helper') }}</span>
+                            <label class="required" for="prompt">{{ trans('cruds.clip.fields.prompt') }}</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="prompt" id="prompt" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="write">Write</button>
+                                </div>
                             </div>
-                            <textarea class="form-control" name="script" id="script" required>{{ old('script') }}</textarea>
-                            @if($errors->has('script'))
+                            @if($errors->has('prompt'))
                                 <div class="invalid-feedback">
-                                    {{ $errors->first('script') }}
+                                    {{ $errors->first('prompt') }}
                                 </div>
                             @endif
-                            <span class="help-block">{{ trans('cruds.clip.fields.script_helper') }}</span>
                         </div>
-                        <!--add voice selection -->
+
+                        <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
+                            <label for="script"> {{ trans('cruds.clip.fields.script') }}</label>
+                            <textarea class="form-control" name="script" id="script">{{ old('script') }}</textarea>
+                            @if($errors->has('script'))
+                                <p class="help-block text-danger">{{ $errors->first('script') }}</p>
+                            @endif
+                            <p class="helper-block" style="color:#6c757d;">
+                            </p>
+                        </div>
 
                         <div class="form-group">
                             <label>{{ trans('cruds.clip.fields.voice') }}</label>
@@ -185,9 +184,9 @@
 @parent
 <script>
 $(function() {
-    $('#gen_script').on('change', function() {
-        var topic = $(this).val();
-        if(topic == ''){
+    $('#write').click(function() {
+        var prompt = $('#prompt').val();
+        if(prompt == ''){
             return;
         }
         //send headers
@@ -199,7 +198,7 @@ $(function() {
             url: '{{ route('frontend.clips.openai') }}',
             type: 'POST',
             data: {
-                topic: topic
+                topic: prompt
             },
             success: function(response) {
                 console.log(response);

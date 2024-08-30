@@ -29,6 +29,7 @@ class GenerateVideo extends Model
         $response = $client->request('POST', 'https://api.d-id.com/talks', [
             'body' => json_encode([
                 "source_url" => $imagePath,
+                "driver_url"=>"bank://classics",
                 "script" => [
                     "type" => "audio",
                     "audio_url" => $mp3Path,
@@ -36,13 +37,13 @@ class GenerateVideo extends Model
 
             "config" => [
                "stitch"=> true,
-              /*  "driver_expressions"=> [
-                    "expressions"=> [
-                        "expression"=> $emotionName,
-                        "start_frame"=> 0,
-                        "intensity"=> 5
-                    ],
-                ], */
+              "driver_expressions"=> [ 
+                "expressions"=> [ 
+                    "start_frame"=> 0, 
+                    "expression"=> $emotionName, 
+                    "intensity"=> 1 
+                    ] 
+                ],
             ],
 
             ]),

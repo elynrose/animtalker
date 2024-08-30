@@ -341,6 +341,7 @@ return [
             'aspect_ratio'             => 'Select the aspect aspect ratio for your video',
             'id'                       => 'ID',
             'id_helper'                => ' ',
+            'art'                => 'Art Style',
             'scene'                    => 'Choose a scene',
             'scene_helper'             => ' ',
             'gender'                   => 'Gender',
@@ -443,6 +444,7 @@ return [
         'title_singular' => 'Clip',
         'fields'         => [
             'id'                 => 'ID',
+            'prompt'             => 'Prompt',
             'id_helper'          => ' ',
             'character'          => 'Character',
             'character_helper'   => ' ',
