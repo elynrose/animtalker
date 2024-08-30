@@ -150,13 +150,13 @@ class GenerateCharacter extends Model
         }
     
         // Describe the art style and setting
-        $prompt .= "The art style is similar to Pixar-like animation. ";
+        $prompt .= "The art style is similar to Pixar-like animation, with exaggerated features and expressive movements.";
         if (!empty($character->custom_prompt)) {
             $prompt .= $character->custom_prompt . " ";
         }
         $prompt .= "The character is set against a " . strtolower($character->scene->scene) . " background, ";
         $prompt .= "with the focus on the character and the background slightly blurred to emphasize the character's features.";
-        $prompt .= "The character is well-lit and the colors are vibrant. ";
+        $prompt .= "The character is well-lit with rich and high detail, the colors are vibrant inspired by Disney's warm and inviting aesthetic, hd quality, vibrant hues, smooth gradients, and soft shadows. ";
         $prompt .= "The image ratio should be a ";
         if($character->aspect_ratio == '16:9'){
             $prompt.="16:9";
