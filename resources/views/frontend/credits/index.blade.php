@@ -19,7 +19,7 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class=" table table-bordered table-striped table-hover datatable datatable-Credit">
+                        <table class=" table table-bordered datatable datatable-Credit">
                             <thead>
                                 <tr>
                                     <th>
