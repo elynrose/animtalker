@@ -9,6 +9,7 @@
                 @foreach($clips as $clip)
                 @if($clip->character)
                     <div class="col-md-3">
+                        @if($clip->video_id)
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
@@ -46,6 +47,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                     @endif
                 @endforeach
