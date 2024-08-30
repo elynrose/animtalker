@@ -48,8 +48,28 @@
                         @guest
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('frontend.home') }}">
-                                    {{ __('Dashboard') }}
+                                <a class="nav-link px-5" href="{{ route('frontend.home') }}">
+                                    {{ __('Home') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('frontend.characters.index') }}">
+                                    {{ __('Characters') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-5" href="{{ route('frontend.clips.index') }}">
+                                    {{ __('Clips') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3" href="{{ route('frontend.payments.index') }}">
+                                    {{ __('Payments') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-5" href="{{ route('frontend.credits.index') }}">
+                                    {{ __('Credits') }} {{ Auth::user()->credits }}
                                 </a>
                             </li>
                         @endguest
