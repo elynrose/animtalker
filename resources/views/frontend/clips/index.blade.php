@@ -64,7 +64,7 @@
             var id = $(this).attr('id');
             var video_id = $(this).attr('rel');
             var clip_status = $(this).text();
-            var ajax_url = id+"/generate-video-status";
+            var ajax_url = "/clips/"+id+"/generate-video-status";
              //send headers
             $.ajaxSetup({
                 headers: {
