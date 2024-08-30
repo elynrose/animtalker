@@ -331,6 +331,22 @@
                             <p class="helper-block" style="color:#6c757d;">
                             </p>
                         </div>
+
+                        <div class="form-group">
+                            <label>{{ trans('cruds.clip.fields.voice') }}</label>
+                            <select class="form-control" name="voice" id="voice">
+                                <option value disabled {{ old('voice', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                                @foreach(App\Models\Clip::VOICE as $key => $label)
+                                    <option value="{{ $key }}" {{ old('voice', 'alloy') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('voice'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('voice') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.clip.fields.status_helper') }}</span>
+                        </div>
                     
                         <div class="form-group">
                             <div class="row">
