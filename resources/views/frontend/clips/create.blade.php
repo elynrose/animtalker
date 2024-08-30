@@ -29,11 +29,9 @@
                             <!--insert a dropdown button with three anchored items-->
                             <div class="form-group">
                                 <select class="form-control" name="gen_script" id="gen_script">
-                                    <option value="" disabled selected>Select to generate</option>
-                                    <option value="a random joke">A random joke</option>
-                                    <option value="a social media tip">A social media tip</option>
-                                    <option value="a short advise">A short advice</option>
-                                    <option value="a wise tale">A wise tale</option>
+                                @foreach(App\Models\Clip::TIPS as $key => $label)
+                                    <option value="{{ $key }}">{{ $label }}</option>
+                                @endforeach
                                 </select>
                                 @if($errors->has('script'))
                                     <div class="invalid-feedback">

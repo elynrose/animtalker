@@ -54,6 +54,18 @@ class Clip extends Model implements HasMedia
         '3' => 'Completed',
     ];
 
+    public const TIPS = [
+        'A short story' => 'A short story',
+        'An office tip' => 'An office tip',
+        'A short joke' => 'A short joke',
+        'A short poem' => 'A short poem',
+        'A short quote' => 'A short quote',
+        'A short fact' => 'A short fact',
+        'Short news' => 'Short news',
+        'A social media post' => 'A social media post',
+        'An advice' => 'An advice',
+    ];
+
     protected $fillable = [
         'character_id',
         'script',
