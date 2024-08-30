@@ -36,13 +36,13 @@ class GenerateVideo extends Model
 
             "config" => [
                "stitch"=> true,
-                "driver_expressions"=> [
+              /*  "driver_expressions"=> [
                     "expressions"=> [
                         "expression"=> $emotionName,
                         "start_frame"=> 0,
                         "intensity"=> 5
                     ],
-                ], 
+                ], */
             ],
 
             ]),
