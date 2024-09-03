@@ -8,7 +8,7 @@
         <div class="container">
 <div class="alert alert-info">This Website is Under Construction. Links may not work.</div>
 </div>
-        <div class="container">
+      <!--  <div class="container">
         <div class="row py-3">
             <div class="col-md-12">
                 <h1 class="display-4">AnimShorts</h1>
@@ -88,7 +88,7 @@
         </div>
         <div class="container">
         <div class="row">
-            <!-- Basic Package -->
+          
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">Basic</div>
@@ -106,7 +106,7 @@
                 </div>
             </div>
             
-            <!-- Standard Package -->
+        
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">Standard</div>
@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <!-- Premium Package -->
+         
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">Premium</div>
@@ -159,7 +159,7 @@
         <p class="text-center"><a href="mailto:hello@animshorts.com">hello@animshorts.com</a></p>
         <p class="small text-center">All Rights Reserved &copy; Animshorts 2024</p>
 
-    </div>
+    </div>-->
     </div>
 
 @endsection
