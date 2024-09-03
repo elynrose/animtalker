@@ -63,8 +63,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('frontend.payments.index') }}">
-                                    {{ __('Payments') }}
+                                <a class="nav-link" href="{{ route('frontend.pricing') }}">
+                                    {{ __('Pricing') }}
                                 </a>
                             </li>
                             <li class="nav-item">

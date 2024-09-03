@@ -1,6 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
+<div class="alert alert-danger">This Website is Under Construction. Links may not work.</div>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12" style="background:url({{ asset('images/banner.png') }}); min-height:750px; background-size:cover;">
@@ -40,7 +41,7 @@
         <div class="container">
         <div class="row py-5">
                     <div class="col-md-12 text-center">
-                <h4>3D Animations in less than 3 minutes.</h4>
+                <h2>How it works.</h2>
                 <p><strong>In 3 simple steps:</strong> Generate Character + Add Voice = Final Output</p>
                 <p class="text-center"><a class="btn btn-lg btn-danger" href="/register">Get Started</a></p>
 
