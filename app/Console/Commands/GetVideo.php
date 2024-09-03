@@ -52,7 +52,7 @@ class GetVideo extends Command
         $video = json_decode($response->getBody()->getContents(), true);
         
         if ($video['status'] == 'done'){
-            $path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
+            //$path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
 
             $clip->status = 'completed';
             $clip->video_path = $video['result_url'];
