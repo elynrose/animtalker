@@ -21,13 +21,15 @@
     @yield('styles')
 </head>
 
-<body class="header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden login-page">
-    <div class="c-app flex-row align-items-center">
-        <div class="container">
+<body class="header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden login-page" >
+    <div class="c-app flex-row align-items-center" style="background:url({{ asset('images/banner.png') }}); min-height:850px; background-size:cover;">
+        <div class="container" >
             @yield("content")
         </div>
     </div>
     @yield('scripts')
+            <p class="small text-center">All Rights Reserved &copy; Animshorts 2024</p>
+
 </body>
 
 </html>
