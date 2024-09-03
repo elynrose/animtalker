@@ -165,6 +165,6 @@ table tbody tr td {
     color: #ffffff;
 }
 
-.card-body {
-  min-height:253px;
+.sprite {
+  background:#000!important;
 }
