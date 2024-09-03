@@ -84,6 +84,7 @@ table.dataTable thead .sorting_desc {
 .btn-default.focus,
 .btn-default:focus {
     box-shadow: 0 0 0 .2rem rgba(209, 213, 215, .5);
+    
 }
 
 .btn-default:hover {
@@ -182,17 +183,13 @@ a, a.link, a:hover {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.card-header {
-  background-color: #007bff;
-  color: white;
-  font-size: 24px;
-  text-align: center;
-  padding: 20px 0;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
+
 .card-body {
   padding: 30px;
+}
+.card-body:hover {
+  border: 1px solid #5ddff2;
+  box-shadow: 0 0 10px #5ddff2;
 }
 .card-price {
   font-size: 36px;
