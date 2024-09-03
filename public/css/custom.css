@@ -1,3 +1,7 @@
+html,body {
+  background-color: #000000;
+  color:#fff;
+}
 .ck-editor__editable,
 textarea {
     min-height: 150px;
@@ -131,154 +135,36 @@ table.dataTable thead .sorting_desc {
     padding: 0.25rem 1.5rem;
 }
 
-/* Background and text color */
-body {
-    background-color: #000000; /* Pure black background */
-    color: #e0e0e0; /* Light gray text color */
-  }
-  
-  /* Link color */
-  a {
-    color: #0099ff; /* Bright blue links */
-  }
-  
-  a:hover {
-    color: #66ccff; /* Lighter blue on hover */
-  }
-  
-  /* Navbar styling */
-  .navbar {
-    background-color: #1e1e1e; /* Darker black for the navbar */
-  }
-  
-  .navbar-light .navbar-nav .nav-link {
-    color: #e0e0e0;
-  }
-  
-  .navbar-light .navbar-nav .nav-link:hover {
+.card {
+    border: 1px solid #232323;
+    background-color: #171616;
+}
+
+.card table {
+    border: 1px solid #232323;
+}
+
+.catd table tr td {
+  background:#000;
+    color:#ffffff;
+}
+
+table.dataTable tbody tr {
+    background-color: #000;
     color: #ffffff;
-  }
-  
-  /* Buttons */
-  .btn-primary {
-    background-color: #1e1e1e; /* Darker black for primary buttons */
-    border-color: #1e1e1e;
-  }
-  
-  .btn-primary:hover {
-    background-color: #444444; /* Medium dark gray on hover */
-    border-color: #444444;
-  }
-  
-  /* Input fields */
-  .form-control {
-    background-color: #1e1e1e; /* Darker background for inputs */
-    color: #e0e0e0; /* Light text color in inputs */
-    border-color: #444444; /* Medium dark gray border */
-  }
-  
-  .form-control:focus {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    border-color: #ffffff; /* Bright blue border on focus */
-  }
-  
-  /* Cards */
-  .card {
-    background-color: #1e1e1e; /* Darker background for cards */
-    border: 1px solid #444444; /* Medium dark gray border */
-  }
-  
-  .card-header {
-    background-color: #444444; /* Medium dark gray for card headers */
-    border-bottom: 1px solid #555555; /* Slightly lighter gray for border */
-  }
-  
-  .card-body {
-    color: #e0e0e0;
-  }
-  
-  /* Footer styling */
-  .footer {
-    background-color: #1e1e1e; /* Darker black for the footer */
-    color: #e0e0e0;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .navbar-light .navbar-nav .nav-link {
-    color: #000000; /* Black color for navbar links */
-  }
-  
-  .navbar-light .navbar-nav .nav-link:hover {
-    color: #444444; /* Dark gray color on hover */
-  }
+}
 
-  /* Gradient button styling */
-.btn-primary {
-    background: linear-gradient(45deg, #ff8c00, #ff4500); /* Orange gradient */
-    border: none; /* Remove border */
-    color: #ffffff; /* White text color */
-    transition: background 0.3s ease; /* Smooth transition on hover */
-  }
-  
-  
-  .btn-primary:hover {
-    background: linear-gradient(45deg, #ff4500, #ff8c00); /* Inverted gradient on hover */
-    color: #ffffff; /* Keep the text color white on hover */
-  }
-
-  .btn-link, .btn-link:hover {
-    font-weight: 400;
+table tbody tr td {
     color: #ffffff;
-    background-color: transparent;
-    font-size:1.1 rem;
-    text-decoration: none;
+    
+}
+.table-bordered td, .table-bordered th{
+    border: 1px solid #232323;
+}
+.dataTables_length label,.dataTables_info, #DataTables_Table_0_filter label{
+    color: #ffffff;
 }
 
-.card-header button {
- text-decoration: none;;
+.card-body {
+  min-height:253px;
 }
-.card h6,label {
-  font-size:1.1rem;
-  margin-top:10px;
-
-}
-
-.card-header {
-  font-size:1.3rem;z
-}
-
-.btn-outline-primary {
-  color: #ff4500;
-  background-color: transparent;
-  background-image: none;
-  border-color: #ff4500;
-}
-
-.btn-outline-primary:hover, .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle  {
-  color: #ffffff;
-  background-color: #ff4500;
-  background-image: none;
-  border-color: #ff4500;
-  box-shadow: #ff4500;
-}
-
-  .accordion-link {
-    color: #ff4500;
-  }
-
-  .accordion-link:hover {
-    color: #ff8c00;
-  }
-
-  .accordion-icon {
-    color: #ff4500;
-  }
-
-  .accordion-icon:hover {
-    color: #ff8c00;
-  }
-
-
-
