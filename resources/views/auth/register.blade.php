@@ -4,13 +4,13 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
 
-        <div class="card mx-4">
+        <div class="card mx-4 border-glow">
             <div class="card-body p-4">
 
                 <form method="POST" action="{{ route('register') }}">
                     {{ csrf_field() }}
 
-                    <h1>{{ trans('panel.site_title') }}</h1>
+                    <h1 class="display-4">{{ trans('panel.site_title') }}</h1>
                     <p class="text-muted">{{ trans('global.register') }}</p>
 
                     <div class="input-group mb-3">

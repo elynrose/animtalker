@@ -2,7 +2,7 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card mx-4">
+        <div class="card mx-4 border-glow">
             <div class="card-body p-4">
                 <h1>{{ trans('panel.site_title') }}</h1>
 

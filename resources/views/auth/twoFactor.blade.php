@@ -12,7 +12,7 @@
                     @endif
                     <form method="POST" action="{{ route('twoFactor.check') }}">
                         @csrf
-                        <h1>{{ __('global.two_factor.title') }}</h1>
+                        <h1 class="display-4">{{ __('global.two_factor.title') }}</h1>
                         <p class="text-muted">
                             {{ __('global.two_factor.sub_title', ['minutes' => 15]) }}
                         </p>
