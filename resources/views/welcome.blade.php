@@ -21,7 +21,7 @@
                     <div class="col-md-6 embed-responsive-item">
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/69ce5zIZ9X0?si=MYxJur7Djje9KQmN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
-                    <div class="col-md-5 px-5">
+                    <div class="col-md-6">
                     <h3 class="mb-3">What is Animshorts</h3>
                         <p>With AnimShorts, creating eye-catching talking 3d animation heads for your social media posts is a breeze. Just input your text and watch as realistic and expressive characters come to life, ready to engage your audience with up to 255 characters of witty banter. Say goodbye to boring static images and hello to dynamic and engaging content that will make your posts stand out from the crowd. Try Generate Anim Shorts today and take your social media game to the next level!</p>
 
