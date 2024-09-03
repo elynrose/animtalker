@@ -2,47 +2,6 @@
 
 @section('content')
 
-
-
-<style>
-        .pricing-header {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .card-header {
-            background-color: #007bff;
-            color: white;
-            font-size: 24px;
-            text-align: center;
-            padding: 20px 0;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        .card-body {
-            padding: 30px;
-        }
-        .card-price {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
 
