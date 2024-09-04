@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-
+<!--
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12" style="background:url({{ asset('images/banner.png') }}); min-height:750px; background-size:cover;">
@@ -65,7 +65,7 @@
 
 <div class="container-fluid py-5">
     <div class="row justify-content-center">
-        <div class="col-md-12" style="background:url({{ asset('images/banner2.png') }}); min-height:750px; background-size:cover;">
+        <div class="col-md-12" style="background:url({{ asset('images/banner2.png') }}); background-size:cover;">
             <h2 class="display-4 text-center">Create Stunning 3D Characters</h2>
             <p class="text-center lead">Choose from a wide range of characters traits and backgrounds to suit your needs.</p>
 
@@ -152,5 +152,5 @@
         </div>
     </div>
 </div>
-
+ -->
 @endsection
