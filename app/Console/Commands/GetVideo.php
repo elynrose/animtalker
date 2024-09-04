@@ -10,11 +10,6 @@ use Illuminate\Http\Request;
 use App\Mail\ClipCompleted;
 use Illuminate\Support\Facades\Mail;
 
-
-
-
-
-
 class GetVideo extends Command
 {
     /**

@@ -139,6 +139,12 @@ class CharacterController extends Controller
         $prompt = $avatarData->prompt;
         $image = $avatarData->dalle_response->data[0]->url;
 
+        if($image == null){
+            return response()->json(['error' => 'Failed to generate character'], 500);
+            //delete character
+            $character->delete();
+        }   
+
         // Save the image to the character
         if ($image) {
             $path = $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'images')->getUrl();
@@ -146,7 +152,6 @@ class CharacterController extends Controller
             $character->save();
         } else {
             return response()->json(['error' => 'Failed to generate character'], 500);
-            //delete character
             $character->delete();
         }
 

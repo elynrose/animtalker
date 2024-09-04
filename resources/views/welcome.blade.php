@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row py-3">
                     <div class="col-md-12">
-                        <h1 class="display-4">AnimShorts</h1>
+                        <h1 class="display-4">anim<strong>shorts</strong></h1>
                         <p class="lead">Animshorts lets you create a 3D animation video in less than 3 minutes.</p>
                         <p class="text-left mt-3"><a class="btn btn-lg btn-danger" href="/pricing">Get Started</a></p>
                     </div>
@@ -20,7 +20,7 @@
                 <div class="row justify-content-center py-5">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-6 embed-responsive embed-responsive-16by9 border-glow">
+                            <div class="col-md-6 embed-responsive embed-responsive-16by9 border-glow mb-5">
                                 <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/69ce5zIZ9X0?si=MYxJur7Djje9KQmN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             </div>
                             <div class="col-md-6">
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div class="container-fluid py-5">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12" style="background:url({{ asset('images/banner2.png') }}); min-height:750px; background-size:cover;">
             <div class="container">
@@ -71,10 +71,10 @@
 
             <div class="container">
                 <div class="row mt-3 mb-3">
-                    <div class="col-md-3"><img src="{{ asset('images/photo1.png') }}" alt="Character" class="img-fluid"></div>
-                    <div class="col-md-3"><img src="{{ asset('images/photo3.png') }}" alt="Character" class="img-fluid  border-glow"></div>
-                    <div class="col-md-3"><img src="{{ asset('images/photo4.png') }}" alt="Character" class="img-fluid"></div>
-                    <div class="col-md-3"><img src="{{ asset('images/photo5.png') }}" alt="Character" class="img-fluid"></div>
+                    <div class="col-md-3 mb-3"><img src="{{ asset('images/photo1.png') }}" alt="Character" class="img-fluid"></div>
+                    <div class="col-md-3 mb-3"><img src="{{ asset('images/photo3.png') }}" alt="Character" class="img-fluid  border-glow"></div>
+                    <div class="col-md-3 mb-3"><img src="{{ asset('images/photo4.png') }}" alt="Character" class="img-fluid"></div>
+                    <div class="col-md-3 mb-3"><img src="{{ asset('images/photo5.png') }}" alt="Character" class="img-fluid"></div>
                 </div>
 
                 <div class="container py-5">
@@ -102,8 +102,8 @@
                             </div>
 
                             <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-header">Standard</div>
+                                <div class="card border-glow">
+                                    <div class="card-header ">Standard</div>
                                     <div class="card-body">
                                         <div class="card-price">$27.85<span class="text-muted">/mo</span></div>
                                         <ul class="list-unstyled">
