@@ -91,7 +91,7 @@
                         $('#'+id).addClass('badge-success').text('Completed');
                     }else if(response.status == 'processing'){
                         $('#'+id).addClass('badge-primary').text('Processing');
-                    }else if(response.status == 'rejected'){
+                    }else if(response.status == 'failed'){
                         $('#'+id).addClass('badge-danger').text('Failed');
                     }
                 }
