@@ -15,7 +15,15 @@
             <div class="row">
                 @foreach($characters as $character)
                     <div class="col-md-3">
+
                         <div class="card mb-4">
+                        @can('character_delete')
+                                        <form class=" " action="{{ route('frontend.characters.destroy', $character->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-danger btn-xs pull-right mx-2 my-2" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
+                                        </form>
+                                    @endcan
                             <div class="card-body">
                                 <h5 class="card-title">{{ $character->name ?? '' }}</h5>
                              
@@ -30,17 +38,11 @@
                                 <div aria-label="Character Actions">
                                     @can('character_show')
                                         <a class="btn btn-primary btn-sm " href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
-                                          <i class="fas fa-video"></i>  
+                                          <i class="fas fa-video"></i> {{ _('Animate')}} {{ $character->name ?? '' }} 
                                         </a>
                                     @endcan
 
-                                    @can('character_delete')
-                                        <form class="mx-2" action="{{ route('frontend.characters.destroy', $character->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="btn btn-danger btn-sm" value="{{ trans('global.delete') }}"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    @endcan
+                                
                                 </div>
                             </div>
                         </div>

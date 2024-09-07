@@ -187,10 +187,8 @@ a, a.link, a:hover {
 .card-body {
   padding: 30px;
 }
-.card-body:hover {
-  border: 1px solid #5ddff2;
-  box-shadow: 0 0 10px #5ddff2;
-}
+
+
 .card-price {
   font-size: 36px;
   font-weight: bold;
@@ -211,4 +209,11 @@ a, a.link, a:hover {
 .border-glow {
   border: 1px solid #5ddff2;
   box-shadow: 0 0 10px #5ddff2;
+}
+
+
+.form-control, .form-control:focus, .form-control:active, input:focus, input:active {
+    background-color: #232323;
+    border: 1px solid #232323;
+    color:white!important;
 }

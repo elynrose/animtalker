@@ -17,6 +17,7 @@ use App\Models\GenerateAudio;
 use App\Models\GenerateVideo;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
+use App\Models\Credit;
 
 
 class ClipsController extends Controller
@@ -218,6 +219,11 @@ class ClipsController extends Controller
             ],
         ]);
         $data = json_decode($response->getBody(), true);
+
+        if(isset($data['choices'][0]['text'])) {
+            $credits = new Credit();
+            $credits->deductCredits('prompt');        }
+
         return trim($data['choices'][0]['text']);
     }
 

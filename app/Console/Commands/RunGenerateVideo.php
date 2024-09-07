@@ -50,11 +50,20 @@ class RunGenerateVideo extends Command
        
         $response = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
 
-        if ($response) {
-            //attach audio and video file to the request
-            $clip->video_id = $response['id'];
-            $clip->status = 'processing';
-            $clip->save();
+
+         if ($response instanceof \Illuminate\Http\JsonResponse) {
+            $content = $response->getContent();
+            $data = json_decode($content, true);
+
+            if(isset($data['error'])){
+                $clip->status = 'failed';
+                $clip->save();
+                return;
+            } else {
+                $clip->video_id = $data['id'];
+                $clip->status = 'processing';
+                $clip->save();
+            }
         }
 
     }

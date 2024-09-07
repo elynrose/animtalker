@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -6,11 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Clip;
-
+use App\Models\Credit;
+use Illuminate\Http\Request;
 
 class GenerateAudio extends Model
 {
+    use HasFactory;
 
+    /**
+     * Converts text to speech using the specified voice and returns the generated audio file URL.
+     *
+     * @param string $text The text to be converted to speech.
+     * @param string $voice The voice to be used for the speech synthesis.
+     * @return string|Illuminate\Http\JsonResponse The URL of the generated audio file or an error response.
+     */
     public function textToSpeech($text, $voice)
     {
         // Prepare the payload for the API request
@@ -19,43 +29,61 @@ class GenerateAudio extends Model
             'voice' => $voice,
             'model' => 'tts-1',
             'config' => [
-                'encoding' => 'MP3', // You can use 'MP3', 'LINEAR16', or 'OGG_OPUS' based on your needs
+                'encoding' => 'MP3', // Supported encodings: 'MP3', 'LINEAR16', 'OGG_OPUS'
                 'sample_rate_hertz' => 24000,
                 'language_code' => 'en-US',
             ],
         ];
 
-        // Initialize the Guzzle client
+        // Initialize the Guzzle HTTP client
         $client = new Client();
 
-        // Make the request to OpenAI TTS API
-        $response = $client->post('https://api.openai.com/v1/audio/speech', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . env('OPENAI_KEY'),
-                'Content-Type' => 'application/json',
-            ],
-            'json' => $payload,
-        ]);
+        try {
+            // Make the request to the OpenAI Text-to-Speech API
+            $response = $client->post('https://api.openai.com/v1/audio/speech', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . env('OPENAI_KEY'),
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $payload,
+            ]);
 
-        if ($response->getStatusCode() == 200) {
-            
-            $audioBinary = $response->getBody();
-          
-            $clip = new Clip(); // Create a new instance of the Clip model
-            $fileName = 'audio/'. uniqid() . '.mp3';
+            // Check if the response status code indicates success
+            if ($response->getStatusCode() == 200) {
+                $audioBinary = $response->getBody();
 
-            // Save the file as a media attachment for clip->audio_file
-            $path = Storage::disk('s3')->put($fileName, $audioBinary);
+                // Check if audio was successfully generated
+                if ($audioBinary == null) {
+                    return response()->json(['error' => 'Failed to generate audio'], 500);
+                }
 
-            if ($path) {
-                $mp3Path = Storage::disk('s3')->url($fileName);
-                return $mp3Path;
+                // Deduct credits for audio generation
+                $credits = new Credit();
+                $credits->deductCredits('audio');
+
+                // Create a new Clip model instance
+                $clip = new Clip();
+
+                // Generate a unique file name for the audio
+                $fileName = 'audio/' . uniqid() . '.mp3';
+
+                // Save the audio file to S3 storage
+                $path = Storage::disk('s3')->put($fileName, $audioBinary);
+
+                // Check if the audio file was successfully saved
+                if ($path) {
+                    $mp3Path = Storage::disk('s3')->url($fileName);
+                    return $mp3Path; // Return the URL of the saved audio file
+                } else {
+                    return response()->json(['error' => 'Failed to save audio file'], 500);
+                }
             } else {
-                return response()->json(['error' => 'Failed to save audio file'], 500);
+                // Return an error response if the API request was unsuccessful
+                return response()->json(['error' => 'Failed to generate audio'], 500);
             }
-    
-        } else {
-            return response()->json(['error' => 'Failed to generate audio'], 500);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the API request
+            return response()->json(['error' => 'Failed to connect to audio generation API'], 500);
         }
     }
 }

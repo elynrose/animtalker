@@ -25,9 +25,9 @@
                         @csrf
                        
                         <div class="form-group">
-                            <label class="required" for="prompt">{{ trans('cruds.clip.fields.prompt') }}</label>
+                            <label for="prompt">{{ trans('cruds.clip.fields.prompt') }}</label>
                             <div class="input-group">
-                                <input class="form-control" type="text" name="prompt" id="prompt" required>
+                                <input class="form-control" type="text" name="prompt" id="prompt">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button" id="write">Write</button>
                                 </div>

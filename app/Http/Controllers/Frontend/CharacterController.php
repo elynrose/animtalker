@@ -35,6 +35,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\GenerateCharacter;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Credit;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterController extends Controller
 {
@@ -100,71 +102,88 @@ class CharacterController extends Controller
         return view('frontend.characters.create', compact('age_groups', 'body_types', 'character_zooms', 'dress_colors', 'dress_styles', 'emotions', 'eye_colors', 'eye_shapes', 'facial_expressions', 'genders', 'hair_colors', 'hair_lenghts', 'hair_styles', 'head_shapes', 'mouth_shapes', 'nose_shapes', 'postures', 'props', 'scenes', 'skin_tones', 'users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCharacterRequest $request)
-    {
-        // Create a new character
-        $character = Character::create($request->except('dress_colors', 'props'));
+  /**
+ * Store a newly created resource in storage.
+ *
+ * @param  \App\Http\Requests\StoreCharacterRequest  $request
+ * @return \Illuminate\Http\Response
+ */
+public function store(StoreCharacterRequest $request)
+{
+    // Create a new character excluding 'dress_colors' and 'props' from the request
+    $character = Character::create($request->except('dress_colors', 'props'));
 
-        $dressColors = $request->input('dress_colors', []);
-        $props = $request->input('props', []);
+    // Retrieve dress colors and props from the request, defaulting to empty arrays if not provided
+    $dressColors = $request->input('dress_colors', []);
+    $props = $request->input('props', []);
 
-        // Insert into character_dress_color table
-        if (!empty($dressColors)) {
-            foreach ($dressColors as $dressColor) {
-                $character->dress_colors()->attach($dressColor);
-            }
-        }
-
-        // Insert into character_prop table
-        if (!empty($props)) {
-            foreach ($props as $prop) {
-                $character->props()->attach($prop);
-            }
-        }
-
-        // Generate character avatar
-        $new_character = new GenerateCharacter;
-        $avatar = $new_character->generate($character->id);
-
-        // Get the image from dalle response
-        $avatarData = $avatar->getData();
-
-        // Get the image and prompt from dalle response
-        $prompt = $avatarData->prompt;
-        $image = $avatarData->dalle_response->data[0]->url;
-
-        if($image == null){
-            return response()->json(['error' => 'Failed to generate character'], 500);
-            //delete character
-            $character->delete();
-        }   
-
-        // Save the image to the character
-        if ($image) {
-            $path = $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'images')->getUrl();
-            $character->avatar_url = $path;
-            $character->save();
-        } else {
-            return response()->json(['error' => 'Failed to generate character'], 500);
-            $character->delete();
-        }
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $character->id]);
-        }
-
-        if ($request->ajax()) {
-            return response()->json(['success' => true, 'image' => $path, 'prompt' => $prompt, 'id'=>$character->id]);
-        } else {
-            return response()->json(['error' => 'Failed to generate character'], 500);
+    // Attach dress colors to the character if any are provided
+    if (!empty($dressColors)) {
+        foreach ($dressColors as $dressColor) {
+            $character->dress_colors()->attach($dressColor);
         }
     }
+
+    // Attach props to the character if any are provided
+    if (!empty($props)) {
+        foreach ($props as $prop) {
+            $character->props()->attach($prop);
+        }
+    }
+
+    // Generate character avatar using an external service
+    $new_character = new GenerateCharacter();
+    $avatar = $new_character->generate($character->id);
+
+    // Retrieve avatar data from the generation response
+    $avatarData = $avatar->getData();
+
+    // Extract the prompt and image URL from the avatar data
+    $prompt = $avatarData->prompt ?? null;
+    $image = $avatarData->dalle_response->data[0]->url ?? null;
+
+    // Handle error if the image is not generated
+    if ($image === null) {
+        // Delete the character if image generation fails
+        $character->delete();
+        return response()->json(['error' => 'Failed to generate character'], 500);
+    }
+
+    // Deduct credits for character generation
+    $credits = new Credit();
+    $credits->deductCredits('character');
+
+    // Save the generated image URL to the character's avatar and save it to S3
+    try {
+        $path = $character->addMediaFromUrl($image)
+                          ->toMediaCollection('avatar', 's3', 'images')
+                          ->getUrl();
+        $character->avatar_url = $path;
+        $character->save();
+    } catch (\Exception $e) {
+        // Delete character and return error if image saving fails
+        $character->delete();
+        return response()->json(['error' => 'Failed to save character avatar'], 500);
+    }
+
+    // If CKEditor media is associated, update the media model_id to the character's id
+    if ($media = $request->input('ck-media', false)) {
+        Media::whereIn('id', $media)->update(['model_id' => $character->id]);
+    }
+
+    // Return a JSON response based on the request type
+    if ($request->ajax()) {
+        return response()->json([
+            'success' => true,
+            'image' => $path,
+            'prompt' => $prompt,
+            'id' => $character->id
+        ]);
+    } else {
+        return response()->json(['error' => 'Failed to generate character'], 500);
+    }
+}
+
 
     public function edit(Character $character)
     {

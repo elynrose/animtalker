@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<!--
+
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12" style="background:url({{ asset('images/banner.png') }}); min-height:750px; background-size:cover;">
@@ -152,5 +152,5 @@
         </div>
     </div>
 </div>
- -->
+
 @endsection
