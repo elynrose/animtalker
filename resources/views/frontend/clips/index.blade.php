@@ -10,7 +10,7 @@
                 @if($clip->character)
                     <div class="col-md-3">
                         <div class="card mb-4">
-                            @if($clip->status=='failed')
+                            
                         @can('character_delete')
                                         <form class="mx-2 my-2" action="{{ route('frontend.clips.destroy', $clip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">
@@ -18,7 +18,7 @@
                                             <button type="submit" class="btn btn-danger btn-xs pull-right" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
                                         </form>
                                     @endcan
-                                @endif
+                            
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
@@ -31,7 +31,7 @@
                                    
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
-                                 <span class="badge badge-primary clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                 <span class="badge @if($clip->status=='completed')badge-success@elseif($clip->status=='processing')badge-primary@elseif($clip->status=='rejected') badge-danger @endif badge-primary clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}}</p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
@@ -42,15 +42,6 @@
                                    
 
                                     <a href="" class="btn btn-success btn-sm mx-2"><i class="fas fa-save"></i></a>
-                                   
-     
-                                    @can('character_delete')
-                                        <form action="{{ route('frontend.clips.destroy', $clip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="btn btn-danger btn-sm" value="{{ trans('global.delete') }}"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    @endcan
                                   
                                 </div>
                             </div>
@@ -101,7 +92,7 @@
                     }else if(response.status == 'processing'){
                         $('#'+id).addClass('badge-primary').text('Processing');
                     }else if(response.status == 'rejected'){
-                        $('#'+id).addClass('badge-danger').text('Rejected');
+                        $('#'+id).addClass('badge-danger').text('Failed');
                     }
                 }
             });
