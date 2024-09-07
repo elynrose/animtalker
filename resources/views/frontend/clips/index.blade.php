@@ -92,6 +92,7 @@
                     }else if(response.status == 'processing'){
                         $('#'+id).addClass('badge-primary').text('Processing');
                     }else if(response.status == 'failed'){
+                        location.reload();
                         $('#'+id).addClass('badge-danger').text('Failed');
                     }
                 }
