@@ -32,13 +32,14 @@ class GetVideo extends Command
      *
      * @var int
      */
-    protected $maxRetries = 3;
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
+        $maxRetries = env('MAX_TRIES');
+
         // Get the first clip that is currently processing
         $clip = Clip::where('status', 'processing')->first();
 
@@ -54,7 +55,7 @@ class GetVideo extends Command
         // Number of attempts made to fetch the video status
         $attempts = 0;
 
-        while ($attempts < $this->maxRetries) {
+        while ($attempts < $maxRetries) {
             try {
                 // Make a GET request to fetch the video status from the D-ID API
                 $response = $client->request('GET', 'https://api.d-id.com/talks/' . $clip->video_id, [
@@ -105,7 +106,7 @@ class GetVideo extends Command
 
         // If maximum retries are reached, log an error and exit
         $this->error('Failed to retrieve video status after ' . $this->maxRetries . ' attempts.');
-        $clip->status = 'rejected';
+        $clip->status = 'failed';
         $clip->save();
     }
 }

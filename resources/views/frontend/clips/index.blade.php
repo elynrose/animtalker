@@ -39,10 +39,16 @@
                                    <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ $clip->video_path }}">
                                           <i class="fas fa-download"></i>  
                                         </a>
-                                   
+                                        
+                                    <a href="{{ route('frontend.clips.savelink') }}" id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }} save"><i class="fas fa-save  saving_{{ $clip->id }}"></i></a>
+                                       <form class="mx-2 my-2" action="{{ route('frontend.clips.savelink') }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="POST">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="clip_id" value="{{$clip->id}}">
+                                            <input type="hidden" name="video_path" value="{{ $clip->video_path }}">
+                                            <button type="submit" class="btn btn-danger btn-xs pull-right" value="{{ trans('global.save') }}"><i class="fas fa-save"></i></button>
+                                        </form> <!-- -->
 
-                                    <a href="" class="btn btn-success btn-sm mx-2"><i class="fas fa-save"></i></a>
-                                  
                                 </div>
                             </div>
                         </div>
@@ -59,6 +65,48 @@
 @section('scripts')
 @parent
 <script>
+    /*
+$(function(){
+    $('.save').click(function(e){
+        e.preventDefault();
+        var clip_id = $(this).attr('id');
+        var video_path = $(this).attr('rel');
+        var url = $(this).attr('href');
+        data = {
+            clip_id: clip_id,
+            video_path: video_path,
+        }
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        $('.saving_'+clip_id).removeClass('fa-save').addClass('fa-spinner fa-spin');
+        
+        $.ajax({
+            url:url,
+            data:data,
+            cache:false,
+            type:'POST',
+            success:function(response){
+                var obj = JSON.parse(response);
+                $('.saving_'+clip_id).removeClass('fa-spinner fa-spin').addClass('fa-save');
+                alert(obj.success)
+                location.reload();
+            },
+            error:function(response){
+                var obj = JSON.parse(response);
+                $('.saving_'+clip_id).removeClass('fa-spinner fa-spin').addClass('fa-save');
+                alert(obj.error)
+                location.reload();
+            }
+        })
+        
+
+    });
+
+});*/
+
     function getStatus(){
         $('.waiting').each(function(){
             var id = $(this).attr('id');

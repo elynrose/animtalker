@@ -18,6 +18,7 @@ use App\Models\GenerateVideo;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Models\Credit;
+use Storage;
 
 
 class ClipsController extends Controller
@@ -136,6 +137,27 @@ class ClipsController extends Controller
         }
 
         return redirect()->route('frontend.clips.index');
+    }
+
+    public function savelink(Request $request)
+    {
+        $video_link = $request->video_path;
+        $clip = Clip::find($request->clip_id);
+        $fileName = 'video/' . uniqid() . '.mp4';
+        $path = Storage::disk('s3')->putFileAs('video', $video_link, $fileName);
+
+dd($path);
+        if($path){
+            $clip->video_path = $path;
+            $clip->save();
+            return json_encode(['success'=>'The file was saved', 'path'=>$path]);
+        } else{
+            return json_encode(['error'=>'The file was not saved, try again.']);
+          //  return redirect()->route('frontend.clips.index')->withError('The file could not be saved.');
+
+        }
+        
+       // $clip->addMedia(storage_path('tmp/uploads/' . basename($video_link)))->toMediaCollection('video');
     }
 
     public function show(Clip $clip)

@@ -295,6 +295,8 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::get('clips/{id}/create', 'ClipsController@create')->name('myclips.create');
     Route::get('clips/{id}/generate-video-status', 'ClipsController@generateVideoStatus')->name('clips.generateVideoStatus');
     Route::post('clips/openai', 'ClipsController@openai')->name('clips.openai');
+    Route::post('clips/savelink', 'ClipsController@savelink')->name('clips.savelink');
+
     
 
 
