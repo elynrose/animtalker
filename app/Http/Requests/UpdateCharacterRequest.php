@@ -21,6 +21,9 @@ class UpdateCharacterRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'is_realistic' => [
+                'nullable',
+            ],
             'scene_id' => [
                 'required',
                 'integer',

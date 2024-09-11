@@ -34,6 +34,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label>{{ trans('cruds.character.fields.is_realistic') }}</label>
+                                <select class="form-control" name="is_realistic" id="is_realistic">
+                                    <option value="0">{{ trans('global.no') }}</option>
+                                    <option value="1">{{ trans('global.yes') }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                             <label>{{ trans('cruds.character.fields.art') }}</label>
                             <select class="form-control" name="art_style" id="art_style">
                                 <option value disabled {{ old('art_style', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>

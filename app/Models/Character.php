@@ -28,6 +28,7 @@ class Character extends Model implements HasMedia
 
     protected $fillable = [
         'name',
+        'is_realistic',
         'scene_id',
         'gender_id',
         'age_group_id',

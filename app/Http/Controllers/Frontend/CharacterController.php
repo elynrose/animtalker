@@ -131,6 +131,8 @@ public function store(StoreCharacterRequest $request)
         }
     }
 
+    
+
     // Generate character avatar using an external service
     $new_character = new GenerateCharacter();
     $avatar = $new_character->generate($character->id);
