@@ -100,7 +100,7 @@ class GetVideo extends Command
                 // Log any exceptions encountered during the API request
                 $this->error('An error occurred: ' . $e->getMessage());
                 $attempts++;
-                sleep(5); // Wait for 5 seconds before retrying
+                sleep(30); // Wait for 5 seconds before retrying
             }
         }
 
