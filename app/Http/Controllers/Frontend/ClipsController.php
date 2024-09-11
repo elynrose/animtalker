@@ -146,7 +146,6 @@ class ClipsController extends Controller
         $fileName = 'video/' . uniqid() . '.mp4';
         $path = Storage::disk('s3')->putFileAs('video', $video_link, $fileName);
 
-dd($path);
         if($path){
             $clip->video_path = $path;
             $clip->save();
