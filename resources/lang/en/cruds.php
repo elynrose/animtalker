@@ -337,7 +337,10 @@ return [
         'desc'    => 'Let\'s create your anime character. Select all fields that apply.',
         'title'          => 'Characters',
         'title_singular' => 'Character',
+        'realistic' => 'Realistic',
+        'cartoon' => 'Cartoon',
         'fields'         => [
+            'is_realistic'             => 'Is this character realistic or cartoon?',
             'aspect_ratio'             => 'Select the aspect aspect ratio for your video',
             'id'                       => 'ID',
             'id_helper'                => ' ',

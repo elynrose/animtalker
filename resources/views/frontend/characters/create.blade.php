@@ -36,8 +36,8 @@
                             <div class="form-group">
                                 <label>{{ trans('cruds.character.fields.is_realistic') }}</label>
                                 <select class="form-control" name="is_realistic" id="is_realistic">
-                                    <option value="0">{{ trans('global.no') }}</option>
-                                    <option value="1">{{ trans('global.yes') }}</option>
+                                    <option value="0">{{ trans('cruds.character.realistic') }}</option>
+                                    <option value="1">{{ trans('cruds.character.cartoon') }}</option>
                                 </select>
                             </div>
 
