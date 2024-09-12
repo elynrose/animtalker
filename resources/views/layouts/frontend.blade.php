@@ -69,7 +69,10 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('frontend.credits.index') }}">
-                                    {{ __('Credits') }} <span>({{ App\Models\Credit::where('email', Auth::user()->email)->sum('points') }})</span>
+                                    @php
+                                  $credit = App\Models\Credit::where('email', Auth::user()->email)->sum('points')
+                                    @endphp
+                                    {{ __('Credits') }} <span>(@if($credit <=0 ){{'0'}}@else{{ $credit ??  0 }}@endif)</span>
                                 </a>
                             </li>
                         @endguest
