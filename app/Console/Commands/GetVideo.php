@@ -95,7 +95,7 @@ class GetVideo extends Command
 
                     //log this video details
                     Log::info($video);
-                    
+
                     return $video;
 
                 } elseif ($video['status'] === 'failed') {
@@ -109,13 +109,13 @@ class GetVideo extends Command
 
                 // If the video is still processing, increment the attempts counter
                 $attempts++;
-                sleep(30); // Wait for 5 seconds before retrying
+                sleep(5); // Wait for 5 seconds before retrying
 
             } catch (\Exception $e) {
                 // Log any exceptions encountered during the API request
                 $this->error('An error occurred: ' . $e->getMessage());
                 $attempts++;
-                sleep(30); // Wait for 5 seconds before retrying
+                sleep(5); // Wait for 5 seconds before retrying
             }
         }
 
