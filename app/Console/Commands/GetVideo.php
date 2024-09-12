@@ -50,10 +50,9 @@ class GetVideo extends Command
         ]);
 
         $video = json_decode($response->getBody()->getContents(), true);
-        
+dd($video);
         if ($video['status'] == 'done'){
             $path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
-
             $clip->status = 'completed';
             $clip->video_path = $video['result_url'];
             $clip->save();
@@ -61,8 +60,6 @@ class GetVideo extends Command
             //Send an email to the user
             $user = $clip->character->user_id;
          //   Mail::to($user->email)->send(new ClipCompleted($clip));
-
-            
         } else if ($video['status'] == 'failed'){
             $clip->status = 'rejected';
             $clip->save();
