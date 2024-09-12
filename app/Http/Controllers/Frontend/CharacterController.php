@@ -133,12 +133,11 @@ public function store(StoreCharacterRequest $request)
 
     
 //Check if the user has enough credits to generate a character
-    $credits = new Credit();
-    $user = Auth::user();
-    $user_credits = $credits->getUserCredits($user->id);
-    if ($user_credits < 1) {
-        return response()->json(['error' => 'Insufficient credits'], 500);
-    }
+$credits = new Credit();
+if ($credits->getUserCredits() < 1) {
+    return response()->json(['error' => 'Insufficient credits'], 500);
+}
+
     // Generate character avatar using an external service
     $new_character = new GenerateCharacter();
     $avatar = $new_character->generate($character->id);
@@ -153,7 +152,7 @@ public function store(StoreCharacterRequest $request)
     // Handle error if the image is not generated
     if ($image === null) {
         // Delete the character if image generation fails
-        $character->delete();
+        $character->destroy();
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 
@@ -166,11 +165,12 @@ public function store(StoreCharacterRequest $request)
         $path = $character->addMediaFromUrl($image)
                           ->toMediaCollection('avatar', 's3', 'images')
                           ->getUrl();
+        $character->custom_prompt= $prompt;
         $character->avatar_url = $path;
         $character->save();
     } catch (\Exception $e) {
         // Delete character and return error if image saving fails
-        $character->delete();
+        $character->destroy();
         return response()->json(['error' => 'Failed to save character avatar'], 500);
     }
 

@@ -66,4 +66,16 @@ class Credit extends Model
         $credit->points = $credit->points - $credits;
         $credit->save();
     }
+
+
+    public function getUserCredits() {
+        $credit = Credit::where('email', Auth::user()->email)->first();
+        if (!$credit) {
+            $credit = new Credit();
+            $credit->email = Auth::user()->email;
+            $credit->points = 0;
+            $credit->save();
+        }
+        return $credit->points;
+    }
 }
