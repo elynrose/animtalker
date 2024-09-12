@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Mail\ClipCompleted;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Credit;
+
 
 class GetVideo extends Command
 {
@@ -74,13 +76,26 @@ class GetVideo extends Command
                     // Update the clip status and video path
                     $clip->status = 'completed';
                     $clip->video_path = $video['result_url'];
-                    $clip->save();
+                    if($clip->save()){
+
+                        $this->info('Clip status updated to completed');
+                        //deduct credits for video generation
+                        $credits = new Credit();
+                        $credits->deductCredits('video');
+
+                    } else {
+                        $this->error('Failed to update clip status');
+                    }
 
                     // Send an email notification to the user
                     $user = $clip->character->user;
-                    Mail::to($user->email)->send(new ClipCompleted($clip));
+                 //   Mail::to($user->email)->send(new ClipCompleted($clip));
 
                     $this->info('Video processing completed successfully for clip ID: ' . $clip->id);
+
+                    //log this video details
+                    Log::info($video);
+                    
                     return $video;
 
                 } elseif ($video['status'] === 'failed') {
@@ -94,7 +109,7 @@ class GetVideo extends Command
 
                 // If the video is still processing, increment the attempts counter
                 $attempts++;
-                sleep(5); // Wait for 5 seconds before retrying
+                sleep(30); // Wait for 5 seconds before retrying
 
             } catch (\Exception $e) {
                 // Log any exceptions encountered during the API request
