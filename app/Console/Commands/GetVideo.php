@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Mail\ClipCompleted;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Character;
+
 
 class GetVideo extends Command
 {
@@ -56,7 +58,7 @@ class GetVideo extends Command
             $clip->duration = $video_duration;
            
 
-            $path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
+           // $path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
             $clip->status = 'completed';
             $clip->video_path = $video['result_url'];
             $clip->save();
