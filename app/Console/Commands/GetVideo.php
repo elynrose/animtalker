@@ -59,63 +59,63 @@ class GetVideo extends Command
 
         while ($attempts < $maxRetries) {
             try {
-                // Make a GET request to fetch the video status from the D-ID API
-                $response = $client->request('GET', 'https://api.d-id.com/talks/' . $clip->video_id, [
-                    'headers' => [
-                        'accept' => 'application/json',
-                        'authorization' => 'Basic ' . env('DID_API_KEY'),
-                        'content-type' => 'application/json',
-                    ],
-                ]);
+                    // Make a GET request to fetch the video status from the D-ID API
+                    $response = $client->request('GET', 'https://api.d-id.com/talks/' . $clip->video_id, [
+                        'headers' => [
+                                'accept' => 'application/json',
+                                'authorization' => 'Basic ' . env('DID_API_KEY'),
+                                'content-type' => 'application/json',
+                        ],
+                    ]);
 
-                // Parse the JSON response from the API
-                $video = json_decode($response->getBody()->getContents(), true);
+                    // Parse the JSON response from the API
+                    $video = json_decode($response->getBody()->getContents(), true);
 
-                // Check the video status in the response
-                if ($video['status'] === 'done') {
-                    // Update the clip status and video path
-                    $clip->status = 'completed';
-                    $clip->video_path = $video['result_url'];
-                    if($clip->save()){
+                    // Check the video status in the response
+                    if ($video['status'] === 'done') {
+                        // Update the clip status and video path
+                        $clip->status = 'completed';
+                        $clip->video_path = $video['result_url'];
+                        if($clip->save()){
 
-                        $this->info('Clip status updated to completed');
-                        //deduct credits for video generation
-                        $credits = new Credit();
-                        $credits->deductCredits('video');
+                                $this->info('Clip status updated to completed');
+                                //deduct credits for video generation
+                                $credits = new Credit();
+                                $credits->deductCredits('video');
 
-                    } else {
-                        $this->error('Failed to update clip status');
+                        } else {
+                                $this->error('Failed to update clip status');
+                        }
+
+                        // Send an email notification to the user
+                        $user = $clip->character->user;
+                     //   Mail::to($user->email)->send(new ClipCompleted($clip));
+
+                        $this->info('Video processing completed successfully for clip ID: ' . $clip->id);
+
+                        //log this video details
+                        Log::info($video);
+
+                        return $video;
+
+                    } elseif ($video['status'] === 'failed') {
+                        // Mark the clip as rejected if the video processing failed
+                        $clip->status = 'rejected';
+                        $clip->save();
+
+                        $this->error('Video processing failed for clip ID: ' . $clip->id);
+                        return $video;
                     }
 
-                    // Send an email notification to the user
-                    $user = $clip->character->user;
-                 //   Mail::to($user->email)->send(new ClipCompleted($clip));
-
-                    $this->info('Video processing completed successfully for clip ID: ' . $clip->id);
-
-                    //log this video details
-                    Log::info($video);
-
-                    return $video;
-
-                } elseif ($video['status'] === 'failed') {
-                    // Mark the clip as rejected if the video processing failed
-                    $clip->status = 'rejected';
-                    $clip->save();
-
-                    $this->error('Video processing failed for clip ID: ' . $clip->id);
-                    return $video;
-                }
-
-                // If the video is still processing, increment the attempts counter
-                $attempts++;
-                sleep(5); // Wait for 5 seconds before retrying
+                    // If the video is still processing, increment the attempts counter
+                    $attempts++;
+                    sl5p(60); // Wait f5 5 seconds before retrying
 
             } catch (\Exception $e) {
-                // Log any exceptions encountered during the API request
-                $this->error('An error occurred: ' . $e->getMessage());
-                $attempts++;
-                sleep(5); // Wait for 5 seconds before retrying
+                    // Log any exceptions encountered during the API request
+                    $this->error('An error occurred: ' . $e->getMessage());
+                    $attempts++;
+                    sl5p(60); // Wait f5 5 seconds before retrying
             }
         }
 
