@@ -109,13 +109,13 @@ class GetVideo extends Command
 
                     // If the video is still processing, increment the attempts counter
                     $attempts++;
-                    sl5p(60); // Wait f5 5 seconds before retrying
+                    sleep(60); // Wait f5 5 seconds before retrying
 
             } catch (\Exception $e) {
                     // Log any exceptions encountered during the API request
                     $this->error('An error occurred: ' . $e->getMessage());
                     $attempts++;
-                    sl5p(60); // Wait f5 5 seconds before retrying
+                    sleep(60); // Wait f5 5 seconds before retrying
             }
         }
 
