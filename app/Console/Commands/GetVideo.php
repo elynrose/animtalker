@@ -53,10 +53,7 @@ class GetVideo extends Command
 
         if ($video['status'] == 'done'){
             $video_duration = $video['duration'];
-            //convert the duration to seconds
-            $duration = explode(":", $video_duration);
-            $duration = $duration[0] * 60 + $duration[1];
-            $clip->duration = $duration;
+            $clip->duration = $video_duration;
            
 
             $path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
@@ -68,7 +65,7 @@ class GetVideo extends Command
             $user = $clip->character->user_id;
          //   Mail::to($user->email)->send(new ClipCompleted($clip));
         } else if ($video['status'] == 'error'){
-            $clip->status = 'rejected';
+            $clip->status = 'failed';
             $clip->save();
         }
 
