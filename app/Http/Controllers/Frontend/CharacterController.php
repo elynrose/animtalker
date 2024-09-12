@@ -139,13 +139,6 @@ public function store(StoreCharacterRequest $request)
     if ($user_credits < 1) {
         return response()->json(['error' => 'Insufficient credits'], 500);
     }
-    //Check if user has gone over the limit of characters
-    $characters = Character::where('user_id', $user->id)->count();
-    if ($characters >= env('BASIC_PLAN_CHARACTER_LIMIT') && $user->subscription == 'basic') {
-        return response()->json(['error' => 'Character limit reached'], 500);
-    } elseif ($characters >= env('STANDARD_PLAN_CHARACTER_LIMIT') && $user->subscription == 'pro') {
-        return response()->json(['error' => 'Character limit reached'], 500);
-    } I I 
     // Generate character avatar using an external service
     $new_character = new GenerateCharacter();
     $avatar = $new_character->generate($character->id);
