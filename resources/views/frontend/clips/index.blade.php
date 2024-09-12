@@ -37,8 +37,9 @@
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
                                   
                                 @if($clip->saved==1)
-                                <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ storage_path('video/'.$clip->video_path) }}">
+                                <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ Storage::disk('s3')->url($clip->video_path) }}">
                                     <i class="fas fa-download"></i>  
+                                </a>
                                 </a>
                                 @elseif($clip->saved==null)
                                    <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ $clip->video_path }}">
