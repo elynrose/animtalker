@@ -120,7 +120,7 @@ class GetVideo extends Command
         }
 
         // If maximum retries are reached, log an error and exit
-        $this->error('Failed to retrieve video status after ' . $this->maxRetries . ' attempts.');
+        $this->error('Failed to retrieve video status after ' . $maxRetries . ' attempts.');
         $clip->status = 'failed';
         $clip->save();
     }
