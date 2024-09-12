@@ -33,7 +33,7 @@
                                 <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
                                  <span class="badge badge-primary clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
-                               <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
+                               <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted small"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
                                   
                                 @if($clip->saved==1)
