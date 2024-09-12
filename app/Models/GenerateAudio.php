@@ -59,7 +59,7 @@ class GenerateAudio extends Model
 
                 // Deduct credits for audio generation
                 $credits = new Credit();
-                $credits->deductCredits('audio');
+                $credits->deductCredits('audio', Auth::user());
 
                 // Create a new Clip model instance
                 $clip = new Clip();

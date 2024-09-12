@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\GenerateVideo;
+use App\Models\User;
 
 
 
@@ -35,6 +36,7 @@ class RunGenerateVideo extends Command
     {
         //Get the first clip that has not been processed
         $clip = Clip::where('status', 'New')->first();
+        $user = User::find($clip->user_id);
 
         if (!$clip){
             return;
@@ -48,7 +50,7 @@ class RunGenerateVideo extends Command
         $mp3Path = $clip->audio_path;
         $text = $clip->script;
        
-        $response = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip);
+        $response = $video->generateTalkingHead($imagePath, $mp3Path, $text, $clip, $user);
 
 
          if ($response instanceof \Illuminate\Http\JsonResponse) {

@@ -26,7 +26,7 @@ class GenerateVideo extends Model
      * @param Clip $clip Clip model instance associated with the video.
      * @return array|string The video response from the API or an error message.
      */
-    public function generateTalkingHead($imagePath, $mp3Path, $text, $clip)
+    public function generateTalkingHead($imagePath, $mp3Path, $text, $clip, $user)
     {
         $emotionName = null;
 
@@ -75,7 +75,7 @@ class GenerateVideo extends Model
 
         // Deduct credits for the video generation
         $credits = new Credit();
-        $credits->deductCredits('video');
+        $credits->deductCredits('video', $user);
 
         // Update the clip model with the new video ID and status
         $clip->video_id = $video['id'];

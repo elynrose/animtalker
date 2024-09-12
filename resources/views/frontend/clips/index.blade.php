@@ -75,6 +75,7 @@
 $(function(){
     $('.save').click(function(e){
         e.preventDefault();
+       
         var clip_id = $(this).attr('id');
         var video_path = $(this).attr('rel');
         var url = $(this).attr('href');
@@ -88,7 +89,7 @@ $(function(){
                 }
             });
         $('.saving_'+clip_id).removeClass('fa-save').addClass('fa-spinner fa-spin');
-        
+         $(this).attr('disabled',true);
         $.ajax({
             url:url,
             data:data,

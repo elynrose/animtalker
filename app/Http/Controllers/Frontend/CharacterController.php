@@ -158,7 +158,7 @@ if ($credits->getUserCredits() < 1) {
 
     // Deduct credits for character generation
     $credits = new Credit();
-    $credits->deductCredits('character');
+    $credits->deductCredits('character', Auth::user());
 
     // Save the generated image URL to the character's avatar and save it to S3
     try {

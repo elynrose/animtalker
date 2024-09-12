@@ -39,7 +39,7 @@ class Credit extends Model
         return $this->belongsTo(User::class, 'email', 'email');
     }
 
-    public function deductCredits($type){
+    public function deductCredits($type, $user){
         if($type == 'video'){
              $credits = env('VIDEO_GEN_CREDITS');
         } elseif($type == 'audio'){
@@ -54,7 +54,7 @@ class Credit extends Model
        
 
         //Deduct Credits
-        $credit = Credit::where('email', Auth::user()->email)->first();
+        $credit = Credit::where('email', $user->email)->first();
 
         if (!$credit) {
              $credit = new Credit();
@@ -72,7 +72,7 @@ class Credit extends Model
         $credit = Credit::where('email', Auth::user()->email)->first();
         if (!$credit) {
             $credit = new Credit();
-            $credit->email = Auth::user()->email;
+            $credit->email = $user()->email;
             $credit->points = 0;
             $credit->save();
         }
