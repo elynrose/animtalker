@@ -35,6 +35,10 @@ class UpdateClipRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'duration' => [
+                'time',
+                'nullable',
+            ],
             'video_id' => [
                 'string',
                 'nullable',
