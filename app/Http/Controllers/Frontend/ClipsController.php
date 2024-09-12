@@ -143,7 +143,7 @@ class ClipsController extends Controller
     {
         $video_link = $request->video_path;
         $clip = Clip::find($request->clip_id);
-        $fileName = 'video/' . uniqid() . '.mp4';
+        $fileName = uniqid() . '.mp4';
         $path = Storage::disk('s3')->putFileAs('video', $video_link, $fileName);
 
         if($path){
