@@ -65,7 +65,7 @@
 @section('scripts')
 @parent
 <script>
-    /*
+    /**/
 $(function(){
     $('.save').click(function(e){
         e.preventDefault();
@@ -105,7 +105,7 @@ $(function(){
 
     });
 
-});*/
+});
 
     function getStatus(){
         $('.waiting').each(function(){
