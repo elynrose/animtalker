@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
@@ -8,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Mail\ClipCompleted;
 use Illuminate\Support\Facades\Mail;
-
 
 class GetVideo extends Command
 {
@@ -27,62 +27,52 @@ class GetVideo extends Command
     protected $description = 'Get the completed video';
 
     /**
-     * Maximum number of retries allowed.
-     *
-     * @var int
-     */
-    protected $maxRetries = 3;
-
-    /**
      * Execute the console command.
      */
     public function handle()
     {
-        // Get the first clip that is currently processing
+        //Get the first pending clip
         $clip = Clip::where('status', 'processing')->first();
 
-        // If no clip is found, exit the command
-        if (!$clip) {
-            $this->info('No processing clips found.');
+        if (!$clip){
             return;
         }
 
-        // Initialize the Guzzle HTTP client
-        $client = new Client();
+        
+        $client = new \GuzzleHttp\Client();
 
-            // Make a GET request to fetch the video status from the D-ID API
-            $response = $client->request('GET', 'https://api.d-id.com/talks/' . $clip->video_id, [
-                'headers' => [
-                    'accept' => 'application/json',
-                    'authorization' => 'Basic ' . env('DID_API_KEY'),
-                    'content-type' => 'application/json',
-                ],
-            ]);
+        $response = $client->request('GET', 'https://api.d-id.com/talks/'.$clip->video_id, [
+       'headers' => [
+                'accept' => 'application/json',
+                'authorization' => 'Basic '.env('DID_API_KEY'),
+                'content-type' => 'application/json',
+            ],
+        ]);
 
-            // Parse the JSON response from the API
-            $video = json_decode($response->getBody()->getContents(), true);
+        $video = json_decode($response->getBody()->getContents(), true);
+        
+        if ($video['status'] == 'done'){
+            $path = $character->addMediaFromUrl($video['result_url'])->toMediaCollection('avatar', 's3', 'videos')->getUrl();
 
-            // Check the video status in the response
-            if ($video['status'] === 'done') {
-                // Update the clip status and video path
-                $clip->status = 'completed';
-                $clip->video_path = $video['result_url'];
-                $clip->save();
+            $clip->status = 'completed';
+            $clip->video_path = $video['result_url'];
+            $clip->save();
 
-                // Send an email notification to the user
-                $user = $clip->character->user;
-               // Mail::to($user->email)->send(new ClipCompleted($clip));
-                $this->info('Video processing completed successfully for clip ID: ' . $clip->id);
-                Log::Info($video);
-                return $video;
+            //Send an email to the user
+            $user = $clip->character->user_id;
+         //   Mail::to($user->email)->send(new ClipCompleted($clip));
 
-            } elseif ($video['status'] === 'failed') {
-                // Mark the clip as rejected if the video processing failed
-                $clip->status = 'failed';
-                $clip->save();
+            
+        } else if ($video['status'] == 'failed'){
+            $clip->status = 'rejected';
+            $clip->save();
+        }
 
-                $this->error('Video processing failed for clip ID: ' . $clip->id);
-            }
+        //return $video as php array
+        return $video;
 
     }
+
+
+   
 }
