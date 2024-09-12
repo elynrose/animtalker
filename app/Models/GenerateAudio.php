@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Clip;
 use App\Models\Credit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class GenerateAudio extends Model
 {
