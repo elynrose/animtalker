@@ -98,6 +98,7 @@ class Clip extends Model implements HasMedia
         'voice',
         'video_path',
         'duration',
+        'saved',
         'video_id',
         'audio_path',
         'privacy',

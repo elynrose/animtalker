@@ -31,6 +31,10 @@ class StoreClipRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'saved' => [
+                'integer',
+                'nullable',
+            ],
             'video_path' => [
                 'string',
                 'nullable',

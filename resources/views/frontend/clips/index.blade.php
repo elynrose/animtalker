@@ -36,10 +36,15 @@
                                <p class="small muted">{{$clip->created_at->diffForHumans()}}</p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
                                   
+                                @if($clip->saved==1)
+                                <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ storage_path('video/'.$clip->video_path) }}">
+                                    <i class="fas fa-download"></i>  
+                                </a>
+                                @elseif($clip->saved==null)
                                    <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ $clip->video_path }}">
                                           <i class="fas fa-download"></i>  
-                                        </a>
-                                        
+                                    </a>
+                                @endif
                                     <a href="{{ route('frontend.clips.savelink') }}" id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }} save"><i class="fas fa-save  saving_{{ $clip->id }}"></i></a>
                                      <!--   <form class="mx-2 my-2" action="{{ route('frontend.clips.savelink') }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="POST">

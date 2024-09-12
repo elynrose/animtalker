@@ -15,6 +15,7 @@ class CreateClipsTable extends Migration
             $table->string('status')->nullable();
             $table->string('voice')->nullable();
             $table->string('audio_path')->nullable();
+            $table->integer('saved')->nullable();
             $table->integer('cost')->nullable();
             $table->string('video_path')->nullable();
             $table->time('duration')->nullable();

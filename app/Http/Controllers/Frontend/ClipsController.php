@@ -139,6 +139,7 @@ class ClipsController extends Controller
         return redirect()->route('frontend.clips.index');
     }
 
+
     public function savelink(Request $request)
     {
         $video_link = $request->video_path;
@@ -147,6 +148,7 @@ class ClipsController extends Controller
         $path = Storage::disk('s3')->putFileAs('video', $video_link, $fileName);
 
         if($path){
+            $clip->saved = 1;
             $clip->video_path = $path;
             $clip->save();
             return json_encode(['success'=>'The file was saved', 'path'=>$path]);
