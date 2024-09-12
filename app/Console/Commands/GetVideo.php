@@ -50,10 +50,6 @@ class GetVideo extends Command
         // Initialize the Guzzle HTTP client
         $client = new Client();
 
-        // Number of attempts made to fetch the video status
-        $attempts = 0;
-
-        while ($attempts < $this->maxRetries) {
             // Make a GET request to fetch the video status from the D-ID API
             $response = $client->request('GET', 'https://api.d-id.com/talks/' . $clip->video_id, [
                 'headers' => [
@@ -75,28 +71,18 @@ class GetVideo extends Command
 
                 // Send an email notification to the user
                 $user = $clip->character->user;
-                Mail::to($user->email)->send(new ClipCompleted($clip));
-
+               // Mail::to($user->email)->send(new ClipCompleted($clip));
                 $this->info('Video processing completed successfully for clip ID: ' . $clip->id);
+                Log::Info($video);
                 return $video;
 
             } elseif ($video['status'] === 'failed') {
                 // Mark the clip as rejected if the video processing failed
-                $clip->status = 'rejected';
+                $clip->status = 'failed';
                 $clip->save();
 
                 $this->error('Video processing failed for clip ID: ' . $clip->id);
-                return $video;
             }
 
-            // If the video is still processing, increment the attempts counter
-            $attempts++;
-            sleep(5); // Wait for 5 seconds before retrying
-        }
-
-        // If maximum retries are reached, log an error and exit
-        $this->error('Failed to retrieve video status after ' . $this->maxRetries . ' attempts.');
-        $clip->status = 'failed';
-        $clip->save();
     }
 }
