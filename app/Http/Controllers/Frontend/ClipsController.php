@@ -246,7 +246,7 @@ class ClipsController extends Controller
 
         if(isset($data['choices'][0]['text'])) {
             $credits = new Credit();
-            $credits->deductCredits('prompt');        }
+            $credits->deductCredits('prompt', Auth::user());        }
 
         return trim($data['choices'][0]['text']);
     }
