@@ -117,7 +117,7 @@ $(function(){
 });
 
     function getStatus(){
-        $('.processing_status').text('Processing...');
+        $('.processing_status').text('Working...');
         $('.waiting').each(function(){
             var id = $(this).attr('id');
             var video_id = $(this).attr('rel');
@@ -138,7 +138,11 @@ $(function(){
                 data: {id: id},
                 success: function(response){
                     console.log(response);
+                    if(response.in_line > 0){
                     $('.processing_status').text('You are number '+response.in_line+' in the queue');
+                    }else{
+                        $('.processing_status').text('Working...');
+                    }
                     //update the download link
                     $('#download_'+id).attr('href',response.video_path);
                    // $('#'+id).text(response.status);
