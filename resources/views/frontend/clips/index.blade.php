@@ -33,7 +33,9 @@
                                    
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
-                                 <span class="badge  @if($clip->status=='processing' || $clip->status=='new') badge-primary @elseif($clip->status=='completed') badge-success @elseif($clip->status=='failed' || $clip->status=='rejected') badge-danger @endif clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                 <span class="badge  @if($clip->status=='processing' || $clip->status=='new') badge-primary @elseif($clip->status=='completed') badge-success @elseif($clip->status=='failed' || $clip->status=='rejected') badge-danger @endif clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span>
+                                 @if($clip->status=='failed') &nbsp; <a href="{{ route('frontend.clips.retry', ['id'=>$clip->id]) }}"><i class="fas fa-refresh"></i></a> @endif
+                                 <br>
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted small"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
@@ -48,7 +50,7 @@
                                           <i class="fas fa-download"></i>  
                                     </a>
                                 @endif
-                                    <a href="@if($clip->saved==null){{ route('frontend.clips.savelink') }}@else#@endif"  id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }}@if($clip->saved==null) save@endif"><i class="fas @if($clip->saved==1)fa-check@else fa-save@endif saving_{{ $clip->id }}"></i></a>
+                                    <a href="@if($clip->saved==null){{ route('frontend.clips.savelink') }} @else # @endif"  id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }} @if ($clip->saved==null) save @endif"><i class="fas @if($clip->saved==1)fa-check @else fa-save @endif saving_{{ $clip->id }}"></i></a>
                                      <!--   <form class="mx-2 my-2" action="{{ route('frontend.clips.savelink') }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="POST">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

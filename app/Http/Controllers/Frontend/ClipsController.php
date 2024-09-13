@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Models\Credit;
 use Storage;
+use Auth;
 
 
 class ClipsController extends Controller
@@ -248,6 +249,22 @@ class ClipsController extends Controller
             $credits->deductCredits('prompt');        }
 
         return trim($data['choices'][0]['text']);
+    }
+
+
+
+    public function retry(Request $request)
+    {
+        $clip_id = $request->id;
+        //Get the first clip that has not been processed
+        $clip = Clip::find($clip_id);
+        if(!$clip){
+            return;
+        }
+        //Update the status to new
+        $clip->status = 'new';
+        $clip->save();     
+        return redirect()->route('frontend.clips.index'); 
     }
 
 }
