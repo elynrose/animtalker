@@ -117,8 +117,9 @@ $(function(){
 });
 
     function getStatus(){
-        $('.processing_status').text('Working...');
+       
         $('.waiting').each(function(){
+            $('.processing_status').text('Working...');
             var id = $(this).attr('id');
             var video_id = $(this).attr('rel');
             var clip_status = $(this).data('status');
