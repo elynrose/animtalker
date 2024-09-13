@@ -5,7 +5,9 @@
         <div class="col-md-12">
       <h3>{{ trans('cruds.clip.title')  }} </h3>
       <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
+      <p class="processing_status"></p>
             <div class="row">
+                
                 @foreach($clips as $clip)
                 @if($clip->character)
                     <div class="col-md-3">
@@ -31,7 +33,7 @@
                                    
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
-                                 <span class="badge badge-primary clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
+                                 <span class="badge  @if($clip->status=='processing' || $clip->status=='new') badge-primary @elseif($clip->status=='completed') badge-success @elseif($clip->status=='failed' || $clip->status=='rejected') badge-danger @endif clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span><br>
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted small"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
@@ -115,6 +117,7 @@ $(function(){
 });
 
     function getStatus(){
+        $('.processing_status').text('Processing...');
         $('.waiting').each(function(){
             var id = $(this).attr('id');
             var video_id = $(this).attr('rel');
@@ -135,7 +138,7 @@ $(function(){
                 data: {id: id},
                 success: function(response){
                     console.log(response);
-
+                    $('.processing_status').text('You are number '+response.in_line+' in the queue');
                     //update the download link
                     $('#download_'+id).attr('href',response.video_path);
                    // $('#'+id).text(response.status);

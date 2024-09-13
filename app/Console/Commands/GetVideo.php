@@ -34,7 +34,6 @@ class GetVideo extends Command
     public function handle()
     {
         //Get the first pending clip
-        $clip_count = Clip::where('status', 'new')->count();
         $clip = Clip::where('status', 'processing')->first();
 
         if (!$clip){
@@ -70,8 +69,6 @@ class GetVideo extends Command
         } else if ($video['status'] == 'error'){
             $clip->status = 'failed';
             $clip->save();
-        } else {
-            return response()->json(['status' => 'You are '.($clip_count-1). 'in line'], 200);
         }
 
         //return $video as php array

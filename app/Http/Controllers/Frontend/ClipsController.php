@@ -212,9 +212,10 @@ class ClipsController extends Controller
     //Create method for generateVideoStatus
     public function generateVideoStatus(Request $request)
     {
+        $count = Clip::where('status','new')->count();
         $clip = Clip::where('id', $request->input('id'))->first();
         if($clip) {
-            return response()->json(['status' => $clip->status, 'video_path' => $clip->video_path]);
+            return response()->json(['status' => $clip->status, 'video_path' => $clip->video_path, 'in_line' => $count]);
         } else {
             return response()->json(['status' => 'not found']);
         }
