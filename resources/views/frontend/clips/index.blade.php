@@ -48,7 +48,7 @@
                                           <i class="fas fa-download"></i>  
                                     </a>
                                 @endif
-                                    <a href="{{ route('frontend.clips.savelink') }}" id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }}  @if($clip->saved==1) save  @endif"><i class="fas @if($clip->saved==1) fa-check  @else fa-save @endif saving_{{ $clip->id }}"></i></a>
+                                    <a href="{{ route('frontend.clips.savelink') }}" id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }}  @if($clip->saved==null) save  @endif"><i class="fas @if($clip->saved==1) fa-check  @else fa-save @endif saving_{{ $clip->id }}"></i></a>
                                      <!--   <form class="mx-2 my-2" action="{{ route('frontend.clips.savelink') }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="POST">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
