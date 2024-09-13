@@ -154,6 +154,7 @@ $(function(){
                     $('#actions_'+id).css('visibility','visible');
                         $('#clock_'+id).removeClass('fa-spin');
                         $('#'+id).addClass('badge-success').text('Completed');
+                        location.reload();
                     }else if(response.status == 'processing'){
                         $('#'+id).addClass('badge-primary').text('Processing');
                     }else if(response.status == 'failed'){
