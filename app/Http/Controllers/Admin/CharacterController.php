@@ -102,7 +102,7 @@ class CharacterController extends Controller
         $character->dress_colors()->sync($request->input('dress_colors', []));
         $character->props()->sync($request->input('props', []));
         if ($request->input('avatar', false)) {
-            $character->addMedia(storage_path('tmp/uploads/' . basename($request->input('avatar'))))->toMediaCollection('avatar');
+            $character->addMedia(storage_path('tmp/uploads/' . basename($request->input('avatar'))))->toMediaCollection('avatar', 's3', 'images');
         }
 
         if ($media = $request->input('ck-media', false)) {

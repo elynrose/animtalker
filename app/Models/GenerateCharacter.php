@@ -55,7 +55,7 @@ class GenerateCharacter extends Model
         ])->post('https://api.openai.com/v1/images/generations', [
             'prompt' => $prompt,          // The description prompt
             'n' => 1,                     // Number of images to generate
-            'size' => '1024x1024',  
+            'size' => '1792x1024',  
             'model'=> 'dall-e-3',     // Image size (can be 256x256, 512x512, or 1024x1024)
         ]);
 
