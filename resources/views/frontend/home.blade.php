@@ -22,7 +22,7 @@
                                    
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
-                                 Created by {{$clip->user->name ?? ''}}<br>
+                                 Created by {{$clip->character->user->name ?? ''}}<br>
                               
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted small"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
