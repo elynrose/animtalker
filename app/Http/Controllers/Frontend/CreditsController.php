@@ -10,6 +10,7 @@ use App\Models\Credit;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CreditsController extends Controller
 {
@@ -17,7 +18,7 @@ class CreditsController extends Controller
     {
         abort_if(Gate::denies('credit_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $credits = Credit::all();
+        $credits = Credit::where('email', auth()->user()->email)->get();
 
         return view('frontend.credits.index', compact('credits'));
     }
