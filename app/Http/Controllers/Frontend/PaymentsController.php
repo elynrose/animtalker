@@ -22,12 +22,12 @@ class PaymentsController extends Controller
 
         abort_if(Gate::denies('payment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if($request->segment(2) == null && $request->segment(3) == null) {
+        if($request->segment(2) == null) {
             return redirect()->route('frontend.credits.index');
         } else {
             $payment = new Payment;
             $payment->stripe_transaction = $request->segment(2);
-            $payment->amount = $request->segment(3);
+            $payment->amount = 10;
             $payment->email = auth()->user()->email;
             
             if($payment->save()){
@@ -38,6 +38,7 @@ class PaymentsController extends Controller
             }
         }
 
+        session()->flash('success', 'Payment successful, we have added 10 credits to your account.');
         return redirect()->route('frontend.credits.index');
 
     }

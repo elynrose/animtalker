@@ -281,7 +281,7 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     // Payments
     Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');
     Route::resource('payments', 'PaymentsController')->except(['update', 'delete', 'edit', 'show']);
-    Route::get('paid/{id}/{amount}', 'PaymentsController@paid')->name('paid');
+    Route::get('paid/{id}', 'PaymentsController@paid')->name('paid');
 
     // Credits
     Route::delete('credits/destroy', 'CreditsController@massDestroy')->name('credits.massDestroy');
