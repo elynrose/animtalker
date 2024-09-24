@@ -42,6 +42,7 @@ class PaymentsController extends Controller
                 } else {
                 $credits->points = $credits->points + 10;
                 $credits->save();
+                }
             }
         }
 
