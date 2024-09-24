@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-      <h3>{{ trans('cruds.clip.title')  }} </h3>
+      <h3 class="mb-5">{{ trans('cruds.clip.title')  }} </h3>
             <div class="row">
                 
                 @foreach($clips as $clip)
@@ -22,9 +22,8 @@
                                    
                                 <p class="card-text mt-3">
                                 <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
-                                 <span class="badge  @if($clip->status=='processing' || $clip->status=='new') badge-primary @elseif($clip->status=='completed') badge-success @elseif($clip->status=='failed' || $clip->status=='rejected') badge-danger @endif clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span>
-                                 @if($clip->status=='failed') &nbsp; <a href="{{ route('frontend.clips.retry', ['id'=>$clip->id]) }}"><i class="fas fa-refresh"></i></a> @endif
-                                 <br>
+                                 Created by {{$clip->user->name ?? ''}}<br>
+                              
                                 </p>
                                <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted small"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
                                 <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
