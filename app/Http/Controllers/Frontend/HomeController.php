@@ -9,8 +9,9 @@ class HomeController
     {
         $clips = Clip::with(['character', 'media'])
         ->where('status', 'completed')
+        ->where('saved', 1)
         ->whereHas('character', function ($query) {
-        $query->where('user_id', auth()->user()->id);
+        $query->where('user_id', '!==', auth()->user()->id);
         })
         ->orderBy('id', 'desc')->get();
 
