@@ -15,9 +15,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
-                                @if($clip->character && $clip->character->avatar)
-                                    <img src="{{ $clip->character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
-                                @else
+                                @if($clip->saved)
                                     <video src="{{ $clip->video_path }}" class="img-responsive" width="100%" controls></video>
                                 @endif
                                        
