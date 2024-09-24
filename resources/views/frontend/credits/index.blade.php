@@ -6,10 +6,11 @@
        
             <div class="card">
                 
-                <h3>{{ trans('cruds.credit.title') }}
-                </h3>
+               
                
                 <div class="card-body">
+                <h3>{{ trans('cruds.credit.title') }}
+                </h3>
                    <p>You have @if($credits->points < 1) {{ '0' }} @else $credit->points @endif credits available. <a href="/top_up">Top up</a></p>
                 </div>
             </div>
