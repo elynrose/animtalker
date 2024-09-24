@@ -8,7 +8,7 @@ class HomeController
     public function index()
     {
         $clips = Clip::with(['character', 'media'])
-        ->where('privacy', 0)
+        ->where('privacy', 1)
         ->where('status', 'completed')
         ->whereHas('character', function ($query) {
         $query->where('user_id', auth()->user()->id);
