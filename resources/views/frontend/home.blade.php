@@ -8,7 +8,7 @@
                 
                 @foreach($clips as $clip)
                 @if($clip->character)
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card mb-4">
                     
                             
