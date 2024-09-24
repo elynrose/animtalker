@@ -25,15 +25,15 @@ class StoreCharacterRequest extends FormRequest
                 'nullable',
             ],
             'scene_id' => [
-                'required',
+                'nullable',
                 'integer',
             ],
             'gender_id' => [
-                'required',
+                'nullable',
                 'integer',
             ],
             'age_group_id' => [
-                'required',
+                'nullable',
                 'integer',
             ],
         

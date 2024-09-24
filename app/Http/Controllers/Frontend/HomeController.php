@@ -1,12 +1,21 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
+use App\Models\Clip;
 
 class HomeController
 {
     public function index()
     {
-        return view('frontend.home');
+        $clips = Clip::with(['character', 'media'])
+        ->where('privacy', 0)
+        ->where('status', 'completed')
+        ->whereHas('character', function ($query) {
+        $query->where('user_id', auth()->user()->id);
+        })
+        ->orderBy('id', 'desc')->get();
+
+        return view('frontend.home', compact('clips'));
     }
 
 
