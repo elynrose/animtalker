@@ -16,7 +16,7 @@
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
                                 @if($clip->saved)
-                                    <video src="{{ $clip->video_path }}" class="img-responsive" width="100%" controls></video>
+                                    <video src="{{ Storage::disk('s3')->url($clip->video_path) }}" class="img-responsive" width="100%" controls></video>
                                 @endif
                                        
                                    
