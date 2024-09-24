@@ -10,9 +10,39 @@ use App\Models\Payment;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Credit;
 
 class PaymentsController extends Controller
 {
+
+    public function paid(Request $request)
+    {
+
+        abort_if(Gate::denies('payment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if($request->segment(2) == null && $request->segment(3) == null) {
+            return redirect()->route('frontend.credits.index');
+        } else {
+            $payment = new Payment;
+            $payment->stripe_transaction = $request->segment(2);
+            $payment->amount = $request->segment(3);
+            $payment->email = auth()->user()->email;
+            
+            if($payment->save()){
+                //Add credits to the user
+                $credits = Credit::where('email', auth()->user()->email)->first();
+                $credits->points = $credits->points + 10;
+                $credits->save();
+            }
+        }
+
+        return redirect()->route('frontend.credits.index');
+
+    }
+
+
     public function index()
     {
         abort_if(Gate::denies('payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
