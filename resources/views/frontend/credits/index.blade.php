@@ -10,7 +10,7 @@
                 </h3>
                
                 <div class="card-body">
-                   <p>You have @if($credits->points > 0) {{ $credit->points ?? '0' }} @else '0' @endif credits available. <a href="/top_up">Top up</a></p>
+                   <p>You have @if($credits->points < 1) {{ '0' }} @else $credit->points @endif credits available. <a href="/top_up">Top up</a></p>
                 </div>
             </div>
 
