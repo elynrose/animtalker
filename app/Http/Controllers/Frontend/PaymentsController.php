@@ -28,11 +28,18 @@ class PaymentsController extends Controller
             $payment = new Payment;
             $payment->stripe_transaction = $request->segment(2);
             $payment->amount = 10;
-            $payment->email = auth()->user()->email;
+            $payment->email = Auth::user()->email;
             
             if($payment->save()){
                 //Add credits to the user
                 $credits = Credit::where('email', Auth::user()->email)->first();
+                //If not found, create a new record
+                if(!$credits){
+                    $credits = new Credit;
+                    $credits->email = Auth::user()->email;
+                    $credits->points = 10;
+                    $credits->save();
+                } else {
                 $credits->points = $credits->points + 10;
                 $credits->save();
             }
