@@ -3,79 +3,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @can('credit_create')
-                <div style="margin-bottom: 10px;" class="row">
-                    <div class="col-lg-12">
-                        <a class="btn btn-success" href="{{ route('frontend.credits.create') }}">
-                            {{ trans('global.add') }} {{ trans('cruds.credit.title_singular') }}
-                        </a>
-                    </div>
-                </div>
-            @endcan
+       
             <div class="card">
-                <div class="card-header">
-                    {{ trans('cruds.credit.title_singular') }} {{ trans('global.list') }}
-                </div>
-
+                
+                <h3>{{ trans('cruds.credit.title') }}
+                </h3>
+               
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class=" table table-bordered datatable datatable-Credit">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        {{ trans('cruds.credit.fields.id') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.credit.fields.points') }}
-                                    </th>
-                                    <th>
-                                        {{ trans('cruds.credit.fields.email') }}
-                                    </th>
-                                    <th>
-                                        &nbsp;
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($credits as $key => $credit)
-                                    <tr data-entry-id="{{ $credit->id }}">
-                                        <td>
-                                            {{ $credit->id ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $credit->points ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $credit->email ?? '' }}
-                                        </td>
-                                        <td>
-                                            @can('credit_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('frontend.credits.show', $credit->id) }}">
-                                                    {{ trans('global.view') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('credit_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('frontend.credits.edit', $credit->id) }}">
-                                                    {{ trans('global.edit') }}
-                                                </a>
-                                            @endcan
-
-                                            @can('credit_delete')
-                                                <form action="{{ route('frontend.credits.destroy', $credit->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                </form>
-                                            @endcan
-
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                   <p>You have @if($credit->points > 0) {{ $credit->points ?? '0' }} @else '0' @endif credits available. <a href="/top_up">Top up</a></p>
                 </div>
             </div>
 
