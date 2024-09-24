@@ -32,7 +32,7 @@ class PaymentsController extends Controller
             
             if($payment->save()){
                 //Add credits to the user
-                $credits = Credit::where('email', auth()->user()->email)->first();
+                $credits = Credit::where('email', Auth::user()->email)->first();
                 $credits->points = $credits->points + 10;
                 $credits->save();
             }
