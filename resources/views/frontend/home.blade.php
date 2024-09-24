@@ -8,7 +8,7 @@
                 
                 @foreach($clips as $clip)
                 @if($clip->character)
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="card mb-4">
                     
                             
@@ -36,6 +36,14 @@
                     @endif
                 @endforeach
             </div>
+
+            <div class="col-md-12">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            {{ $clips->links() }}
+                        </ul>
+                    </nav>
+                </div>
 
         </div>
     </div>
