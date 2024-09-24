@@ -18,7 +18,7 @@ class CreditsController extends Controller
     {
         abort_if(Gate::denies('credit_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $credits = Credit::where('email', auth()->user()->email)->get();
+        $credits = Credit::where('email', auth()->user()->email)->first();
 
         return view('frontend.credits.index', compact('credits'));
     }
