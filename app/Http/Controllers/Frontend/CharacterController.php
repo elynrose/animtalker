@@ -119,7 +119,7 @@ public function store(StoreCharacterRequest $request)
     $character = Character::create(
         [
             'name' => $request->name,
-            'custom_prompt' => $request->custom_prompt,
+            'custom_prompt' => trim($request->custom_prompt),
             'user_id' => Auth::user()->id,
         ]
     );

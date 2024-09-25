@@ -46,21 +46,27 @@ class GenerateCharacter extends Model
      */
     private function sendToDalle($prompt)
     {
-        // Set the OpenAI API key from the environment
-        $apiKey = env('OPENAI_KEY');
+        try {
+            // Set the OpenAI API key from the environment
+            $apiKey = env('OPENAI_KEY');
 
-        // Prepare the API request payload
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer $apiKey",
-        ])->post('https://api.openai.com/v1/images/generations', [
-            'prompt' => $prompt,          // The description prompt
-            'n' => 1,                     // Number of images to generate
-            'size' => '1792x1024',  
-            'model'=> 'dall-e-3',     // Image size (can be 256x256, 512x512, or 1024x1024)
-        ]);
+            // Prepare the API request payload
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer $apiKey",
+            ])->post('https://api.openai.com/v1/images/generations', [
+                'prompt' => $prompt,          // The description prompt
+                'n' => 1,                     // Number of images to generate
+                'size' => '1792x1024',  
+                'model'=> 'dall-e-3',     // Image size (can be 256x256, 512x512, or 1024x1024)
+            ]);
 
-        // Decode and return the response from OpenAI
-        return $response->json();
+            // Decode and return the response from OpenAI
+            return $response->json();
+        } catch (\Exception $e) {
+            // Handle the exception and return a JSON error response
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return response()->json(['error' => 'Failed to generate image, please wait and try again.'], 500);
+        }
         
     }
 
@@ -142,7 +148,7 @@ private function backgroundAndArtDetails($character, $isRealistic)
         $details .= "The character is set against a " . strtolower($character->scene->scene) . " background, ";
     }
     $details .= "with the character prominently placed in the foreground, facing the viewer. ";
-    $details .= "The camera maintains a ".($character->zoom->name ?? "Medium shot")." view, smoothly following the character's movements. ";
+    $details .= "The camera maintains a ".($character->zoom->name ?? "Eye level shot")." view, smoothly following the character's movements. ";
     $details .= "The character is well-lit with rich and high detail, ";
     $details .= "in a " . ($isRealistic ? "hyperrealistic" : "3D animated") . " style with realistic textures and lighting effects. ";
     $details .= "The colors are vibrant, inspired by " . ($isRealistic ? "DSLR camera quality" : "Disney's warm aesthetic") . ". ";

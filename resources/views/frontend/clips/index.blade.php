@@ -10,14 +10,14 @@
                 
                 @foreach($clips as $clip)
                 @if($clip->character)
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card mb-4">
                             
                         @can('character_delete')
                                         <form class="mx-2 my-2" action="{{ route('frontend.clips.destroy', $clip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="btn btn-danger btn-xs pull-right" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
+                                            <button type="submit" class="btn btn-black btn-xs pull-right" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
                                         </form>
                                     @endcan
                             
@@ -25,7 +25,15 @@
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
                                 @if($clip->character && $clip->character->avatar)
+                                <div style="position:relative;">
                                     <img src="{{ $clip->character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
+                               
+                                    <!--bottom half overlay, show on hover-->
+                                <div class="overlay_{{ $clip->id }}" style="padding:10px;position:absolute;bottom:0;left:10;right:10;background-color:rgba(0,0,0,0.5);overflow:hidden;height:auto;width:100%;transition: .5s ease;">
+                                    <div class="text" style="color:white;font-size:12px;">{{ $clip->script ?? 'No script available' }}</div>
+                                </div>
+
+                                </div>
                                 @endif
                                        
                                    
