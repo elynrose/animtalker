@@ -255,7 +255,7 @@ class ClipsController extends Controller
 
     public function retry(Request $request)
     {
-        if(Auth::check()){
+        if(!Auth::check()){
             return redirect()->route('login');
         }
         $clip_id = $request->segment(3);
