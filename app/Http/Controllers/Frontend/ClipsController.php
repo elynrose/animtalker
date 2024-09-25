@@ -255,7 +255,7 @@ class ClipsController extends Controller
 
     public function retry(Request $request)
     {
-        $clip_id = $request->id;
+        $clip_id = $request->segment(3);
         //Get the first clip that has not been processed
         $clip = Clip::find($clip_id);
         if(!$clip){

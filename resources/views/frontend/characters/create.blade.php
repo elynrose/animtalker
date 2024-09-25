@@ -29,7 +29,8 @@
 
                         <div class="form-group mb-5" id="custom">
                             <label for="custom_prompt">{{ trans('cruds.character.fields.custom_prompt') }}</label>
-                            <textarea class="form-control" name="custom_prompt" id="custom_prompt" rows="3">{{ old('custom_prompt', '') }}</textarea>
+                            <textarea class="form-control" name="custom_prompt" id="custom_prompt" rows="6" oninput="autoExpand(this)">{{ old('custom_prompt', 'Create a detailed 3D animated character modeled in a Pixar-like, Disney-like style, featuring [Character Features]. The character is [Character Description: Age, Gender] dressed in [Clothing Description] with varying shades of [Color Palette]. The setting is [Setting Description] during [Time of Day], with the [Lighting Description]. The landscape includes [Key Landscape Features]. [Additional Landscape or Setting Features]. The background is [Background Detail] to emphasize the character, who is vividly lit with [Inspiration Source]-inspired vibrant hues, smooth gradients, and soft shadows. The image should be high-definition quality, maintaining a [Aspect Ratio] aspect ratio to ensure the character is the focal point with the right perspective on screen.
+') }}</textarea>
                             @if($errors->has('custom_prompt'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('custom_prompt') }}
@@ -615,6 +616,11 @@ $(function() {
                                     customPrompt.style.display = "block";
                                     button.textContent = "Use Wizard";
                                 }
+                            }
+
+                            function autoExpand(textarea) {
+                                textarea.style.height = 'auto';
+                                textarea.style.height = textarea.scrollHeight + 'px';
                             }
                         </script>
 @endsection
