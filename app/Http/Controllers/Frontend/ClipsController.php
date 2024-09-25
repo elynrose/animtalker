@@ -260,11 +260,13 @@ class ClipsController extends Controller
         $clip = Clip::find($clip_id);
         if(!$clip){
             return;
-        }
+        } else{
         //Update the status to new
         $clip->status = 'new';
         $clip->save();     
         return redirect()->route('frontend.clips.index'); 
+        }
+      
     }
 
 }
