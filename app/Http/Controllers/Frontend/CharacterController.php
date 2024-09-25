@@ -110,6 +110,21 @@ class CharacterController extends Controller
  */
 public function store(StoreCharacterRequest $request)
 {
+    if($request->custom_prompt){
+        $request->validate([
+            'custom_prompt' => 'required|string|max:2000',
+        ]);
+
+    // Create a new character excluding 'dress_colors' and 'props' from the request
+    $character = Character::create(
+        [
+            'name' => $request->name,
+            'custom_prompt' => $request->custom_prompt,
+            'user_id' => Auth::user()->id,
+        ]
+    );
+
+    } else {
     // Create a new character excluding 'dress_colors' and 'props' from the request
     $character = Character::create($request->except('dress_colors', 'props'));
 
@@ -130,7 +145,7 @@ public function store(StoreCharacterRequest $request)
             $character->props()->attach($prop);
         }
     }
-
+}
     
 //Check if the user has enough credits to generate a character
 $credits = new Credit();
@@ -168,6 +183,7 @@ if ($credits->getUserCredits() < 1) {
         $character->custom_prompt= $prompt;
         $character->avatar_url = $path;
         $character->save();
+        
     } catch (\Exception $e) {
         // Delete character and return error if image saving fails
         $character->destroy();

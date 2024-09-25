@@ -64,6 +64,14 @@ class UpdateCharacterRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'parent_id' => [
+                'nullable',
+                'integer',
+            ],
+            'custom_prompt' => [
+                'string',
+                'nullable',
+            ],
             'user_id' => [
                 'required',
                 'integer',

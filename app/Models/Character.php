@@ -52,6 +52,7 @@ class Character extends Model implements HasMedia
         'avatar_url',
         'aspect_ratio',
         'art_style',
+        'parent_id',
         'user_id',
         'created_at',
         'updated_at',

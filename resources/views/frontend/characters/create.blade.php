@@ -3,23 +3,54 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+        <h3> {{ trans('cruds.character.title') }}</h3>
+        <p>{{ trans('cruds.character.desc') }}</p>
             <div class="card" id="step1">
-                <div class="card-header">
-                   {{ trans('cruds.character.desc') }}
-                </div>
+             
 
                 <div class="card-body">
                     <div class="alert alert-danger error" style="display:none;"></div>
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
+                        <p><a onclick="toggleWizard();" class="btn btn-info btn-sm"> Use the wizard</a></p>
+
+                        <div class="form-group mb-5">
+                            <label class="required" for="name">{{ trans('cruds.character.fields.name') }}</label>
+                            <input class="form-control" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                            @if($errors->has('name'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('name') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.character.fields.name_helper') }}</span>
+                        </div>
+
+
+                        <div class="form-group mb-5" id="custom">
+                            <label for="custom_prompt">{{ trans('cruds.character.fields.custom_prompt') }}</label>
+                            <textarea class="form-control" name="custom_prompt" id="custom_prompt" rows="3">{{ old('custom_prompt', '') }}</textarea>
+                            @if($errors->has('custom_prompt'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('custom_prompt') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.character.fields.custom_prompt_helper') }}</span>
+                        </div>
+
+                        
+
+                       
+
+                        <div id="wizard" style="display:none;">
                         <!--Radio button for aspect ratio-->
                                 
-                            <div class="card">
+                            <!--   <div class="card">
                                 <div class="card-header">
                                     <h6>{{ trans('cruds.character.fields.aspect_ratio') }}</h6>
                                 </div>
-                                <div class="card-body">
+                             <div class="card-body">
+                                    
                                     <div class="row">
                                     <div class="col-md-6">
                                     <input type="radio" name="aspect_ratio" id="aspect_ratio_1" value="9:16">
@@ -31,9 +62,9 @@
                                     </div>
                                     </div>
                                  </div>
-                            </div>
+                            </div>-->
 
-                            <div class="form-group">
+                          <div class="form-group mb-5">
                                 <label>{{ trans('cruds.character.fields.is_realistic') }}</label>
                                 <select class="form-control" name="is_realistic" id="is_realistic">
                                 <option value="1">{{ trans('cruds.character.cartoon') }}</option>
@@ -41,7 +72,9 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
+                      
+
+                            <div class="form-group mb-5">
                             <label>{{ trans('cruds.character.fields.art') }}</label>
                             <select class="form-control" name="art_style" id="art_style">
                                 <option value disabled {{ old('art_style', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
@@ -57,16 +90,7 @@
                             <span class="help-block">{{ trans('cruds.clip.fields.status_helper') }}</span>
                         </div>
 
-                        <div class="form-group">
-                            <label class="required" for="name">{{ trans('cruds.character.fields.name') }}</label>
-                            <input class="form-control" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
-                            @if($errors->has('name'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('name') }}
-                                </div>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.character.fields.name_helper') }}</span>
-                        </div>
+                    
 
                         
 
@@ -295,9 +319,10 @@
                             </div>
 
                         </div>
-
+</div>
                         <div class="form-group mt-4">
-                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                        <input type="hidden" name="aspect_ratio" value="16:9" id="aspect_ratio">
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <button class="btn btn-danger btn-block" id="save" type="submit">
                                 {{ trans('global.generate') }}
                             </button>
@@ -509,15 +534,15 @@ $(function() {
             // Check if the required fields are provided
 
             var name = $('#name').val();
-            var aspectRatio = $('input[name="aspect_ratio"]:checked').val();
+            var aspectRatio = $('#aspect_ratio').val();
             var sceneId = $('#scene_id').val();
             var genderId = $('#gender_id').val();
             var ageGroupId = $('#age_group_id').val();
             var characterId = $('#character_id').val();
 
-            if (aspectRatio == '' && name.trim() === '' || sceneId.trim() === '' || genderId.trim() === '' || ageGroupId.trim() === '') {
+            if (name.trim() === '') {
                 // Flash an error message
-                $('.error').text('Aspect ratio, scene and Character detail sections are required.').show();
+                $('.error').text('Character name required.').show();
                 return;
             }
             $('.error').hide();
@@ -575,5 +600,21 @@ $(function() {
         });
     });
 </script>
-</script>
+<script>
+                            function toggleWizard() {
+                                var wizard = document.getElementById("wizard");
+                                var customPrompt = document.getElementById("custom");
+                                var button = document.querySelector("#step1 a");
+
+                                if (wizard.style.display === "none") {
+                                    wizard.style.display = "block";
+                                    customPrompt.style.display = "none";
+                                    button.textContent = "Use Custom Prompt";
+                                } else {
+                                    wizard.style.display = "none";
+                                    customPrompt.style.display = "block";
+                                    button.textContent = "Use Wizard";
+                                }
+                            }
+                        </script>
 @endsection

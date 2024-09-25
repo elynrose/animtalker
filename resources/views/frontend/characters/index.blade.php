@@ -29,7 +29,7 @@
                              
                                        @if($character->avatar)
                                             <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}" target="_blank">
-                                                <img src="{{ $character->avatar->getUrl('preview') }}" class="img-responsive" width="100%">
+                                                <img src="{{ $character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
                                             </a>
                                         @endif  
                                 <p class="card-text mt-2">
