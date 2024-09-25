@@ -35,12 +35,13 @@ class RunGenerateVideo extends Command
     public function handle()
     {
         //Get the first clip that has not been processed
-        $clip = Clip::where('status', 'New')->first();
-        $user = User::find($clip->character->user_id);
-
+        $clip = Clip::where('status', 'new')->first();
         if (!$clip){
             return;
         }
+        $user = User::find($clip->character->user_id);
+
+ 
 
         //Generate the video
        
