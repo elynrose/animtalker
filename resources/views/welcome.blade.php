@@ -79,8 +79,8 @@
 
                 <div class="container py-5">
                     <div class="pricing-header">
-                        <h1 class="display-4">Our Pricing Plans</h1>
-                        <p class="lead">Choose the plan that best suits your needs</p>
+                        <h1 class="display-4">Our Pricing Plan</h1>
+                        <p class="lead">We currently only have one plan.</p>
                     </div>
                     <div class="container">
                         <div class="row justify-content-center">
