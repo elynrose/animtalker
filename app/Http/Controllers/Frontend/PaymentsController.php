@@ -41,7 +41,7 @@ class PaymentsController extends Controller
         //Validate the stripe transaction
         try {
             // Retrieve the session from Stripe
-            $session = StripeSession::retrieve($sessionId);
+            $session = StripeSession::retrieve($request->segment(2));
     
             // Optionally, check if the session is paid, active, etc.
             if ($session->payment_status == 'paid') {
