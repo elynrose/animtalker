@@ -83,57 +83,30 @@
                         <p class="lead">Choose the plan that best suits your needs</p>
                     </div>
                     <div class="container">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-header">Basic</div>
-                                    <div class="card-body">
-                                        <div class="card-price">$11.15<span class="text-muted">/mo</span></div>
-                                        <ul class="list-unstyled">
-                                            <li>20 videos per month</li>
-                                            <li>0.56 credits per video</li>
-                                            <li>7.5 total minutes</li>
-                                        </ul>
-                                        <div class="text-center">
-                                            <a href="#" class="btn btn-custom btn-block">Get Started</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="row justify-content-center">
+                  
 
-                            <div class="col-md-4">
-                                <div class="card border-glow">
-                                    <div class="card-header ">Standard</div>
-                                    <div class="card-body">
-                                        <div class="card-price">$27.85<span class="text-muted">/mo</span></div>
-                                        <ul class="list-unstyled">
-                                            <li>50 videos per month</li>
-                                            <li>0.56 credits per video</li>
-                                            <li>18.75 total minutes</li>
-                                        </ul>
-                                        <div class="text-center">
-                                            <a href="#" class="btn btn-custom btn-block">Get Started</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-header">Premium</div>
-                                    <div class="card-body">
-                                        <div class="card-price">$44.55<span class="text-muted">/mo</span></div>
-                                        <ul class="list-unstyled">
-                                            <li>80 videos per month</li>
-                                            <li>0.56 credits per video</li>
-                                            <li>30 total minutes</li>
-                                        </ul>
-                                        <div class="text-center">
-                                            <a href="#" class="btn btn-custom btn-block">Get Started</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                     <!-- Basic Package -->
+            <div class="col-md-4">
+                <div class="card">
+                    <h3 class="card-header text-center">Starter Package</h3>
+                    <div class="card-body">
+                        <div class="card-price">{{ _('$10')}}<span class="text-muted"></span></div>
+                        <ul class="list-unstyled text-center">
+                            <li>10 videos </li>
+                            <li>1 credits per video</li>
+                            <li>X total minutes</li>
+                        </ul>
+                        @if(Auth::check())
+                        <div class="mt-3 text-center">
+                            <a href="https://buy.stripe.com/4gwaHYa690SF0a4bII" class="btn btn-custom">Buy Now</a>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            
+                           
                         </div>
                     </div>
                 </div>
