@@ -154,7 +154,7 @@ private function backgroundAndArtDetails($character, $isRealistic)
     $details .= "The character is well-lit with rich and high detail, ";
     $details .= "in a " . ($isRealistic ? "hyperrealistic" : "3D animated") . " style with realistic textures and lighting effects. ";
     $details .= "The colors are vibrant, inspired by " . ($isRealistic ? "DSLR camera quality" : "Disney's warm aesthetic") . ". ";
-    $details .= "The image ratio should be " . ($character->aspect_ratio ?? "16:9") . " aspect ratio and medium shot. ";
+    $details .= "The image ratio should be " . ($character->aspect_ratio ?? "16:9") . " aspect ratio and eye-level shot. ";
     $details .= "ensuring that the character remains the main focus of the image throughout the scene. Character must alway look at the camera.";
 
     return $details;
