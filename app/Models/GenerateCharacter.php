@@ -23,7 +23,7 @@ class GenerateCharacter extends Model
 
         if($character->is_realistic==1){
             $isRealistic = false;
-        } elseif($character->is_realistic==2){ {
+        } elseif($character->is_realistic==2){ 
             $isRealistic = true;
         }
 
@@ -44,8 +44,8 @@ class GenerateCharacter extends Model
      * @param  string  $prompt
      * @return array
      */
-    private function sendToDalle($prompt)
-    {
+        private function sendToDalle($prompt)
+        {
         try {
             // Set the OpenAI API key from the environment
             $apiKey = env('OPENAI_KEY');
