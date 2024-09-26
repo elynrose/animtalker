@@ -86,7 +86,7 @@ class GenerateCharacter extends Model
     }
 
     // Initialize the prompt with the character type
-    $prompt = "Create " . ($isRealistic ? "a highly detailed, realistic " : "a detailed 3D animated characted Create a stunning 3D animated character that exudes the same level of sophistication and charm as those seen in modern 3D animated movies.");
+    $prompt = "Create " . ($isRealistic ? "a highly detailed, realistic " : "a detailed 3D animated characted Create a stunning 3D animated character that exudes the same level of sophistication and charm as those seen in modern 3D animated movies, akin to  in a hyperrealistic, Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm style.");
 
     // Add age group and gender
     $prompt .= (!empty($character->age_group) ? $character->age_group->age . " " : "") .
@@ -150,7 +150,7 @@ private function backgroundAndArtDetails($character, $isRealistic)
         $details .= "The character is set against a " . strtolower($character->scene->scene) . " background, ";
     }
     $details .= "with the character prominently placed in the foreground, facing the viewer. ";
-    $details .= "The camera maintains a ".($character->zoom->name ?? " eye-level shot").", smoothly following the character's movements. ";
+    $details .= "The camera maintains a ".($character->zoom->name ?? " eye-level shot");
     $details .= "The character is well-lit with rich and high detail, ";
     $details .= "in a " . ($isRealistic ? "hyperrealistic" : "3D animated") . " style with realistic textures and lighting effects. ";
     $details .= "The colors are vibrant, inspired by " . ($isRealistic ? "DSLR camera quality" : "Disney's warm aesthetic") . ". ";
