@@ -328,7 +328,7 @@ if ($credits->getUserCredits() < 1) {
         public function refine(Request $request)
         { 
             $custom_prompt = $request->input('topic');    
-            $prompt = "Refine and improve the following prompt which generates a 3D disney-like, pixar-like, or dreamworks-like character: Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9 and a full-body or wide-angle shot. Here is the prompt provided by the user:".$custom_prompt;
+            $prompt = "Refine and improve the following prompt which generates a 3D disney-like, pixar-like, or dreamworks-like character: Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9 and a medium shot. Here is the prompt provided by the user:".$custom_prompt;
             $result = SendToOpenai::sendToOpenAI($prompt);
             return $result;
         }
