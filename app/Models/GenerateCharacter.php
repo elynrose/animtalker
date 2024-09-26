@@ -21,10 +21,10 @@ class GenerateCharacter extends Model
         
         $character = Character::find($id);
 
-        if($character->is_realistic){
-            $isRealistic = true;
-        } else {
+        if($character->is_realistic==1){
             $isRealistic = false;
+        } elseif($character->is_realistic==2){ {
+            $isRealistic = true;
         }
 
         // Generate the prompt
