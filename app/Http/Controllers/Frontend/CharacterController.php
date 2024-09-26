@@ -169,7 +169,7 @@ if ($credits->getUserCredits() < 1) {
     // Handle error if the image is not generated
     if ($image === null) {
         // Delete the character if image generation fails
-        $character->delete();
+        $character->destroy();
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 
@@ -188,8 +188,8 @@ if ($credits->getUserCredits() < 1) {
         
     } catch (\Exception $e) {
         // Delete character and return error if image saving fails
-        $character->destroy();
-        return response()->json(['error' => 'Failed to save character avatar'], 500);
+        $character->delete();
+    return response()->json(['error' => 'Failed to save character avatar'], 500);
     }
 
     // If CKEditor media is associated, update the media model_id to the character's id
@@ -328,7 +328,7 @@ if ($credits->getUserCredits() < 1) {
         public function refine(Request $request)
         { 
             $custom_prompt = $request->input('topic');    
-            $prompt = "In less than 180 words, refine and improve the following prompt which generates a 3D animated character that draws inspiration from modern animated films: Include exaggerated facial features, soft smooth texturing, bright vivid colors, highly polished surfaces, realistic lightening and depth and finally cute endearing features eg. Large eyes, small nose, plump lips.  Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9  and medium shot angle. Be creative with lightening and textures. Here is the prompt provided by the user:".$custom_prompt;
+            $prompt = "Refine and improve the following prompt which generates a 3D disney-like, pixar-like, or dreamworks-like character: Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9 and a full-body or wide-angle shot. Here is the prompt provided by the user:".$custom_prompt;
             $result = SendToOpenai::sendToOpenAI($prompt);
             return $result;
         }
