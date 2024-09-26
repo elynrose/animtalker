@@ -340,6 +340,7 @@ return [
         'realistic' => 'Realistic',
         'cartoon' => 'Cartoon',
         'fields'         => [
+            'refine_prompt'            => 'Refine my prompt',
             'is_realistic'             => 'Is this character realistic or cartoon?',
             'aspect_ratio'             => 'Select the aspect aspect ratio for your video',
             'id'                       => 'ID',

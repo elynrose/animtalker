@@ -148,7 +148,7 @@ private function backgroundAndArtDetails($character, $isRealistic)
         $details .= "The character is set against a " . strtolower($character->scene->scene) . " background, ";
     }
     $details .= "with the character prominently placed in the foreground, facing the viewer. ";
-    $details .= "The camera maintains a ".($character->zoom->name ?? "Eye level shot")." view, smoothly following the character's movements. ";
+    $details .= "The camera maintains a ".($character->zoom->name ?? " full-body or wide-angle shot").", smoothly following the character's movements. ";
     $details .= "The character is well-lit with rich and high detail, ";
     $details .= "in a " . ($isRealistic ? "hyperrealistic" : "3D animated") . " style with realistic textures and lighting effects. ";
     $details .= "The colors are vibrant, inspired by " . ($isRealistic ? "DSLR camera quality" : "Disney's warm aesthetic") . ". ";

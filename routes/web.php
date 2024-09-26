@@ -277,6 +277,8 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::post('characters/media', 'CharacterController@storeMedia')->name('characters.storeMedia');
     Route::post('characters/ckmedia', 'CharacterController@storeCKEditorImages')->name('characters.storeCKEditorImages');
     Route::resource('characters', 'CharacterController');
+    Route::post('characters/refine', 'CharacterController@refine')->name('character.refine');
+
 
     // Payments
     Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');

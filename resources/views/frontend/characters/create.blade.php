@@ -29,8 +29,8 @@
 
                         <div class="form-group mb-5" id="custom">
                             <label for="custom_prompt">{{ trans('cruds.character.fields.custom_prompt') }}</label>
-                            <textarea class="form-control mb-3" name="custom_prompt" id="custom_prompt" rows="6" oninput="autoExpand(this)" placeholder="Create a detailed 3D animated character modeled in a Pixar-like, Disney-like style, featuring [Character Features]. The character is [Character Description: Age, Gender] dressed in [Clothing Description] with varying shades of [Color Palette]. The setting is [Setting Description] during [Time of Day], with the [Lighting Description]. The landscape includes [Key Landscape Features]. [Additional Landscape or Setting Features]. The background is [Background Detail] to emphasize the character, who is vividly lit with [Inspiration Source]-inspired vibrant hues, smooth gradients, and soft shadows. The image should be high-definition quality, maintaining a [Aspect Ratio] aspect ratio to ensure the character is the focal point with the right perspective on screen.">{{ old('custom_prompt', '') }}</textarea>
-<p><a href="javascript();" onclick="refinePrompt()" class="mt-2" id="improve_prompt">{{ trans('cruds.character.fields.refine_prompt') }}</a></p>
+                            <textarea class="form-control mb-3" name="custom_prompt" id="custom_prompt" rows="6" oninput="autoExpand(this)">{{ old('custom_prompt', '') }}</textarea>
+<p><a href="javascript();"  class="mt-2" id="refine">{{ trans('cruds.character.fields.refine_prompt') }}</a></p>
 
                             @if($errors->has('custom_prompt'))
                                 <div class="invalid-feedback">
@@ -623,5 +623,40 @@ $(function() {
                                 textarea.style.height = 'auto';
                                 textarea.style.height = textarea.scrollHeight + 'px';
                             }
+
+                            //when refinePrompt is clicked, send the value in custom_prompt to the server ClipsController@refinePrompt
+
+                         
+                            $(function(){
+                                $('#refine').click(function(e) {
+                                    e.preventDefault();
+                                    var customPrompt = $('#custom_prompt').val();
+                                    if(customPrompt == ''){
+                                        return;
+                                    }
+                                    //send headers
+                                    $('#custom_prompt').val('Loading...');
+                                    $.ajax({
+                                        headers: {
+                                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                                        },
+                                        url: '{{ route('frontend.character.refine') }}',
+                                        type: 'POST',
+                                        data: {
+                                            topic: customPrompt
+                                        },
+                                        success: function(response) {
+                                            console.log(response);
+                                            //parse the response and display the first choice in the textarea
+                                            $('#custom_prompt').val(response);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.log(xhr.responseText);
+                                            alert('An error occurred: ' + error);
+                                        }
+                                    });
+                                });
+                            });
+                                
                         </script>
 @endsection

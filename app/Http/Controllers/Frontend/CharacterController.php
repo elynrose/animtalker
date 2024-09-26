@@ -37,6 +37,8 @@ use App\Models\GenerateCharacter;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Credit;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SendToOpenai;
+
 
 class CharacterController extends Controller
 {
@@ -319,4 +321,18 @@ if ($credits->getUserCredits() < 1) {
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
+
+
+    
+        //create an openai method to generate text with a given prompt
+        public function refine(Request $request)
+        { 
+            $custom_prompt = $request->input('topic');    
+            $prompt = "In less than 200 words, refine and improve the following prompt which generates a 3D 'disney-like', 'pixar-like' character that draws inspiration from modern animated films: Include exaggerated facial features, soft smooth texturing, bright vivid colors, highly polished surfaces, realistic lightening and depth and finally cute endearing features eg. Large eyes, small nose, plump lips.  Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9  and medium shot angle. Be creative with lightening and textures. Here is the prompt provided by the user:".$custom_prompt;
+            $result = SendToOpenai::sendToOpenAI($prompt);
+            return $result;
+        }
+    
+
+
 }
