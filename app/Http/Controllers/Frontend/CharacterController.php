@@ -169,7 +169,7 @@ if ($credits->getUserCredits() < 1) {
     // Handle error if the image is not generated
     if ($image === null) {
         // Delete the character if image generation fails
-        $character->destroy();
+        $character->delete();
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 
