@@ -25,6 +25,8 @@ class GenerateCharacter extends Model
             $isRealistic = false;
         } elseif($character->is_realistic==2){ 
             $isRealistic = true;
+        } else {
+            $isRealistic = false;
         }
 
         // Generate the prompt
