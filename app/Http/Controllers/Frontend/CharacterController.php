@@ -328,7 +328,7 @@ if ($credits->getUserCredits() < 1) {
         public function refine(Request $request)
         { 
             $custom_prompt = $request->input('topic');    
-            $prompt = "In less than 180 words, refine and improve the following prompt which generates a 3D animated character that draws inspiration from modern animated films: Include exaggerated facial features, soft smooth texturing, bright vivid colors, highly polished surfaces, realistic lightening and depth and finally cute endearing features eg. Large eyes, small nose, plump lips.  Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9  and medium shot angle. Be creative with lightening and textures. Here is the prompt provided by the user:".$custom_prompt. "Do not refer to the art styles as Disney or Pixar, rather disney-like or pixar-like for copyright purposes.";
+            $prompt = "In less than 180 words, refine and improve the following prompt which generates a 3D animated character that draws inspiration from modern animated films: Include exaggerated facial features, soft smooth texturing, bright vivid colors, highly polished surfaces, realistic lightening and depth and finally cute endearing features eg. Large eyes, small nose, plump lips.  Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9  and medium shot angle. Be creative with lightening and textures. Here is the prompt provided by the user:".$custom_prompt;
             $result = SendToOpenai::sendToOpenAI($prompt);
             return $result;
         }
