@@ -155,20 +155,26 @@ if ($credits->getUserCredits() < 1) {
     return response()->json(['error' => 'Insufficient credits'], 500);
 }
 
-    // Generate character avatar using an external service
-    $new_character = new GenerateCharacter();
-    $avatar = $new_character->generate($character->id);
+    try {
+        // Generate character avatar using an external service
+        $new_character = new GenerateCharacter();
+        $avatar = $new_character->generate($character->id);
 
-    // Retrieve avatar data from the generation response
-    $avatarData = $avatar->getData();
+        // Retrieve avatar data from the generation response
+        $avatarData = $avatar->getData();
 
-    // Extract the prompt and image URL from the avatar data
-    $prompt = $avatarData->prompt ?? null;
-    $image = $avatarData->dalle_response->data[0]->url ?? null;
+        // Extract the prompt and image URL from the avatar data
+        $prompt = $avatarData->prompt ?? null;
+        $image = $avatarData->dalle_response->data[0]->url ?? null;
 
-    // Handle error if the image is not generated
-    if ($image === null) {
-        // Delete the character if image generation fails
+        // Handle error if the image is not generated
+        if ($image === null) {
+            // Delete the character if image generation fails
+            $character->delete();
+            return response()->json(['error' => 'Failed to generate character'], 500);
+        }
+    } catch (\Exception $e) {
+        // Delete character and return error if image generation fails
         $character->delete();
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
@@ -328,7 +334,7 @@ if ($credits->getUserCredits() < 1) {
         public function refine(Request $request)
         { 
             $custom_prompt = $request->input('topic');    
-            $prompt = "Refine and improve the following prompt which generates a 3D animated character  that exudes the same level of sophistication and charm as those seen in modern 3D animated movies, akin to  in a hyperrealistic, Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm style: Example art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Include an aspect ratio of 16:9 and an eye-level shot. Here is the prompt provided by the user:".$custom_prompt;
+            $prompt = "Refine and improve the following prompt which generates a 3D animated character that exudes the same level of sophistication and charm as those seen in modern 3D animated movies, the capture quality should be like a Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm picture.: Example 3D art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Photo can have an aspect ratio of 16:9 and taken at an eye-level shot. Here is the prompt provided by the user:".$custom_prompt;
             $result = SendToOpenai::sendToOpenAI($prompt);
             return $result;
         }
