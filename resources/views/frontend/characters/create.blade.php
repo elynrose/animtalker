@@ -574,8 +574,6 @@ $(function() {
                     var prompt = response.prompt;
                     var id = response.id;
                     if(image!==''){
-                        //Parse reponse
-                        var response = JSON.parse(response);
                     // Display the image and prompt
                     $('#image').attr('src', image);
                     $('#prompt').text(prompt);
@@ -584,9 +582,8 @@ $(function() {
                     $('#character_id').val(id);
                     $('#img_wrap').show();
                     $('#save').attr('disabled', false);
-                    $('.error').text(response.message).show();
                 } else {
-                    $('.error').text(response.message).show();
+                    $('.error').text(response.error).show();
                 }
                 },
                 error: function(xhr, status, error) {
