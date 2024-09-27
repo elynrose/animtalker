@@ -152,7 +152,7 @@ public function store(StoreCharacterRequest $request)
 //Check if the user has enough credits to generate a character
 $credits = new Credit();
 if ($credits->getUserCredits() < 1) {
-    return response()->json(['error' => 'Insufficient credits'], 500);
+    return response()->json(['message' => 'Insufficient credits'], 500);
 }
 
     try {
@@ -171,7 +171,7 @@ if ($credits->getUserCredits() < 1) {
         if ($image === null) {
             // Delete the character if image generation fails
             $character->delete();
-            return response()->json(['error' => 'Failed to generate character'], 500);
+            return response()->json(['message' => 'Failed to generate character'], 500);
         }
     } catch (\Exception $e) {
         // Delete character and return error if image generation fails
@@ -195,7 +195,7 @@ if ($credits->getUserCredits() < 1) {
     } catch (\Exception $e) {
         // Delete character and return error if image saving fails
         $character->delete();
-    return response()->json(['error' => 'Failed to save character avatar'], 500);
+    return response()->json(['message' => 'Failed to save character avatar'], 500);
     }
 
     // If CKEditor media is associated, update the media model_id to the character's id
@@ -212,7 +212,7 @@ if ($credits->getUserCredits() < 1) {
             'id' => $character->id
         ]);
     } else {
-        return response()->json(['error' => 'Failed to generate character'], 500);
+        return response()->json(['message' => 'Failed to generate character'], 500);
     }
 }
 
