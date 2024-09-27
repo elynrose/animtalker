@@ -23,7 +23,7 @@ class SendToOpenai extends Model
                 'json' => [
                     'model' => 'gpt-3.5-turbo-instruct',
                     'prompt' => $prompt,
-                    'max_tokens' => 255,
+                    'max_tokens' => 1000,
                     'temperature' => 0.7,
                     'top_p' => 1,
                     'frequency_penalty' => 0,
