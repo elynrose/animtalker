@@ -582,6 +582,7 @@ $(function() {
                     $('#character_id').val(id);
                     $('#img_wrap').show();
                     $('#save').attr('disabled', false);
+                    $('.error').text(response.error).show();
                 } else {
                     $('.error').text(response.error).show();
                 }
