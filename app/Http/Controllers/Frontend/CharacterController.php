@@ -334,7 +334,7 @@ if ($credits->getUserCredits() < 1) {
         public function refine(Request $request)
         { 
             $custom_prompt = $request->input('topic');    
-            $prompt = "Rewite the following as a 3D Character animation expert would do. The prompt should generate a 3D animated character that exudes the same level of sophistication and charm as those seen in modern 3D animated photos. Example 3D art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Be sure to give a detailed description of the facial features, expressions, clothes, background and lightening. Photo must have an aspect ratio of 16:9 and taken at an eye-level shot. Character must alway look at the camera. Here is the prompt provided by the user:".$custom_prompt;
+            $prompt = "Rewite the following as a 3D Character animation expert would do for a still shot. The prompt should generate a 3D animated character that exudes the same level of sophistication and charm as those seen in modern 3D animations. Example 3D art style can be found here 'https://animshorts.s3.us-east-2.amazonaws.com/46/conversions/img-GuEi5JXrr8ETyKxSjQ9G8c2q-thumb.jpg'. Be sure to give a detailed description of the facial features, expressions, clothes, background and lightening. Photo must have an aspect ratio of 16:9 and taken at an eye-level shot. Character must alway look at the camera. Here is the prompt provided by the user:".$custom_prompt;
             $result = SendToOpenai::sendToOpenAI($prompt);
             return $result;
         }

@@ -86,7 +86,7 @@ class GenerateCharacter extends Model
     }
 
     // Initialize the prompt with the character type
-    $prompt = "Create " . ($isRealistic ? "a highly detailed, realistic picture. The capture quality should be like a that of a Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm picture." : "  a stunning 3D animated character, as a 3D Character animation expert would do. The character should exude the same level of sophistication and charm as those seen in modern 3D animated movies.");
+    $prompt = "Create a still shot of a" . ($isRealistic ? "a highly detailed, realistic photo. The capture quality should be like a that of a Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm picture." : "  a stunning 3D animated character, as a 3D Character animation expert would do. The character should exude the same level of sophistication and charm as those seen in modern 3D animated movies.");
 
     // Add age group and gender
     $prompt .= (!empty($character->age_group) ? $character->age_group->age . " " : "") .
