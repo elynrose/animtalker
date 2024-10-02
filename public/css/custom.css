@@ -136,16 +136,16 @@ table.dataTable thead .sorting_desc {
     padding: 0.25rem 1.5rem;
 }
 
-.card {
+#app .card {
     border: 1px solid #232323;
     background-color: #171616;
 }
 
-.card table {
+#app .card table {
     border: 1px solid #232323;
 }
 
-.catd table tr td {
+#app .card table tr td {
   background:#000;
     color:#ffffff;
 }
@@ -178,13 +178,13 @@ a, a.link, a:hover {
   text-align: center;
   padding: 50px 0;
 }
-.card {
+#app .card {
   border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-body {
+#app .card-body {
   padding: 30px;
 }
 
@@ -214,6 +214,18 @@ a, a.link, a:hover {
 
 .form-control, .form-control:focus, .form-control:active, input:focus, input:active {
     background-color: #232323;
+    border: 1px solid #232323;
+    color:white!important;
+}
+
+#app .btn-black, .btn-primary, btn-secondary, .btn-success, .btn-danger, .btn-warning, .btn-info, .btn-light, .btn-dark, .btn-link {
+    background:#171616!important;
+    border: 1px solid #232323;
+    color:white!important;
+}
+
+#app .btn-black:hover, .btn-primary:hover, btn-secondary:hover, .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover, .btn-light:hover, .btn-dark:hover, .btn-link:hover {
+    background:#232323!important;
     border: 1px solid #232323;
     color:white!important;
 }

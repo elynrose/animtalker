@@ -446,6 +446,7 @@ return [
         'desc'    => 'Great! Now let\'s think about the script for your anime character whilst we work on it.',
         'title'          => 'Clips',
         'title_singular' => 'Clip',
+        'generate' => 'Generate Clip',
         'fields'         => [
             'id'                 => 'ID',
             'prompt'             => 'Prompt',

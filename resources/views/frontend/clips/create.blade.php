@@ -1,14 +1,14 @@
 @extends('layouts.frontend')
 @section('content')
 <div class="container">
+<h3 class="mb-5">{{ trans('global.create') }} {{ trans('cruds.clip.title_singular') }}     </h3>
+
     <div class="row justify-content-center">
+        
         <div class="col-md-12">
 
             <div class="card">
-                <div class="card-header">
-                    {{ trans('global.create') }} {{ trans('cruds.clip.title_singular') }}
-                </div>
-
+           
                 <div class="card-body">
                     
                 <div class="row">
@@ -161,7 +161,7 @@
                             <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl() }}">
                             @endif
                             <button class="btn btn-danger btn-lg" type="submit">
-                                {{ trans('global.save') }}
+                                {{ trans('cruds.clip.generate') }}
                             </button>
                         </div>
                     </form>

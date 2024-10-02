@@ -6,7 +6,7 @@
             @can('character_create')
                 <div class="row mb-3">
                     <div class="col-lg-12">
-                        <a class="btn btn-success" href="{{ route('frontend.characters.create') }}">
+                        <a class="btn btn-danger" href="{{ route('frontend.characters.create') }}">
                             {{ trans('global.add') }} {{ trans('cruds.character.title_singular') }}
                         </a>
                     </div>
@@ -14,27 +14,25 @@
             @endcan
             <div class="row">
                 @foreach($characters as $character)
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
 
-                        <div class="card mb-4">
+                        <div class="card mb-6">
                         @can('character_delete')
                                         <form class=" " action="{{ route('frontend.characters.destroy', $character->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="btn btn-danger btn-xs pull-right mx-2 my-2" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
+                                            <button type="submit" class="btn btn-black btn-xs pull-right mx-2 my-2" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
                                         </form>
                                     @endcan
                             <div class="card-body">
-                                <h5 class="card-title">{{ $character->name ?? '' }}</h5>
+                                <h6 class="card-title">{{ ucfirst($character->name) ?? '' }}</h6>
                              
                                        @if($character->avatar)
-                                            <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}" target="_blank">
+                                            <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
                                                 <img src="{{ $character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
                                             </a>
                                         @endif  
-                                <p class="card-text mt-2">
-                                    <strong>{{ trans('cruds.character.fields.gender') }}:</strong> {{ $character->gender->type ?? '' }}<br>
-                                </p>
+                           <p></p>
                                 <div aria-label="Character Actions">
                                     @can('character_show')
                                         <a class="btn btn-primary btn-sm " href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
