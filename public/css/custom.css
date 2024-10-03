@@ -145,24 +145,24 @@ table.dataTable thead .sorting_desc {
     border: 1px solid #232323;
 }
 
-#app .card table tr td {
+#app #app .card table tr td {
   background:#000;
     color:#ffffff;
 }
 
-table.dataTable tbody tr {
+#app table.dataTable tbody tr {
     background-color: #000;
     color: #ffffff;
 }
 
-table tbody tr td {
+#app table tbody tr td {
     color: #ffffff;
     
 }
-.table-bordered td, .table-bordered th{
+#app .table-bordered td, .table-bordered th{
     border: 1px solid #232323;
 }
-.dataTables_length label,.dataTables_info, #DataTables_Table_0_filter label{
+#app .dataTables_length label,.dataTables_info, #DataTables_Table_0_filter label{
     color: #ffffff;
 }
 

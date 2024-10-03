@@ -117,11 +117,13 @@ public function store(StoreCharacterRequest $request)
             'custom_prompt' => 'required|string|max:2000',
         ]);
 
+        $genPrompt = "Create a 3D animated character, with eye-level focus based on the following prompt: ".$request->custom_prompt.". Ensure that the character is unique and engaging, with a focus on the facial features and expressions which should be detectable by any facial detection software. No side profiles, only front-facing characters.";
+
     // Create a new character excluding 'dress_colors' and 'props' from the request
     $character = Character::create(
         [
             'name' => $request->name,
-            'custom_prompt' => trim($request->custom_prompt),
+            'custom_prompt' => $genPrompt,
             'user_id' => Auth::user()->id,
         ]
     );
