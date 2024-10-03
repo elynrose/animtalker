@@ -218,13 +218,13 @@ a, a.link, a:hover {
     color:white!important;
 }
 
-#app .btn-black, .btn-primary, btn-secondary, .btn-success, .btn-danger, .btn-warning, .btn-info, .btn-light, .btn-dark, .btn-link {
+#app .btn-black,  .btn-secondary, .btn-success, .btn-danger, .btn-warning, .btn-info, .btn-light, .btn-dark, .btn-link {
     background:#171616!important;
     border: 1px solid #232323;
     color:white!important;
 }
 
-#app .btn-black:hover, .btn-primary:hover, btn-secondary:hover, .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover, .btn-light:hover, .btn-dark:hover, .btn-link:hover {
+#app .btn-black:hover, .btn-secondary:hover, .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover, .btn-light:hover, .btn-dark:hover, .btn-link:hover {
     background:#232323!important;
     border: 1px solid #232323;
     color:white!important;
