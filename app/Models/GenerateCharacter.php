@@ -86,7 +86,7 @@ class GenerateCharacter extends Model
     }
 
     // Initialize the prompt with the character type
-    $prompt = "Create a still shot of a" . ($isRealistic ? "a highly detailed, realistic photo. The capture quality should be like a that of a Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm picture." : "  a stunning 3D animated character, as a 3D Character animation expert would do. The character should exude the same level of sophistication and charm as those seen in modern 3D animated movies.");
+    $prompt = "Create a still shot of a" . ($isRealistic ? "a highly detailed, realistic photo. The capture quality should be like a that of a Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm picture." : "  a stunning 3D animated character, as a 3D Character animation expert would do. The character should exude the same level of sophistication and charm as those seen in modern 3D animated movies. Ensure the face is detectable by a facial recognition software. The lips must be visible for animation purposes.");
 
     // Add age group and gender
     $prompt .= (!empty($character->age_group) ? $character->age_group->age . " " : "") .
@@ -155,7 +155,7 @@ private function backgroundAndArtDetails($character, $isRealistic)
     $details .= "in a " . ($isRealistic ? "hyperrealistic" : "3D animated") . " style with realistic textures and lighting effects. ";
     $details .= "The colors are vibrant, inspired by " . ($isRealistic ? "DSLR camera quality" : "Disney's warm aesthetic") . ". ";
     $details .= "The image ratio should be " . ($character->aspect_ratio ?? "16:9") . " aspect ratio and eye-level shot. ";
-    $details .= "ensuring that the character remains the main focus of the image throughout the scene. Character must alway look at the camera.";
+    $details .= "ensuring that the character remains the main focus of the image throughout the scene. Character must alway look at the camera. Also ensure the face is detectable by a facial recognition software. The lips must be visible for animation purposes.";
 
     return $details;
 }
