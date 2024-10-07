@@ -17,7 +17,7 @@ class CreditsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('credit_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $users = User::all();
+        $users = User::paginate(10);
         return view('admin.credits.index', compact('users'));
     }
 

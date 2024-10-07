@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-
+        <h3 class="mb-4">{{ trans('cruds.credit.title') }}</h3>
         @if(session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
@@ -16,14 +16,20 @@
               
                @php $credits = App\Models\Credit::where('email', $user->email)->sum('points');@endphp
                 <div class="card-body">
-                <h3>{{ $user->name }} {{ trans('cruds.credit.title') }}
-                </h3>
+                <h4>{{ $user->name }} 
+                </h4>
                    <p>You have @if($credits < 1) {{ '0' }} @else {{ $credits ?? '0' }}  @endif credits available. <a href="https://buy.stripe.com/4gwaHYa690SF0a4bII">Top up</a></p>
                 </div>
             </div>
             @endforeach
 
         </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {{ $users->links() }}
+                </div>
+            </div>
     </div>
 </div>
 @endsection
