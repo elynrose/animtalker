@@ -13,7 +13,7 @@
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
-                        <p><a onclick="toggleWizard();" class="btn btn-primary btn-sm"> Use the wizard</a></p>
+                       <!-- <p><a onclick="toggleWizard();" class="btn btn-primary btn-sm"> Use the wizard</a></p>-->
 
                         <div class="form-group mb-5">
                             <label class="required" for="name">{{ trans('cruds.character.fields.name') }}</label>
@@ -26,7 +26,7 @@
                             <span class="help-block">{{ trans('cruds.character.fields.name_helper') }}</span>
                         </div>
 
-
+<!--
                         <div class="form-group mb-5" id="custom">
                             <label for="custom_prompt">{{ trans('cruds.character.fields.custom_prompt') }}</label>
                             <textarea class="form-control mb-3" name="custom_prompt" id="custom_prompt" rows="6" oninput="autoExpand(this)">{{ old('custom_prompt', '') }}</textarea>
@@ -39,12 +39,12 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.character.fields.custom_prompt_helper') }}</span>
                         </div>
-
+-->
                         
 
                        
 
-                        <div id="wizard" style="display:none;">
+                        <div id="wizard" style="display:block;">
                         <!--Radio button for aspect ratio-->
                                 
                             <!--   <div class="card">
@@ -603,7 +603,7 @@ $(function() {
     });
 </script>
 <script>
-                            function toggleWizard() {
+                     /*       function toggleWizard() {
                                 var wizard = document.getElementById("wizard");
                                 var customPrompt = document.getElementById("custom");
                                 var button = document.querySelector("#step1 a");
@@ -623,7 +623,7 @@ $(function() {
                                 textarea.style.height = 'auto';
                                 textarea.style.height = textarea.scrollHeight + 'px';
                             }
-
+*/
                             //when refinePrompt is clicked, send the value in custom_prompt to the server ClipsController@refinePrompt
 
                          
