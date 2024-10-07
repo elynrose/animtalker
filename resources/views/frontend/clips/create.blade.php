@@ -41,7 +41,7 @@
 
                         <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
                             <label for="script"> {{ trans('cruds.clip.fields.script') }}</label>
-                            <textarea class="form-control" name="script" id="script" oninput="limitWords(this, 255)">{{ old('script') }}</textarea>
+                            <textarea class="form-control" name="script" id="script" oninput="limitWords(this, 60)">{{ old('script') }}</textarea>
                             <script>
                             function limitWords(textarea, maxWords) {
                                 var words = textarea.value.split(/\s+/);

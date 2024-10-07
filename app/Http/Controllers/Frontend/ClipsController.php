@@ -226,7 +226,7 @@ class ClipsController extends Controller
     //create an openai method to generate text with a given prompt
     public function openai(Request $request)
     { 
-        $prompt = "Generate a 255 word post and not include hashtags. Topic: ".$request->input('topic');
+        $prompt = "Generate a 60 word only post and not include hashtags. Topic: ".$request->input('topic');
         $result = SendToOpenai::sendToOpenAI($prompt);
         return $result;
     }
