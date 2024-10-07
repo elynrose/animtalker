@@ -9,11 +9,11 @@
                             {{ session('success') }}
                         </div>
                     @endif
-       
+        @foreach($users as $user)
             <div class="card">
                 
                
-               @foreach($users as $user)
+              
                @php $credits = App\Models\Credit::where('email', $user->email)->sum('points');@endphp
                 <div class="card-body">
                 <h3>{{ $user->name }} {{ trans('cruds.credit.title') }}
