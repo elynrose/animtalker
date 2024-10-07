@@ -117,9 +117,35 @@ class GetVideo extends Command
      */
     protected function markClipAsCompleted(Clip $clip, array $video)
     {
+        $duration = explode(':', $video['duration']);
+
+        // Ensure $duration has two elements (minutes and seconds)
+        if (count($duration) == 1) {
+            // If only seconds are provided, assume minutes are 0
+            array_unshift($duration, '0');
+        }
+        
+        // Ensure minutes are two digits
+        if ($duration[0] < 10) {
+            $duration[0] = '0' . $duration[0];
+        } elseif ($duration[0] > 99) {
+            $duration[0] = substr($duration[0], -2);
+        }
+        
+        // Ensure seconds are two digits
+        if ($duration[1] < 10) {
+            $duration[1] = '0' . $duration[1];
+        } elseif ($duration[1] > 99) {
+            $duration[1] = substr($duration[1], -2);
+        }
+        
+        $totalDuration = $duration[0] . ':' . $duration[1];
+        
         // Update clip details
         $clip->update([
-            'duration' => $video['duration'],
+            'duration' => $totalDuration,
+            'minutes' => $duration[0],
+            'seconds' => $duration[1],
             'status' => 'completed',
             'video_path' => $video['result_url'],
         ]);

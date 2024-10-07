@@ -43,6 +43,14 @@ class StoreClipRequest extends FormRequest
                 'time',
                 'nullable',
             ],
+            'minutes' => [
+                'integer',
+                'nullable',
+            ],
+            'seconds' => [
+                'integer',
+                'nullable',
+            ],
             'video_id' => [
                 'string',
                 'nullable',

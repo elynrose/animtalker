@@ -13,7 +13,7 @@
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
-                        <p><a onclick="toggleWizard();" class="btn btn-info btn-sm"> Use the wizard</a></p>
+                        <p><a onclick="toggleWizard();" class="btn btn-primary btn-sm"> Use the wizard</a></p>
 
                         <div class="form-group mb-5">
                             <label class="required" for="name">{{ trans('cruds.character.fields.name') }}</label>
@@ -325,7 +325,7 @@
                         <div class="form-group mt-4">
                         <input type="hidden" name="aspect_ratio" value="16:9" id="aspect_ratio">
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                            <button class="btn btn-danger btn-block" id="save" type="submit">
+                            <button class="btn btn-danger" id="save" type="submit">
                                 {{ trans('global.generate') }}
                             </button>
                         </div>
