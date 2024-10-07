@@ -125,22 +125,24 @@ class GetVideo extends Command
             array_unshift($duration, '0');
         }
         
+        // Convert seconds to minutes if necessary
+        $minutes = (int)$duration[0];
+        $seconds = (float)$duration[1];
+        
+        if ($seconds >= 60) {
+            $additionalMinutes = floor($seconds / 60);
+            $seconds = $seconds % 60;
+            $minutes += $additionalMinutes;
+        }
+        
         // Ensure minutes are two digits
-        if ($duration[0] < 10) {
-            $duration[0] = '0' . $duration[0];
-        } elseif ($duration[0] > 99) {
-            $duration[0] = substr($duration[0], -2);
-        }
+        $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
         
-        // Ensure seconds are two digits
-        if ($duration[1] < 10) {
-            $duration[1] = '0' . $duration[1];
-        } elseif ($duration[1] > 99) {
-            $duration[1] = substr($duration[1], -2);
-        }
+        // Ensure seconds are two digits without fractional part
+        $seconds = str_pad((int)$seconds, 2, '0', STR_PAD_LEFT);
         
-        $totalDuration = $duration[0] . ':' . $duration[1];
-        
+        $totalDuration = $minutes . ':' . $seconds;
+
         // Update clip details
         $clip->update([
             'duration' => $totalDuration,
