@@ -226,7 +226,7 @@ class ClipsController extends Controller
     //create an openai method to generate text with a given prompt
     public function openai(Request $request)
     { 
-        $prompt = "Generate a random post about the topic:".$request->input('topic').". Limit the response to no more than 255 characters.";
+        $prompt = "Generate a 255 token writeup about this topic:".$request->input('topic');
         $result = SendToOpenai::sendToOpenAI($prompt);
         return $result;
     }
