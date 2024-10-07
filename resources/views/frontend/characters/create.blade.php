@@ -64,7 +64,7 @@
                                     </div>
                                     </div>
                                  </div>
-                            </div>-->
+                            </div>
 
                           <div class="form-group mb-5">
                                 <label>{{ trans('cruds.character.fields.is_realistic') }}</label>
@@ -93,7 +93,7 @@
                         </div>
 
                     
-
+-->
                         
 
                         <div id="accordion">
@@ -102,7 +102,7 @@
                             <div class="card mb-3">
                                 <div class="card-header" id="sceneHeading">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link" data-toggle="collapse" data-target="#sceneCollapse" aria-expanded="true" aria-controls="sceneCollapse">
+                                        <button class="btn btn-link btn-block" data-toggle="collapse" data-target="#sceneCollapse" aria-expanded="true" aria-controls="sceneCollapse">
                                             Scene
                                         </button>
                                     </h5>
@@ -121,7 +121,7 @@
                             <div class="card mb-3">
                                 <div class="card-header" id="characterDetailsHeading">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#characterDetailsCollapse" aria-expanded="false" aria-controls="characterDetailsCollapse">
+                                        <button class="btn btn-link collapsed  btn-block" data-toggle="collapse" data-target="#characterDetailsCollapse" aria-expanded="false" aria-controls="characterDetailsCollapse">
                                             Character Details
                                         </button>
                                     </h5>
@@ -156,7 +156,7 @@
                             <div class="card mb-3">
                                 <div class="card-header" id="appearanceHeading">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#appearanceCollapse" aria-expanded="false" aria-controls="appearanceCollapse">
+                                        <button class="btn btn-link collapsed  btn-block" data-toggle="collapse" data-target="#appearanceCollapse" aria-expanded="false" aria-controls="appearanceCollapse">
                                             Appearance
                                         </button>
                                     </h5>
@@ -233,7 +233,7 @@
                             <div class="card mb-3">
                                 <div class="card-header" id="expressionsHeading">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#expressionsCollapse" aria-expanded="false" aria-controls="expressionsCollapse">
+                                        <button class="btn btn-link collapsed  btn-block" data-toggle="collapse" data-target="#expressionsCollapse" aria-expanded="false" aria-controls="expressionsCollapse">
                                             Expressions
                                         </button>
                                     </h5>
@@ -261,7 +261,7 @@
                             <div class="card mb-3">
                                 <div class="card-header" id="clothingHeading">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#clothingCollapse" aria-expanded="false" aria-controls="clothingCollapse">
+                                        <button class="btn btn-link collapsed  btn-block" data-toggle="collapse" data-target="#clothingCollapse" aria-expanded="false" aria-controls="clothingCollapse">
                                             Clothing
                                         </button>
                                     </h5>
