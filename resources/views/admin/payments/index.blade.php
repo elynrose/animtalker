@@ -49,7 +49,16 @@
                                 {{ $payment->id ?? '' }}
                             </td>
                             <td>
-                                {{ $payment->stripe_transaction ?? '' }}
+                                @php
+                                try {
+                                    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+                                    $invoice = $stripe->invoices->retrieve($payment->stripe_transaction, []);
+                                } catch (\Exception $e) {
+                                    $invoice = null;
+                                }
+                         
+                                @endphp
+                                {{ $payment->stripe_transaction ?? '' }} {{ $invoice }}
                             </td>
                             <td>
                                 {{ $payment->amount ?? '' }}

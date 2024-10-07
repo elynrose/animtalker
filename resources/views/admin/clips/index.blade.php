@@ -1,120 +1,186 @@
 @extends('layouts.admin')
 @section('content')
-@can('clip_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.clips.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.clip.title_singular') }}
-            </a>
-        </div>
-    </div>
-@endcan
-<div class="card">
-    <div class="card-header">
-        {{ trans('cruds.clip.title_singular') }} {{ trans('global.list') }}
-    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+      <h3>{{ trans('cruds.clip.title')  }} </h3>
+      <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
+      <p class="processing_status"></p>
+            <div class="row">
+                
+                @foreach($clips as $clip)
+                @if($clip->character)
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            
+                        @can('character_delete')
+                                        <form class="mx-2 my-2" action="{{ route('frontend.clips.destroy', $clip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-black btn-xs pull-right" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
+                                        </form>
+                                    @endcan
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Clip">
-                <thead>
-                    <tr>
-                        <th width="10">
+                                @if($clip->character && $clip->character->avatar)
+                                <div style="position:relative;">
+                                    <img src="{{ $clip->character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
+                               
+                                    <!--bottom half overlay, show on hover-->
+                                <div class="overlay_{{ $clip->id }}" style="padding:10px;position:absolute;bottom:0;left:10;right:10;background-color:rgba(0,0,0,0.5);overflow:hidden;height:auto;width:100%;transition: .5s ease;">
+                                    <div class="text" style="color:white;font-size:12px;">{{ $clip->script ?? 'No script available' }}</div>
+                                </div>
 
-                        </th>
-                        <th>
-                            {{ trans('cruds.clip.fields.character') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.clip.fields.audio_file') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.clip.fields.status') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.clip.fields.video') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.clip.fields.privacy') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($clips as $key => $clip)
-                        <tr data-entry-id="{{ $clip->id }}">
-                            <td>
-
-                            </td>
-                            <td>
-                                {{ $clip->character->name ?? '' }}
-                            </td>
-                            <td>
-                                @if($clip->audio_file)
-                                    <a href="{{ $clip->audio_file->getUrl() }}" target="_blank">
-                                        {{ trans('global.view_file') }}
+                                </div>
+                                @endif
+                                       
+                                   
+                                <p class="card-text mt-3">
+                                <i class="fas fa-clock  @if($clip->status=='new' || $clip->status=='processing') fa-spin  @endif" id="clock_{{$clip->id}}"></i>
+                                 <span class="badge  @if($clip->status=='processing' || $clip->status=='new') badge-primary @elseif($clip->status=='completed') badge-success @elseif($clip->status=='failed' || $clip->status=='rejected') badge-danger @endif clip_status @if($clip->status=='processing' || $clip->status=='new') waiting @endif" id="{{ $clip->id ?? ''}}" rel="{{$clip->video_id}}" data-status="{{ $clip->status ?? 'new'}}"> {{ ucfirst($clip->status) ?? '' }}</span>
+                                 @if($clip->status=='failed') &nbsp; <a href="{{ route('frontend.clips.retry', ['id'=>$clip->id]) }}"><i class="fas fa-refresh"></i></a> @endif
+                                 <br>
+                                </p>
+                               <p class="small muted">{{$clip->created_at->diffForHumans()}} <br><span class="text-muted small"> <i class="fas fa-clock"></i> {{ $clip->duration ?? '00:00:00' }}</span></p>
+                                <div aria-label="Character Actions" id="actions_{{$clip->id}}"  @if($clip->video_path=='') style="visibility:hidden;"    @endif>
+                                  
+                                @if($clip->saved==1)
+                                <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ Storage::disk('s3')->url($clip->video_path) }}">
+                                    <i class="fas fa-download"></i>  
+                                </a>
+                                </a>
+                                @elseif($clip->saved==null)
+                                   <a class="btn btn-primary btn-sm" id="download_{{$clip->id}}" href="{{ $clip->video_path }}">
+                                          <i class="fas fa-download"></i>  
                                     </a>
                                 @endif
-                            </td>
-                            <td>
-                                {{ App\Models\Clip::STATUS_SELECT[$clip->status] ?? '' }}
-                            </td>
-                            <td>
-                                @if($clip->video)
-                                    <a href="{{ $clip->video->getUrl() }}" target="_blank">
-                                        {{ trans('global.view_file') }}
-                                    </a>
-                                @endif
-                            </td>
-                            <td>
-                                {{ App\Models\Clip::PRIVACY_RADIO[$clip->privacy] ?? '' }}
-                            </td>
-                            <td>
-                                @can('clip_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.clips.show', $clip->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
+                                    <a href="@if($clip->saved==null){{ route('frontend.clips.savelink') }} @else # @endif"  id="{{$clip->id}}" rel="{{ $clip->video_path }}" class="btn btn-sm btn-default save_{{ $clip->id }} @if ($clip->saved==null) save @endif"><i class="fas @if($clip->saved==1)fa-check @else fa-save @endif saving_{{ $clip->id }}"></i></a>
+                                     <!--   <form class="mx-2 my-2" action="{{ route('frontend.clips.savelink') }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="POST">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="clip_id" value="{{$clip->id}}">
+                                            <input type="hidden" name="video_path" value="{{ $clip->video_path }}">
+                                            <button type="submit" class="btn btn-danger btn-xs pull-right" value="{{ trans('global.save') }}"><i class="fas fa-save"></i></button>
+                                        </form> -->
 
-                                @can('clip_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.clips.edit', $clip->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
+            </div>
 
-                                @can('clip_delete')
-                                    <form action="{{ route('admin.clips.destroy', $clip->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
-
-
 
 @endsection
 @section('scripts')
 @parent
 <script>
+    /**/
+$(function(){
+    $('.save').click(function(e){
+        e.preventDefault();
+       
+        var clip_id = $(this).attr('id');
+        var video_path = $(this).attr('rel');
+        var url = $(this).attr('href');
+        data = {
+            clip_id: clip_id,
+            video_path: video_path,
+        }
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        $('.saving_'+clip_id).removeClass('fa-save').addClass('fa-spinner fa-spin');
+         $(this).attr('disabled',true);
+        $.ajax({
+            url:url,
+            data:data,
+            cache:false,
+            type:'POST',
+            success:function(response){
+                var obj = JSON.parse(response);
+                $('.saving_'+clip_id).removeClass('fa-spinner fa-spin').addClass('fa-check');
+                alert(obj.success)
+                location.reload();
+            },
+            error:function(response){
+                var obj = JSON.parse(response);
+                $('.saving_'+clip_id).removeClass('fa-spinner fa-spin').addClass('fa-save');
+                alert(obj.error)
+                location.reload();
+            }
+        })
+        
+
+    });
+
+});
+
+    function getStatus(){
+       
+        $('.waiting').each(function(){
+            $('.processing_status').text('Working...');
+            var id = $(this).attr('id');
+            var video_id = $(this).attr('rel');
+            var clip_status = $(this).data('status');
+            var ajax_url = "/clips/"+id+"/generate-video-status";
+             //send headers
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            //make an ajax call to get the status of the clip
+            //create the url for the ajax call
+            $('#clock_'+id).addClass('fa-spin');
+            $.ajax({
+                url: ajax_url,
+                type: 'GET',
+                data: {id: id},
+                success: function(response){
+                    console.log(response);
+                    if(response.in_line > 0){
+                    $('.processing_status').text('You are number '+response.in_line+' in the queue');
+                    }else{
+                        $('.processing_status').text('Working...');
+                    }
+                    //update the download link
+                    $('#download_'+id).attr('href',response.video_path);
+                   // $('#'+id).text(response.status);
+                    if(response.status == 'completed'){
+                    //make #actions visible
+                    $('#actions_'+id).css('visibility','visible');
+                        $('#clock_'+id).removeClass('fa-spin');
+                        $('#'+id).addClass('badge-success').text('Completed');
+                        location.reload();
+                    }else if(response.status == 'processing'){
+                        $('#'+id).addClass('badge-primary').text('Processing');
+                    }else if(response.status == 'failed'){
+                        location.reload();
+                        $('#'+id).addClass('badge-danger').text('Failed');
+                    }
+                }
+            });
+        });
+    }
+
+        setInterval(getStatus, 15000);
+  
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('clip_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.clips.massDestroy') }}",
+    url: "{{ route('frontend.clips.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

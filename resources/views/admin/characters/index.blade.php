@@ -1,104 +1,58 @@
 @extends('layouts.admin')
 @section('content')
-@can('character_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.characters.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.character.title_singular') }}
-            </a>
-        </div>
-    </div>
-@endcan
-<div class="card">
-    <div class="card-header">
-        {{ trans('cruds.character.title_singular') }} {{ trans('global.list') }}
-    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            @can('character_create')
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <a class="btn btn-danger" href="{{ route('frontend.characters.create') }}">
+                            {{ trans('global.add') }} {{ trans('cruds.character.title_singular') }}
+                        </a>
+                    </div>
+                </div>
+            @endcan
+            <div class="row">
+                @foreach($characters as $character)
+                    <div class="col-md-3 mb-5">
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Character">
-                <thead>
-                    <tr>
-                        <th width="10">
+                        <div class="card mb-6">
+                        @can('character_delete')
+                                        <form class=" " action="{{ route('frontend.characters.destroy', $character->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-black btn-xs pull-right mx-2 my-2" value="{{ trans('global.delete') }}"><i class="fas fa-close"></i></button>
+                                        </form>
+                                    @endcan
+                            <div class="card-body">
+                                <h6 class="card-title">{{ ucfirst($character->name) ?? '' }}</h6>
+                             
+                                       @if($character->avatar)
+                                            <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
+                                                <img src="{{ $character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
+                                            </a>
+                                        @endif  
+                           <p></p>
+                                <div aria-label="Character Actions">
+                                    @can('character_show')
+                                        <a class="btn btn-primary btn-sm " href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
+                                          <i class="fas fa-video"></i> {{ _('Animate')}} {{ $character->name ?? '' }} 
+                                        </a>
+                                    @endcan
 
-                        </th>
-                        <th>
-                            {{ trans('cruds.character.fields.name') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.character.fields.gender') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.character.fields.dress_color') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.character.fields.posture') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.character.fields.user') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($characters as $key => $character)
-                        <tr data-entry-id="{{ $character->id }}">
-                            <td>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
 
-                            </td>
-                            <td>
-                                {{ $character->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $character->gender->type ?? '' }}
-                            </td>
-                            <td>
-                                @foreach($character->dress_colors as $key => $item)
-                                    <span class="badge badge-info">{{ $item->color }}</span>
-                                @endforeach
-                            </td>
-                            <td>
-                                {{ $character->posture->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $character->user->name ?? '' }}
-                            </td>
-                            <td>
-                                @can('character_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.characters.show', $character->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                                @can('character_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.characters.edit', $character->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('character_delete')
-                                    <form action="{{ route('admin.characters.destroy', $character->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
-
-
-
 @endsection
+
 @section('scripts')
 @parent
 <script>
@@ -108,7 +62,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.characters.massDestroy') }}",
+    url: "{{ route('frontend.characters.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

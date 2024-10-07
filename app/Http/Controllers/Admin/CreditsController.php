@@ -10,16 +10,15 @@ use App\Models\Credit;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\User;
 
 class CreditsController extends Controller
 {
     public function index()
     {
         abort_if(Gate::denies('credit_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $credits = Credit::all();
-
-        return view('admin.credits.index', compact('credits'));
+        $users = User::all();
+        return view('admin.credits.index', compact('users'));
     }
 
     public function create()

@@ -86,7 +86,7 @@ class PaymentsController extends Controller
         abort_if(Gate::denies('payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $payments = Payment::where('email', Auth::user()->email)->get();
-
+        
         return view('frontend.payments.index', compact('payments'));
     }
 

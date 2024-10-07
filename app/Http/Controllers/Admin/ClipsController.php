@@ -22,7 +22,7 @@ class ClipsController extends Controller
     {
         abort_if(Gate::denies('clip_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clips = Clip::with(['character', 'media'])->get();
+        $clips = Clip::with(['character', 'media'])->orderby('id', 'desc')->get();
 
         return view('admin.clips.index', compact('clips'));
     }
