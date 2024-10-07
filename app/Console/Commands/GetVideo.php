@@ -145,7 +145,7 @@ class GetVideo extends Command
 
         // Update clip details
         $clip->update([
-            'duration' => $totalDuration,
+            'duration' => $video['duration'],
             'minutes' => $duration[0],
             'seconds' => $duration[1],
             'status' => 'completed',

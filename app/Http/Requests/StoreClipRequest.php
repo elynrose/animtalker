@@ -40,7 +40,7 @@ class StoreClipRequest extends FormRequest
                 'nullable',
             ],
             'duration' => [
-                'time',
+                'string',
                 'nullable',
             ],
             'minutes' => [

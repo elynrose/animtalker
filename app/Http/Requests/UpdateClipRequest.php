@@ -40,7 +40,7 @@ class UpdateClipRequest extends FormRequest
                 'nullable',
             ],
             'duration' => [
-                'time',
+                'string',
                 'nullable',
             ],
             'minutes' => [
