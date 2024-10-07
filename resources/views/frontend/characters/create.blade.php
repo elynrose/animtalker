@@ -4,11 +4,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
         <h3> {{ trans('cruds.character.title') }}</h3>
-        <p>{{ trans('cruds.character.desc') }}</p>
             <div class="card" id="step1">
-             
+
 
                 <div class="card-body">
+                <p class="display-5">{{ trans('cruds.character.desc') }}</p>
+
                     <div class="alert alert-danger error" style="display:none;"></div>
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
@@ -136,14 +137,14 @@
                                         <input type="hidden" name="gender_id" id="gender_id">
 
                                         <!-- Age Group -->
-                                        <h6 class="mb-3">Age Group</h6>
+                                        <h6 class="mt-3">Age Group</h6>
                                         @foreach($age_groups as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 age-group-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="age_group_id" id="age_group_id">
 
                                         <!-- Body Type -->
-                                        <h6 class="mb-3">Body Type</h6>
+                                        <h6 class="mt-3">Body Type</h6>
                                         @foreach($body_types as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 body-type-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
@@ -171,56 +172,56 @@
                                         <input type="hidden" name="hair_color_id" id="hair_color_id">
 
                                         <!-- Hair Length -->
-                                        <h6 class="mb-3">Hair Length</h6>
+                                        <h6 class="mt-3">Hair Length</h6>
                                         @foreach($hair_lenghts as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 hair-length-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="hair_lenght_id" id="hair_lenght_id">
 
                                         <!-- Hair Style -->
-                                        <h6 class="mb-3">Hair Style</h6>
+                                        <h6 class="mt-3">Hair Style</h6>
                                         @foreach($hair_styles as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 hair-style-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="hair_style_id" id="hair_style_id">
 
                                         <!-- Head Shape -->
-                                        <h6 class="mb-3">Head Shape</h6>
+                                        <h6 class="mt-3">Head Shape</h6>
                                         @foreach($head_shapes as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 head-shape-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="head_shape_id" id="head_shape_id">
 
                                         <!-- Nose Shape -->
-                                        <h6 class="mb-3">Nose Shape</h6>
+                                        <h6 class="mt-3">Nose Shape</h6>
                                         @foreach($nose_shapes as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 nose-shape-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="nose_shape_id" id="nose_shape_id">
 
                                         <!-- Mouth Shape -->
-                                        <h6 class="mb-3">Mouth Shape</h6>
+                                        <h6 class="mt-3">Mouth Shape</h6>
                                         @foreach($mouth_shapes as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 mouth-shape-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="mouth_shape_id" id="mouth_shape_id">
 
                                         <!-- Eye Shape -->
-                                        <h6 class="mb-3">Eye Shape</h6>
+                                        <h6 class="mt-3">Eye Shape</h6>
                                         @foreach($eye_shapes as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 eye-shape-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="eye_shape_id" id="eye_shape_id">
 
                                         <!-- Eye Color -->
-                                        <h6 class="mb-3">Eye Color</h6>
+                                        <h6 class="mt-3">Eye Color</h6>
                                         @foreach($eye_colors as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 eye-color-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="eye_color_id" id="eye_color_id">
 
                                         <!-- Skin Tone -->
-                                        <h6 class="mb-3">Skin Tone</h6>
+                                        <h6 class="mt-3">Skin Tone</h6>
                                         @foreach($skin_tones as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 skin-tone-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
@@ -248,7 +249,7 @@
                                         <input type="hidden" name="facial_expression_id" id="facial_expression_id">
 
                                         <!-- Emotion -->
-                                        <h6 class="mb-3">Emotion</h6>
+                                        <h6 class="mt-3">Emotion</h6>
                                         @foreach($emotions as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 emotion-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
@@ -276,14 +277,14 @@
                                         <input type="hidden" name="dress_style_id" id="dress_style_id">
 
                                         <!-- Dress Colors -->
-                                        <h6 class="mb-3">Dress Colors</h6>
+                                        <h6 class="mt-3">Dress Colors</h6>
                                         @foreach($dress_colors as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 dress-color-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="dress_colors[]" id="dress_colors">
 
                                         <!-- Props -->
-                                        <h6 class="mb-3">Props</h6>
+                                        <h6 class="mt-3">Props</h6>
                                         @foreach($props as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 props-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
@@ -311,7 +312,7 @@
                                         <input type="hidden" name="posture_id" id="posture_id">
 
                                         <!-- Character Zoom -->
-                                        <h6 class="mb-3">Character Zoom</h6>
+                                        <h6 class="mt-3">Character Zoom</h6>
                                         @foreach($character_zooms as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 character-zoom-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
@@ -325,7 +326,7 @@
                         <div class="form-group mt-4">
                         <input type="hidden" name="aspect_ratio" value="16:9" id="aspect_ratio">
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                            <button class="btn btn-danger" id="save" type="submit">
+                            <button class="btn btn-danger btn-block" id="save" type="submit">
                                 {{ trans('global.generate') }}
                             </button>
                         </div>
@@ -403,7 +404,7 @@
                         <div class="form-group">
                             <input type="hidden" name="character_id" id="character_id"  value="">
                             <input type="hidden" name="image_path" id="image_path" value="">
-                            <button class="btn btn-danger btn-lg" type="submit">
+                            <button class="btn btn-danger btn-block btn-lg" type="submit">
                                 {{ trans('global.animate') }}
                             </button>
                         </div>
