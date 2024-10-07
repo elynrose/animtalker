@@ -41,7 +41,17 @@
 
                         <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
                             <label for="script"> {{ trans('cruds.clip.fields.script') }}</label>
-                            <textarea class="form-control" name="script" id="script">{{ old('script') }}</textarea>
+                            <textarea class="form-control" name="script" id="script" oninput="limitWords(this, 255)">{{ old('script') }}</textarea>
+                            <script>
+                            function limitWords(textarea, maxWords) {
+                                var words = textarea.value.split(/\s+/);
+                                if (words.length > maxWords) {
+                                    textarea.value = words.slice(0, maxWords).join(" ");
+                                    //write a message to the user
+                                    alert('You have reached the maximum number of words allowed');
+                                }
+                            }
+                            </script>
                             @if($errors->has('script'))
                                 <p class="help-block text-danger">{{ $errors->first('script') }}</p>
                             @endif
