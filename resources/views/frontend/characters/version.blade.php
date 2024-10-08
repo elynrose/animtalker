@@ -68,7 +68,7 @@ $(function() {
             $.ajax({
                 url: "{{ route('frontend.characters.store') }}",
                 type: "POST",
-                data: 'name=' + name + '&new_prompt=' + new_prompt + '&parent_id' + {{ $character->id }} + '&user_id=' + {{ Auth::id() }},
+                data: 'name=' + name + '&new_prompt=' + new_prompt + '&parent_id' + {{ $character->id }} + '&user_id=' + {{ Auth::id() }} + '&base_image=' + "{{ $character->avatar_url }}",
                 success: function(response) {
                     // Handle the success response
                     console.log(response);

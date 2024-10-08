@@ -117,7 +117,7 @@ public function store(StoreCharacterRequest $request)
             'new_prompt' => 'required|string|max:2000',
         ]);
 
-        $genPrompt = $request->new_prompt;
+        $genPrompt = "Original prompt: " + $request->new_prompt + "--base image reference for the character" + $request->base_image + "Recommended adjustments" + $request->new_prompt;
 
     // Create a new character excluding 'dress_colors' and 'props' from the request
     $character = Character::create(
