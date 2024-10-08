@@ -17,7 +17,7 @@
 
                         <div class="form-group mb-5" id="custom">
                             <label for="custom_prompt">{{ trans('cruds.character.fields.custom_prompt') }}</label>
-                            <textarea class="form-control mb-3" name="version" id="version" rows="6" oninput="autoExpand(this)">{{ old('custom_prompt', '') }}</textarea>
+                            <textarea class="form-control mb-3" name="version" id="version" rows="6">{{ old('custom_prompt', '') }}</textarea>
                             <input type="hidden" id="prompt" name="prompt" value="{{ $character->custom_prompt }}">
                             @if($errors->has('custom_prompt'))
                                 <div class="invalid-feedback">
@@ -68,7 +68,7 @@ $(function() {
             $.ajax({
                 url: "{{ route('frontend.characters.store') }}",
                 type: "POST",
-                data: 'name=' + name + '&new_prompt=' + new_prompt + '&parent_id' + {{ $character->id }} + '&user_id=' + {{ Auth::id() }} + '&base_image=' + "{{ $character->avatar_url }}",
+                data: 'name=' + name + '&new_prompt=' + new_prompt + '&parent_id' + {{ $character->id }} + '&user_id=' + {{ Auth::id() }} + '&base_image=' + '{{ $character->avatar_url }}',
                 success: function(response) {
                     // Handle the success response
                     console.log(response);

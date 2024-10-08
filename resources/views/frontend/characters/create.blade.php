@@ -590,6 +590,7 @@ $(function() {
                 error: function(xhr, status, error) {
                     // Handle the error response
                     //alert error message
+                    $('.error').text(xhr.responseText.error).show();
                     $('#save').attr('disabled', false);
                     $('#img_wrap').hide();
                     $('#loading').hide();

@@ -117,7 +117,7 @@ public function store(StoreCharacterRequest $request)
             'new_prompt' => 'required|string|max:2000',
         ]);
 
-        $genPrompt = "--Base image reference for the character: " + $request->base_image + "--Recommended adjustments" + $request->new_prompt;
+        $genPrompt = " --Base image as seed for this character: " . $request->base_image . "  Keep the same face shape, head shape,  hair color, hair style, eyes, eye color, mouth, mouth shape, complexion, ears, clothing, color of clothing, build, posture, background and every other feature that makes this person unique. --Recommended adjustments" . $request->new_prompt;
 
     // Create a new character excluding 'dress_colors' and 'props' from the request
     $character = Character::create(
@@ -165,7 +165,6 @@ if ($credits->getUserCredits() < 1) {
 
         // Retrieve avatar data from the generation response
         $avatarData = $avatar->getData();
-
         // Extract the prompt and image URL from the avatar data
         $prompt = $avatarData->prompt ?? null;
         $image = $avatarData->dalle_response->data[0]->url ?? null;
