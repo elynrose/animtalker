@@ -278,6 +278,7 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::post('characters/ckmedia', 'CharacterController@storeCKEditorImages')->name('characters.storeCKEditorImages');
     Route::resource('characters', 'CharacterController');
     Route::post('characters/refine', 'CharacterController@refine')->name('character.refine');
+    Route::get('characters/version/{id}', 'CharacterController@version')->name('character.version');
 
 
     // Payments

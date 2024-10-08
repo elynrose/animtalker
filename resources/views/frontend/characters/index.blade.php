@@ -36,8 +36,9 @@
                                 <div aria-label="Character Actions">
                                     @can('character_show')
                                         <a class="btn btn-primary btn-sm " href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
-                                          <i class="fas fa-video"></i> {{ _('Animate')}} {{ $character->name ?? '' }} 
+                                          <i class="fas fa-video"></i> {{ _('Animate')}} 
                                         </a>
+                                        <a class="btn btn-black" href="characters/version/{{ $character->id }}"><i class="fas fa-random"></i></a>
                                     @endcan
 
                                 

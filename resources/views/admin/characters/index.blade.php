@@ -38,6 +38,7 @@
                                         <a class="btn btn-primary btn-sm " href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
                                           <i class="fas fa-video"></i> {{ _('Animate')}} {{ $character->name ?? '' }} 
                                         </a>
+                                        <a href="character/version/{{ $character->id }}">Create Version</a>
                                     @endcan
 
                                 

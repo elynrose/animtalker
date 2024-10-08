@@ -57,6 +57,7 @@ class Character extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
+        'parent_id',
     ];
 
     public const ART = [

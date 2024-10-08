@@ -8,7 +8,7 @@
 
 
                 <div class="card-body">
-                <p class="display-5">{{ trans('cruds.character.desc') }}</p>
+                <p class="display-5 mb-5">{{ trans('cruds.character.desc') }}</p>
 
                     <div class="alert alert-danger error" style="display:none;"></div>
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
@@ -297,7 +297,7 @@
                             <div class="card mb-3">
                                 <div class="card-header" id="postureZoomHeading">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#postureZoomCollapse" aria-expanded="false" aria-controls="postureZoomCollapse">
+                                        <button class="btn btn-link collapsed btn-block" data-toggle="collapse" data-target="#postureZoomCollapse" aria-expanded="false" aria-controls="postureZoomCollapse">
                                             Posture and Zoom
                                         </button>
                                     </h5>

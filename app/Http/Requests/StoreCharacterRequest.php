@@ -65,6 +65,10 @@ class StoreCharacterRequest extends FormRequest
                 'required',
                 'integer',
             ],
+            'parent_id' => [
+                'integer',
+                'nullable',
+            ],
         ];
     }
 }
