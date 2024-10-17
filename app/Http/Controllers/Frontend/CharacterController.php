@@ -154,8 +154,9 @@ public function store(StoreCharacterRequest $request)
     
 //Check if the user has enough credits to generate a character
 $credits = new Credit();
-if ($credits->getUserCredits() < 1) {
-    return response()->json(['error' => 'Insufficient credits'], 500);
+if ($credits->getUserCredits() < 5) {
+    //redirect back with an error message
+    return redirect()->back()->withError('You do not have enough credits to perform this action.');
 }
 
     try {
