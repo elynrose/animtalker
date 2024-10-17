@@ -72,14 +72,7 @@ class ClipsController extends Controller
         }
 
         $text = $request->input('script'); // Required: The text to convert to speech
-
-        //limit the text to 60 words
-        $text = implode(' ', array_slice(explode(' ', $text), 0, 60));
-
-        if($text > 60){
-            return redirect()->back()->withError('The text should not exceed 60 words.');
-        }
-
+        
         $voice = $request->input('voice', 'alloy'); // Optional: Define a default voice
 
         $audio  = new GenerateAudio;
