@@ -68,7 +68,7 @@ class ClipsController extends Controller
             $data  = ['action' => 'created', 'model_name' => 'Clip'];
             Notification::send($user, new NotEnoughCreditsEmailNotification($data));
             //Go back to the previous page and flash a message
-            return redirect()->back()->with('error', 'You do not have enough credits to create a clip.');
+            return redirect()->back()->withError('You do not have enough credits to perform this action.');
         }
 
         $text = $request->input('script'); // Required: The text to convert to speech
