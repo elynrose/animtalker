@@ -25,7 +25,6 @@ class VideoWebHookController extends Controller
             $clips->status = $status;
             $clips->video_path = $response->json()['result_url'];
             $clips->save();
-            $clips->save();
 
             return response()->json(['status' => $status]);
         } else {

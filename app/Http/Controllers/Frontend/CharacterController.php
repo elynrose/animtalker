@@ -185,10 +185,6 @@ if ($credits->getUserCredits() < 5) {
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 
-    // Deduct credits for character generation
-    $credits = new Credit();
-    $credits->deductCredits('character', Auth::user());
-
     // Save the generated image URL to the character's avatar and save it to S3
     try {
         $path = $character->addMediaFromUrl($image)
