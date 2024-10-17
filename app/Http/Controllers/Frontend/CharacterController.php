@@ -217,7 +217,10 @@ if ($credits->getUserCredits() < 5) {
 
      //Deduct Credits
 
-    Credit::where('email', $user->email)->decrement('points', env('IMAGE_CREDIT_DEDUCTION'));
+     $credit = Credit::where('email', Auth::user()->email)->first();
+     $credit_balance  = $credit->points - env('IMAGE_CREDIT_DEDUCTION');
+    $credit->points = $credit_balance;
+    $credit->save();
 
     } else {
         //delete the character with this id if the image is not saved 

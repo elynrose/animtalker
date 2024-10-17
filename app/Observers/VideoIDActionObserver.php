@@ -96,8 +96,10 @@ class VideoIDActionObserver
             $user = $model->character->user;
 
             //Deduct Credits
-
-            Credit::where('email', $user->email)->decrement('points', env('VIDEO_CREDIT_DEDUCTION'));
+            $credit = Credit::where('email', Auth::user()->email)->first();
+            $credit_balance  = $credit->points - env('IMAGE_CREDIT_DEDUCTION');
+            $credit->points = $credit_balance;
+            $credit->save();
 
             // Notify the user via email
             Notification::send($user, new DataChangeEmailNotification($data));
