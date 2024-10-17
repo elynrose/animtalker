@@ -2,7 +2,11 @@
 @section('content')
 <div class="container">
 <h3 class="mb-5">{{ trans('global.create') }} {{ trans('cruds.clip.title_singular') }}     </h3>
-
+@if(session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
     <div class="row justify-content-center">
         
         <div class="col-md-12">

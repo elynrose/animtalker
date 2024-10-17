@@ -206,6 +206,14 @@ if ($credits->getUserCredits() < 5) {
         Media::whereIn('id', $media)->update(['model_id' => $character->id]);
     }
 
+     //Deduct Credits
+
+     $credit = Credit::where('email', Auth::user()->email)->first();
+     $credit_balance  = $credit->points - env('IMAGE_CREDIT_DEDUCTION');
+    $credit->points = $credit_balance;
+    $credit->save();    
+    
+    
     // Return a JSON response based on the request type
     if ($request->ajax()) {
         return response()->json([
@@ -215,12 +223,7 @@ if ($credits->getUserCredits() < 5) {
             'id' => $character->id
         ]);
 
-     //Deduct Credits
 
-     $credit = Credit::where('email', Auth::user()->email)->first();
-     $credit_balance  = $credit->points - env('IMAGE_CREDIT_DEDUCTION');
-    $credit->points = $credit_balance;
-    $credit->save();
 
     } else {
         //delete the character with this id if the image is not saved 
