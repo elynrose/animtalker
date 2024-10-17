@@ -63,7 +63,7 @@ class ClipsController extends Controller
         $user = Auth::user();
         $credits = Credit::where('email', $user->email)->first();
 
-        if ($credits->points < env('CREDIT_DEDUCTION', 5)) {
+        if ($credits->points <  5) {
             // Notify the user via email
             $data  = ['action' => 'created', 'model_name' => 'Clip'];
             Notification::send($user, new NotEnoughCreditsEmailNotification($data));
