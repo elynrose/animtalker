@@ -11,10 +11,11 @@ use App\Models\User;
 use App\Models\GenerateVideo;
 use App\Models\GenerateAudio;
 use App\Models\SendToOpenai;
-//Add guzzle client
+// Add guzzle client
 use GuzzleHttp\Client;
 use App\Models\Credit;
 use App\Notifications\NotEnoughCreditsEmailNotification;
+use Exception;
 
 class VideoIDActionObserver
 {
@@ -31,17 +32,14 @@ class VideoIDActionObserver
      * @param \GuzzleHttp\Client $client
      */
     public function __construct(Client $client)
-
     {
         $this->client = $client;
     }
 
-
-    
     public function created(Clip $model)
     {
-        $data  = ['action' => 'created', 'model_name' => 'Clip'];
-        
+        $data = ['action' => 'created', 'model_name' => 'Clip'];
+
         // Retrieve the first unprocessed clip
         $clip = $this->getUnprocessedClip();
 
@@ -54,74 +52,68 @@ class VideoIDActionObserver
 
         $credits = Credit::where('email', $user->email)->first();
 
-        //Check if the user has enough credits
+        // Check if the user has enough credits
         if ($credits->points < env('CREDIT_DEDUCTION', 5)) {
+            try {
+                // Notify the user via email
+                Notification::send($user, new NotEnoughCreditsEmailNotification($data));
+            } catch (Exception $e) {
+                \Log::error('Error sending not enough credits email: ' . $e->getMessage());
+            }
 
-            // Notify the user via email
-            Notification::send($user, new NotEnoughCreditsEmailNotification($data));
+            return;
         }
-
 
         // Generate the video and update the clip status
         $response = $this->generateVideoForClip($clip, $user);
 
         // Handle the response from the video generation process
         $this->handleVideoGenerationResponse($response, $clip);
-        
-        
-        //Get the user who created the clip
-        $user = $model->character->user;
-
-        }
+    }
 
     public function updated(Clip $model)
     {
-        $data  = ['action' => 'created', 'model_name' => 'Clip', 'changed_field' => 'video_id'];
+        $data = ['action' => 'updated', 'model_name' => 'Clip', 'changed_field' => 'video_id'];
+
         if ($model->isDirty('video_id')) {
             $video_id = $model->video_id;
 
-              // Retrieve the first clip that is still processing
-        $clip = Clip::where('video_id', $video_id)->first();
+            // Retrieve the first clip that is still processing
+            $clip = Clip::where('video_id', $video_id)->first();
 
-        if (!$clip) {
-            return; // Exit if no clip is being processed
+            if (!$clip) {
+                return; // Exit if no clip is being processed
+            }
+
+            // Fetch video status from external API
+            $video = $this->fetchVideoStatus($clip->video_id);
+
+            if ($this->isVideoCompleted($video)) {
+                $this->markClipAsCompleted($clip, $video);
+
+                $user = $model->character->user;
+
+                // Deduct credits
+                $credit = Credit::where('email', $user->email)->first();
+                $credit->points -= env('IMAGE_CREDIT_DEDUCTION', 5);
+                $credit->save();
+
+                try {
+                    // Notify the user via email
+                    Notification::send($user, new DataChangeEmailNotification($data));
+                } catch (Exception $e) {
+                    \Log::error('Error sending data change email: ' . $e->getMessage());
+                }
+
+            } elseif ($this->isVideoFailed($video)) {
+                $this->markClipAsFailed($clip);
+            }
         }
-
-        // Fetch video status from external API
-        $video = $this->fetchVideoStatus($clip->video_id);
-
-        if ($this->isVideoCompleted($video)) {
-            $this->markClipAsCompleted($clip, $video);
-
-            $user = $model->character->user;
-
-            //Deduct Credits
-            $credit = Credit::where('email', Auth::user()->email)->first();
-            $credit_balance  = $credit->points - env('IMAGE_CREDIT_DEDUCTION');
-            $credit->points = $credit_balance;
-            $credit->save();
-
-            // Notify the user via email
-            Notification::send($user, new DataChangeEmailNotification($data));
-
-        } elseif ($this->isVideoFailed($video)) {
-            $this->markClipAsFailed($clip);
-        }
-
-        }
-
-        // Notification::send($users, new DataChangeEmailNotification($data));
-
     }
 
+    // Helper Methods
 
-
-
-//-------------Code fot the RunGenerateVideo.php file-----------------//
-
-
-
-      /**
+    /**
      * Get the first clip that has not been processed.
      *
      * @return \App\Models\Clip|null
@@ -174,6 +166,11 @@ class VideoIDActionObserver
         if ($response instanceof \Illuminate\Http\JsonResponse) {
             $data = json_decode($response->getContent(), true);
 
+            if (is_null($data)) {
+                \Log::error('Failed to decode video generation response');
+                return;
+            }
+
             if (isset($data['error'])) {
                 $this->markClipAsFailed($clip);
             } else {
@@ -208,54 +205,50 @@ class VideoIDActionObserver
         $clip->update(['status' => 'failed']);
     }
 
-
-
-
-
-//-------------Code fot the GetVideo.php file-----------------//
-
-
-
-
-      /**
+    /**
      * Fetch the video status from the D-ID API.
      *
      * @param string $videoId
-     * @return array
+     * @return array|null
      */
     protected function fetchVideoStatus($videoId)
     {
-        $response = $this->client->get("https://api.d-id.com/talks/{$videoId}", [
-            'headers' => [
-                'accept' => 'application/json',
-                'authorization' => 'Basic ' . env('DID_API_KEY'),
-                'content-type' => 'application/json',
-            ],
-        ]);
+        try {
+            $response = $this->client->get("https://api.d-id.com/talks/{$videoId}", [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'authorization' => 'Basic ' . env('DID_API_KEY'),
+                    'content-type' => 'application/json',
+                ],
+            ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (Exception $e) {
+            \Log::error('Error fetching video status: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**
      * Determine if the video is completed.
      *
-     * @param array $video
+     * @param array|null $video
      * @return bool
      */
-    protected function isVideoCompleted(array $video)
+    protected function isVideoCompleted($video)
     {
-        return $video['status'] === 'done';
+        return $video && $video['status'] === 'done';
     }
 
     /**
      * Determine if the video processing failed.
      *
-     * @param array $video
+     * @param array|null $video
      * @return bool
      */
-    protected function isVideoFailed(array $video)
+    protected function isVideoFailed($video)
     {
-        return $video['status'] === 'error';
+        return $video && $video['status'] === 'error';
     }
 
     /**
@@ -267,37 +260,14 @@ class VideoIDActionObserver
      */
     protected function markClipAsCompleted(Clip $clip, array $video)
     {
-        $duration = explode(':', $video['duration']);
+        $durationInSeconds = $video['duration_in_seconds'];
 
-        // Ensure $duration has two elements (minutes and seconds)
-        if (count($duration) == 1) {
-            // If only seconds are provided, assume minutes are 0
-            array_unshift($duration, '0');
-        }
-        
-        // Convert seconds to minutes if necessary
-        $minutes = (int)$duration[0];
-        $seconds = (float)$duration[1];
-        
-        if ($seconds >= 60) {
-            $additionalMinutes = floor($seconds / 60);
-            $seconds = $seconds % 60;
-            $minutes += $additionalMinutes;
-        }
-        
-        // Ensure minutes are two digits
-        $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
-        
-        // Ensure seconds are two digits without fractional part
-        $seconds = str_pad((int)$seconds, 2, '0', STR_PAD_LEFT);
-        
-        $totalDuration = $minutes . ':' . $seconds;
+        // Use PHP's gmdate for proper formatting of duration
+        $totalDuration = gmdate("i:s", $durationInSeconds);
 
         // Update clip details
         $clip->update([
-            'duration' => $video['duration'],
-            'minutes' => $duration[0],
-            'seconds' => $duration[1],
+            'duration' => $totalDuration,
             'status' => 'completed',
             'video_path' => $video['result_url'],
         ]);
@@ -306,5 +276,20 @@ class VideoIDActionObserver
         $this->notifyUser($clip);
     }
 
-
+    /**
+     * Notify the user that the clip processing is completed.
+     *
+     * @param \App\Models\Clip $clip
+     * @return void
+     */
+    protected function notifyUser(Clip $clip)
+    {
+        $user = $clip->character->user;
+        $data = ['action' => 'completed', 'model_name' => 'Clip'];
+        try {
+            Notification::send($user, new DataChangeEmailNotification($data));
+        } catch (Exception $e) {
+            \Log::error('Error sending completion email: ' . $e->getMessage());
+        }
+    }
 }
