@@ -172,7 +172,7 @@ $(function(){
         });
     }
 
-        setInterval(getStatus, 15000);
+        setInterval(getStatus, 3000);
   
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
