@@ -97,7 +97,7 @@ class VideoIDActionObserver
 
             //Deduct Credits
 
-            Credit::where('email', $user->email)->decrement('points', env('CREDIT_DEDUCTION'));
+            Credit::where('email', $user->email)->decrement('points', env('VIDEO_CREDIT_DEDUCTION'));
 
             // Notify the user via email
             Notification::send($user, new DataChangeEmailNotification($data));

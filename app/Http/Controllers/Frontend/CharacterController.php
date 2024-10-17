@@ -214,6 +214,11 @@ if ($credits->getUserCredits() < 5) {
             'prompt' => $prompt,
             'id' => $character->id
         ]);
+
+     //Deduct Credits
+
+    Credit::where('email', $user->email)->decrement('points', env('IMAGE_CREDIT_DEDUCTION'));
+
     } else {
         //delete the character with this id if the image is not saved 
         DB::table('characters')->where('id', $character->id)->delete();   
