@@ -7,7 +7,7 @@
       <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
       <p class="processing_status"></p>
             <div class="row">
-                
+                @if(!$clips->isEmpty())
                 @foreach($clips as $clip)
                 @if($clip->character)
                     <div class="col-md-4">
@@ -72,7 +72,7 @@
                     @endif
                 @endforeach
             </div>
-
+@endif
         </div>
     </div>
 </div>

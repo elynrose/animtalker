@@ -213,6 +213,11 @@ class Character extends Model implements HasMedia
             $file->url       = $file->getUrl();
             $file->thumbnail = $file->getUrl('thumb');
             $file->preview   = $file->getUrl('preview');
+        } else {
+            $file = new \stdClass();
+            $file->url = null;
+            $file->thumbnail = null;
+            $file->preview = null;
         }
 
         return $file;

@@ -30,7 +30,7 @@ class ClipsController extends Controller
     {
         abort_if(Gate::denies('clip_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clips = Clip::with(['character', 'media'])
+         $clips = Clip::with(['character', 'media'])
             ->whereHas('character', function ($query) {
             $query->where('user_id', auth()->user()->id);
             })
