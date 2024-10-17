@@ -93,9 +93,8 @@
                     <div class="card-body">
                         <div class="card-price">{{ _('$10')}}<span class="text-muted"></span></div>
                         <ul class="list-unstyled text-center">
-                            <li>10 videos </li>
-                            <li>1 credits per video</li>
-                            <li>X total minutes</li>
+                            <li>2 credits per video</li>
+                            <li>1 credit per character</li>
                         </ul>
                         @if(Auth::check())
                         <div class="mt-3 text-center">
