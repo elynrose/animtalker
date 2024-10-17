@@ -20,6 +20,10 @@ use App\Models\Credit;
 use Storage;
 use Auth;
 use App\Models\SendToOpenai;
+use App\Notifications\NotEnoughCreditsEmailNotification;
+use Illuminate\Support\Facades\Notification;
+
+
 
 
 class ClipsController extends Controller
@@ -55,6 +59,18 @@ class ClipsController extends Controller
 
     public function store(StoreClipRequest $request)
     {
+        //Check if the user has enough credits
+        $user = Auth::user();
+        $credits = Credit::where('email', $user->email)->first();
+
+        if ($credits->points < env('CREDIT_DEDUCTION', 5)) {
+            // Notify the user via email
+            $data  = ['action' => 'created', 'model_name' => 'Clip'];
+            Notification::send($user, new NotEnoughCreditsEmailNotification($data));
+            //Go back to the previous page and flash a message
+            return redirect()->back()->with('error', 'You do not have enough credits to create a clip.');
+        }
+
         $text = $request->input('script'); // Required: The text to convert to speech
         $voice = $request->input('voice', 'alloy'); // Optional: Define a default voice
 

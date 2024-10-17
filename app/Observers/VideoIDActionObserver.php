@@ -14,6 +14,7 @@ use App\Models\SendToOpenai;
 //Add guzzle client
 use GuzzleHttp\Client;
 use App\Models\Credit;
+use App\Notifications\NotEnoughCreditsEmailNotification;
 
 class VideoIDActionObserver
 {
@@ -51,11 +52,16 @@ class VideoIDActionObserver
         // Retrieve the user related to the clip's character
         $user = $this->getClipUser($clip);
 
+        $credits = Credit::where('email', $user->email)->first();
+
         //Check if the user has enough credits
-        if ($user->credits < env('CREDIT_DEDUCTION', 5)) {
-            //Go back to the previous page and flash a message
-            return redirect()->back()->with('error', 'You do not have enough credits to create a clip.');
+        if ($credits->points < env('CREDIT_DEDUCTION', 5)) {
+
+            // Notify the user via email
+            Notification::send($user, new NotEnoughCreditsEmailNotification($data));
         }
+
+
         // Generate the video and update the clip status
         $response = $this->generateVideoForClip($clip, $user);
 
@@ -90,7 +96,8 @@ class VideoIDActionObserver
             $user = $model->character->user;
 
             //Deduct Credits
-            Credit::where('user_id', $user->id)->decrement('credits', env('CREDIT_DEDUCTION', 5));
+            
+            Credit::where('email', $user->email)->decrement('points', env('CREDIT_DEDUCTION', 5));
 
             // Notify the user via email
             Notification::send($user, new DataChangeEmailNotification($data));
