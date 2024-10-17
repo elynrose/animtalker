@@ -4,6 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
       <h3>{{ trans('cruds.clip.title')  }} </h3>
+    
       <p class="mb-5">Videos are only available for 9 hours. Please download as soon as you can.</p>
       <p class="processing_status"></p>
             <div class="row">

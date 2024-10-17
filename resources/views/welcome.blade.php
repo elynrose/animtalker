@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12" style="background:url({{ asset('images/banner.png') }}); min-height:750px; background-size:cover;">
             <div class="container">
-                <div class="alert alert-info">This Website is Under Construction. Links may not work.</div>
+                BETA
             </div>
             <div class="container">
                 <div class="row py-3">
