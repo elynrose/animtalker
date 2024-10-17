@@ -24,6 +24,7 @@
                         <ul class="list-unstyled text-center">
                             <li>5 videos </li>
                             <li>2 credits per video</li>
+                            <li>0.5 credit per character</li>
                         </ul>
                         @if(Auth::check())
                         <div class="mt-3 text-center">
