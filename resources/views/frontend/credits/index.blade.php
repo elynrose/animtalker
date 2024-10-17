@@ -17,7 +17,7 @@
                 <div class="card-body">
                 <h3>{{ trans('cruds.credit.title') }}
                 </h3>
-                   <p>You have @if($credits < 1) {{ '0' }} @else {{ $credits ?? '0' }}  @endif credits available. <a href="https://buy.stripe.com/4gwaHYa690SF0a4bII">Top up</a></p>
+                   <p>You have @if($points < 1) {{ '0' }} @else {{ $points ?? '0' }}  @endif credits available. <a href="https://buy.stripe.com/4gwaHYa690SF0a4bII">Top up</a></p>
                 </div>
             </div>
 

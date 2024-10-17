@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Credit;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SendToOpenai;
+use Illuminate\Support\Facades\DB;
 
 
 class CharacterController extends Controller
@@ -156,7 +157,9 @@ public function store(StoreCharacterRequest $request)
 $credits = new Credit();
 if ($credits->getUserCredits() < 5) {
     //redirect back with an error message
-    return redirect()->back()->withError('You do not have enough credits to perform this action.');
+    //send a status with the error message
+    return response()->json(['status'=>'error','message' => 'You do not have enough credits to generate a character'], 500);
+    exit;
 }
 
     try {
@@ -197,7 +200,8 @@ if ($credits->getUserCredits() < 5) {
         
     } catch (\Exception $e) {
         // Delete character and return error if image saving fails
-        $character->delete();
+        DB::table('characters')->where('id', $character->id)->delete();   
+
     return response()->json(['error' => 'Failed to save character avatar'], 500);
     }
 
@@ -215,6 +219,9 @@ if ($credits->getUserCredits() < 5) {
             'id' => $character->id
         ]);
     } else {
+        //delete the character with this id if the image is not saved 
+        DB::table('characters')->where('id', $character->id)->delete();   
+        
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 }

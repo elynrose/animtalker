@@ -568,8 +568,19 @@ $(function() {
                 type: "POST",
                 data: formData,
                 success: function(response) {
+
                     // Handle the success response
-                    console.log(response);
+                    if(response.status=='error'){
+                    //Parse the response
+                    response = JSON.parse(response);
+                        $('.error').text(response.error).show();
+                        $('#save').attr('disabled', false);
+                        $('#img_wrap').hide();
+                        $('#loading').hide();
+                        $('#step1').show();
+                        $('#step2').hide();
+                        return;
+                    }
                     //get image and prompt from response from parsed json
                     var image = response.image;
                     var prompt = response.prompt;
@@ -584,21 +595,21 @@ $(function() {
                     $('#img_wrap').show();
                     $('#save').attr('disabled', false);
                 } else {
-                    $('.error').text(response.error).show();
+                    response = JSON.parse(response);
+                    $('.error').text(response.message).show();
                 }
                 },
                 error: function(xhr, status, error) {
                     // Handle the error response
-                    //alert error message
-                    $('.error').text(xhr.responseText.error).show();
+                    var response = JSON.parse(xhr.responseText);
+                    $('.error').text(response.error).show();
                     $('#save').attr('disabled', false);
                     $('#img_wrap').hide();
                     $('#loading').hide();
                     $('#img_wrap', '#image').hide();
                     $('#step1').show();
                     $('#step2').hide();
-                    $('.error').text('An error occurred. Please try again.');
-                    console.log(xhr.responseText);
+                    $('.error').text(response.message).show();
                 }
             });
         });
