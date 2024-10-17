@@ -59,10 +59,6 @@ class GenerateAudio extends Model
                     return response()->json(['error' => 'Failed to generate audio'], 500);
                 }
 
-                // Deduct credits for audio generation
-                $credits = new Credit();
-                $credits->deductCredits('audio', Auth::user());
-
                 // Create a new Clip model instance
                 $clip = new Clip();
 
