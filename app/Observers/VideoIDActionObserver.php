@@ -13,6 +13,7 @@ use App\Models\GenerateAudio;
 use App\Models\SendToOpenai;
 //Add guzzle client
 use GuzzleHttp\Client;
+use App\Models\Credit;
 
 class VideoIDActionObserver
 {
@@ -34,7 +35,7 @@ class VideoIDActionObserver
         $this->client = $client;
     }
 
-    
+
     
     public function created(Clip $model)
     {
@@ -50,6 +51,11 @@ class VideoIDActionObserver
         // Retrieve the user related to the clip's character
         $user = $this->getClipUser($clip);
 
+        //Check if the user has enough credits
+        if ($user->credits < env('CREDIT_DEDUCTION', 5)) {
+            //Go back to the previous page and flash a message
+            return redirect()->back()->with('error', 'You do not have enough credits to create a clip.');
+        }
         // Generate the video and update the clip status
         $response = $this->generateVideoForClip($clip, $user);
 
@@ -71,7 +77,7 @@ class VideoIDActionObserver
               // Retrieve the first clip that is still processing
         $clip = Clip::where('video_id', $video_id)->first();
 
-        if (! $clip) {
+        if (!$clip) {
             return; // Exit if no clip is being processed
         }
 
@@ -80,6 +86,15 @@ class VideoIDActionObserver
 
         if ($this->isVideoCompleted($video)) {
             $this->markClipAsCompleted($clip, $video);
+
+            $user = $model->character->user;
+
+            //Deduct Credits
+            Credit::where('user_id', $user->id)->decrement('credits', env('CREDIT_DEDUCTION', 5));
+
+            // Notify the user via email
+            Notification::send($user, new DataChangeEmailNotification($data));
+
         } elseif ($this->isVideoFailed($video)) {
             $this->markClipAsFailed($clip);
         }
