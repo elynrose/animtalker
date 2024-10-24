@@ -136,7 +136,7 @@ table.dataTable thead .sorting_desc {
     padding: 0.25rem 1.5rem;
 }
 
-#app .card {
+#app .card, .c-app .card {
     border: 1px solid #232323;
     background-color: #171616;
 }
@@ -145,7 +145,7 @@ table.dataTable thead .sorting_desc {
     border: 1px solid #232323;
 }
 
-#app #app .card table tr td {
+#app .card table tr td {
   background:#000;
     color:#ffffff;
 }
