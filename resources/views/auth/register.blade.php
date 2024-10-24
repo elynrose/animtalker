@@ -10,8 +10,10 @@
                 <form method="POST" action="{{ route('register') }}">
                     {{ csrf_field() }}
 
-                    <h1 class="display-4">{{ trans('panel.site_title') }}</h1>
-                    <p class="text-muted">{{ trans('global.register') }}</p>
+                    <a class="navbar-brand dynapuff-logo" href="{{ url('/') }}">
+                  <span style="color:orange;">anim</span>shorts
+                </a>
+                                    <p class="text-muted">{{ trans('global.register') }}</p>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">

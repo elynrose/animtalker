@@ -236,3 +236,8 @@ a, a.link, a:hover {
     font-weight: 600;
     font-style: normal;
   }
+
+  .dynapuff-logo a {
+    color: #fff!important;
+    text-decoration: none;
+  }
