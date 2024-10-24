@@ -5,6 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+            <a class="navbar-brand dynapuff-logo" href="{{ url('/') }}">
+                  <span style="color:orange;">anim</span>shorts
+                </a>
                 <div class="card-header">{{ __('Confirm Password') }}</div>
 
                 <div class="card-body">
