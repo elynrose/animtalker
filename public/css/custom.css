@@ -229,3 +229,10 @@ a, a.link, a:hover {
     border: 1px solid #232323;
     color:white!important;
 }
+
+.dynapuff-logo {
+    font-family: "DynaPuff", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+  }
