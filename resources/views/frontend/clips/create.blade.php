@@ -165,7 +165,7 @@
                             <input type="hidden" name="character_id" value="{{ Request::segment(2) }}">
                             <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl() }}">
                             @endif
-                            <button class="btn btn-danger btn-lg" type="submit">
+                            <button class="btn btn-danger btn-lg" type="submit" onclick="pleasewait()">
                                 {{ trans('cruds.clip.generate') }}
                             </button>
                         </div>
@@ -188,6 +188,10 @@
 @section('scripts')
 @parent
 <script>
+function pleasewait(){
+    $('#script').val('Please wait...');
+}
+
 $(function() {
     $('#write').click(function() {
         var prompt = $('#prompt').val();
