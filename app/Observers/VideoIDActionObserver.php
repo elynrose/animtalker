@@ -41,7 +41,7 @@ class VideoIDActionObserver
         $data = ['action' => 'created', 'model_name' => 'Clip'];
 
         // Retrieve the first unprocessed clip
-        $clip = $this->getUnprocessedClip();
+        $clip = $this->getUnprocessedClip($clip);
 
         if (! $clip) {
             return;
@@ -95,7 +95,7 @@ class VideoIDActionObserver
 
                 // Deduct credits
                 $credit = Credit::where('email', $user->email)->first();
-                $credit->points -= env('IMAGE_CREDIT_DEDUCTION', 5);
+                $credit->points -= env('VIDEO_CREDIT_DEDUCTION', 5);
                 $credit->save();
 
                 try {
@@ -118,9 +118,9 @@ class VideoIDActionObserver
      *
      * @return \App\Models\Clip|null
      */
-    protected function getUnprocessedClip()
+    protected function getUnprocessedClip($clip)
     {
-        return Clip::where('status', 'new')->first();
+        return Clip::where('status', 'new')->where('id', $clip->id)->get();
     }
 
     /**
