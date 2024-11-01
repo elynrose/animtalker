@@ -169,7 +169,7 @@
                             <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl('preview') }}">
                             @endif
                             @endif
-                            <button class="btn btn-danger btn-lg" type="submit" onclick="pleasewait()">
+                            <button class="btn btn-danger btn-lg" type="submit" onclick="generating()">
                                 {{ trans('cruds.clip.generate') }}
                             </button>
                         </div>
@@ -192,7 +192,7 @@
 @section('scripts')
 @parent
 <script>
-function pleasewait(){
+function generating(){
     $('#script').val('Please wait...');
 }
 

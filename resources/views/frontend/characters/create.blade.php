@@ -99,7 +99,7 @@
                                     </div>
                                  </div>
                             </div>
-                            
+
                             <!-- Scene Section -->
                             <div class="card mb-3">
                                 <div class="card-header" id="sceneHeading">
@@ -405,7 +405,7 @@
                         <div class="form-group">
                             <input type="hidden" name="character_id" id="character_id"  value="">
                             <input type="hidden" name="image_path" id="image_path" value="">
-                            <button class="btn btn-danger btn-block btn-lg" type="submit">
+                            <button class="btn btn-danger btn-block btn-lg" type="submit" onclick="generating()">
                                 {{ trans('global.animate') }}
                             </button>
                         </div>
@@ -430,7 +430,9 @@
 @section('scripts')
 @parent
 <script>
-
+function generating(){
+    $(this).html('Generating...');
+}
 $(function() {
     $('#write').click(function() {
         var prompt = $('#prompt').val();
