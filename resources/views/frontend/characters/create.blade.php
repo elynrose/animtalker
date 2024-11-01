@@ -2,7 +2,13 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4"></div>
+    <div class="col-md-4 text-center">
+            <div class="card shadow" id="character_box">
+                <div class="card-body sprite">
+            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
+            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
+            <div id="prompt mt-4"></div>
+        </div>
 
 
         <div class="col-md-8">
@@ -418,13 +424,7 @@
             </div>
 
         </div>
-        <div class="col-md-4 text-center">
-            <div class="card shadow" id="character_box">
-                <div class="card-body sprite">
-            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
-            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
-            <div id="prompt mt-4"></div>
-        </div>
+       
     </div>
 </div>
     </div>
