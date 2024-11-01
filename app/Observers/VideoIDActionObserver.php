@@ -16,6 +16,7 @@ use GuzzleHttp\Client;
 use App\Models\Credit;
 use App\Notifications\NotEnoughCreditsEmailNotification;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class VideoIDActionObserver
 {
@@ -94,7 +95,7 @@ class VideoIDActionObserver
                 $user = $model->character->user;
 
                 // Deduct credits
-                $credit = Credit::where('email', $user->email)->first();
+                $credit = Credit::where('email', Auth::user()->email)->first();
                 $credit->points -= env('IMAGE_CREDIT_DEDUCTION', 5);
                 $credit->save();
 
