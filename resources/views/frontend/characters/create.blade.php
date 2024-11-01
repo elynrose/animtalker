@@ -2,15 +2,6 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-    <div class="col-md-4 text-center">
-            <div class="card shadow" id="character_box">
-                <div class="card-body sprite">
-            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
-            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
-            <div id="prompt mt-4"></div>
-        </div>
-
-
         <div class="col-md-8">
         <h3> {{ trans('cruds.character.title') }}</h3>
             <div class="card" id="step1">
@@ -57,7 +48,24 @@
                         <div id="wizard" style="display:block;">
                         <!--Radio button for aspect ratio-->
                                 
-                            <!--  
+                            <!--   <div class="card">
+                                <div class="card-header">
+                                    <h6>{{ trans('cruds.character.fields.aspect_ratio') }}</h6>
+                                </div>
+                             <div class="card-body">
+                                    
+                                    <div class="row">
+                                    <div class="col-md-6">
+                                    <input type="radio" name="aspect_ratio" id="aspect_ratio_1" value="9:16">
+                                    <label for="aspect_ratio_1">9:16</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <input type="radio" name="aspect_ratio" id="aspect_ratio_2" value="16:9">
+                                    <label for="aspect_ratio_2">16:9</label>
+                                    </div>
+                                    </div>
+                                 </div>
+                            </div>
 
                           <div class="form-group mb-5">
                                 <label>{{ trans('cruds.character.fields.is_realistic') }}</label>
@@ -90,24 +98,6 @@
                         
 
                         <div id="accordion">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h6>{{ trans('cruds.character.fields.aspect_ratio') }}</h6>
-                                </div>
-                             <div class="card-body">
-                                    
-                                    <div class="row">
-                                    <div class="col-md-6">
-                                    <input type="radio" name="aspect_ratio" id="aspect_ratio_1" value="9:16">
-                                    <label for="aspect_ratio_1">9:16</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                    <input type="radio" name="aspect_ratio" id="aspect_ratio_2" value="16:9">
-                                    <label for="aspect_ratio_2">16:9</label>
-                                    </div>
-                                    </div>
-                                 </div>
-                            </div>
 
                             <!-- Scene Section -->
                             <div class="card mb-3">
@@ -424,9 +414,14 @@
             </div>
 
         </div>
-       
-    </div>
-</div>
+        <div class="col-md-4 text-center">
+            <div class="card shadow" id="character_box">
+                <div class="card-header"> {{ trans('cruds.character.title_singular') }}</div>
+                <div class="card-body sprite">
+            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
+            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
+            <div id="prompt mt-4"></div>
+        </div></div></div>
     </div>
 </div>
 @endsection
