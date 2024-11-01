@@ -2,6 +2,16 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+
+    <div class="col-md-4 text-center">
+            <div class="card shadow" id="character_box">
+                <div class="card-header"> {{ trans('cruds.character.title_singular') }}</div>
+                <div class="card-body sprite">
+            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Generating Character ...</p>
+            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
+            <div id="prompt mt-4"></div>
+        </div>
+
         <div class="col-md-8">
         <h3> {{ trans('cruds.character.title') }}</h3>
             <div class="card" id="step1">
@@ -404,7 +414,7 @@
                         <div class="form-group">
                             <input type="hidden" name="character_id" id="character_id"  value="">
                             <input type="hidden" name="image_path" id="image_path" value="">
-                            <button class="btn btn-danger btn-block btn-lg" type="submit">
+                            <button class="btn btn-danger btn-block btn-lg" type="submit" onclick="pleasewait()">
                                 {{ trans('global.animate') }}
                             </button>
                         </div>
@@ -414,14 +424,9 @@
             </div>
 
         </div>
-        <div class="col-md-4 text-center">
-            <div class="card shadow" id="character_box">
-                <div class="card-header"> {{ trans('cruds.character.title_singular') }}</div>
-                <div class="card-body sprite">
-            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
-            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
-            <div id="prompt mt-4"></div>
-        </div></div></div>
+       
+    </div>
+</div>
     </div>
 </div>
 @endsection
@@ -429,7 +434,9 @@
 @section('scripts')
 @parent
 <script>
-
+function pleasewait(){
+    $('#script').val('Please wait...');
+}
 $(function() {
     $('#write').click(function() {
         var prompt = $('#prompt').val();
