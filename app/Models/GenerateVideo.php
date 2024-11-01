@@ -73,14 +73,15 @@ class GenerateVideo extends Model
             return response()->json(['error' => 'Failed to generate video'], 500);
         }
 
-        // Deduct credits for the video generation
-        $credits = new Credit();
-        $credits->deductCredits('video', $user);
-
         // Update the clip model with the new video ID and status
         $clip->video_id = $video['id'];
         $clip->status = 'processing';
         $clip->save();
+
+                // Deduct credits
+                $video_credit = Credit::where('email', Auth::user()->email)->first();
+                $video_credit->points -= env('VIDEO_CREDIT_DEDUCTION', 3);
+                $video_credit->save();
 
         // Return the video response
         return $video;

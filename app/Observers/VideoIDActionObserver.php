@@ -273,11 +273,6 @@ class VideoIDActionObserver
             'video_path' => $video['result_url'],
         ]);
 
-                // Deduct credits
-                $video_credit = Credit::where('email', Auth::user()->email)->first();
-                $video_credit->points -= env('VIDEO_CREDIT_DEDUCTION', 3);
-                $video_credit->save();
-
 
         // Notify the user via email
         $this->notifyUser($clip);
