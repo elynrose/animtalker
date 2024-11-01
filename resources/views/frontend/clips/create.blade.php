@@ -163,7 +163,11 @@
                         <div class="form-group">
                             @if(!empty(Request::segment(2)))
                             <input type="hidden" name="character_id" value="{{ Request::segment(2) }}">
+                            @if($character->ratio == '16:9')
                             <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl() }}">
+                            @elseif($character->ratio == '9:16')
+                            <input type="hidden" name="image_path" value="{{ $character->avatar->getUrl('preview') }}">
+                            @endif
                             @endif
                             <button class="btn btn-danger btn-lg" type="submit" onclick="pleasewait()">
                                 {{ trans('cruds.clip.generate') }}
