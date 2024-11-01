@@ -2,6 +2,16 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        <div class="col-md-4">
+        <div class="card shadow" id="character_box">
+                <div class="card-body sprite">
+            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
+            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
+            <div id="prompt mt-4"></div>
+        </div>
+        </div>
+
+
         <div class="col-md-8">
         <h3> {{ trans('cruds.character.title') }}</h3>
             <div class="card" id="step1">
@@ -80,7 +90,8 @@
 -->
                         
 
-                        <div id="accordion">' <div class="card">
+                        <div id="accordion">
+                            <div class="card">
                                 <div class="card-header">
                                     <h6>{{ trans('cruds.character.fields.aspect_ratio') }}</h6>
                                 </div>
@@ -414,14 +425,7 @@
             </div>
 
         </div>
-        <div class="col-md-4 text-center">
-            <div class="card shadow" id="character_box">
-                <div class="card-body sprite">
-            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
-            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
-            <div id="prompt mt-4"></div>
-        </div>
-    </div>
+   
 </div>
     </div>
 </div>
