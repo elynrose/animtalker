@@ -193,7 +193,7 @@
 @parent
 <script>
 function generating(){
-    $('#script').val('Please wait...');
+    $(this).val('Generating...');
 }
 
 $(function() {
