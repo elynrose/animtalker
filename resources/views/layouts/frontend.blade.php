@@ -30,6 +30,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+    <head>
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lcxf3gqAAAAAIHqT-GDMB2cLSCU5EGmaRgWP3x0"></script>
+  <!-- Your code -->
+</head>
+
     @yield('styles')
 </head>
 
@@ -315,6 +320,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+
+<script>
+  function onClick(e) {
+    e.preventDefault();
+    grecaptcha.enterprise.ready(async () => {
+      const token = await grecaptcha.enterprise.execute('6Lcxf3gqAAAAAIHqT-GDMB2cLSCU5EGmaRgWP3x0', {action: 'LOGIN'});
+    });
+  }
+</script>
+
 @yield('scripts')
 
 </html>
