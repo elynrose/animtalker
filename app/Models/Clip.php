@@ -34,12 +34,9 @@ class Clip extends Model implements HasMedia
 
 
     public const VOICE = [
-        'alloy' => 'Alloy - Male',
-        'echo' => 'Steve - Male',
-        'fable' => 'Maxim - Male',
-        'onyx' => 'Michael - Male',
-        'nova' => 'Sarah - Female',
-        'shimmer' => 'Zack - Unisex',
+        'alloy' => 'Male',
+        'nova' => 'Female',
+        'shimmer' => 'Unisex',
     ];
 
     protected $dates = [
