@@ -188,7 +188,7 @@ if ($credits->getUserCredits() < 5) {
     // Save the generated image URL to the character's avatar and save it to S3
     try {
         $path = $character->addMediaFromUrl($image)
-                          ->toMediaCollection('avatar', 's3', 'images')
+                          ->toMediaCollection('avatar', 's3', 'photos')
                           ->getUrl();
         $character->custom_prompt= $prompt;
         $character->avatar_url = $path;
