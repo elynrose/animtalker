@@ -7,38 +7,21 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyCharacterRequest;
 use App\Http\Requests\StoreCharacterRequest;
 use App\Http\Requests\UpdateCharacterRequest;
-use App\Models\AgeGroup;
-use App\Models\Background;
-use App\Models\BodyType;
-use App\Models\Character;
-use App\Models\DressColor;
-use App\Models\DressStyle;
-use App\Models\Emotion;
-use App\Models\EyeColor;
-use App\Models\EyeShape;
-use App\Models\FacialExpression;
-use App\Models\Gender;
-use App\Models\HairColor;
-use App\Models\HairLength;
-use App\Models\HairStyle;
-use App\Models\HeadShape;
-use App\Models\MouthShape;
-use App\Models\NoseShape;
-use App\Models\Posture;
-use App\Models\Prop;
-use App\Models\SkinTone;
-use App\Models\User;
-use App\Models\Zoom;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\GenerateCharacter;
+use App\Models\GenerateAudio;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Credit;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SendToOpenai;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Character;
+use App\Models\Clip;
+
 
 
 class CharacterController extends Controller
@@ -49,7 +32,7 @@ class CharacterController extends Controller
     {
         abort_if(Gate::denies('character_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $characters = Character::with(['scene', 'gender', 'age_group', 'body_type', 'hair_color', 'hair_lenght', 'hair_style', 'head_shape', 'nose_shape', 'mouth_shape', 'eye_shape', 'eye_color', 'skin_tone', 'facial_expression', 'emotion', 'dress_style', 'dress_colors', 'props', 'posture', 'character_zoom', 'user', 'media'])
+        $characters = Character::with(['user', 'media'])
             ->where('user_id', auth()->id())->orderBy('id', 'desc')
             ->get();
 
@@ -60,49 +43,9 @@ class CharacterController extends Controller
     {
         abort_if(Gate::denies('character_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $scenes = Background::pluck('background_title', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $genders = Gender::pluck('type', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $age_groups = AgeGroup::pluck('age', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $body_types = BodyType::pluck('body', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $hair_colors = HairColor::pluck('color', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $hair_lenghts = HairLength::pluck('lenght', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $hair_styles = HairStyle::pluck('style', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $head_shapes = HeadShape::pluck('shape', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $nose_shapes = NoseShape::pluck('shape', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $mouth_shapes = MouthShape::pluck('shape', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $eye_shapes = EyeShape::pluck('shape', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $eye_colors = EyeColor::pluck('color', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $skin_tones = SkinTone::pluck('tone', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $facial_expressions = FacialExpression::pluck('expression', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $emotions = Emotion::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $dress_styles = DressStyle::pluck('style', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $dress_colors = DressColor::pluck('color', 'id');
-
-        $props = Prop::pluck('name', 'id');
-
-        $postures = Posture::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $character_zooms = Zoom::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('frontend.characters.create', compact('age_groups', 'body_types', 'character_zooms', 'dress_colors', 'dress_styles', 'emotions', 'eye_colors', 'eye_shapes', 'facial_expressions', 'genders', 'hair_colors', 'hair_lenghts', 'hair_styles', 'head_shapes', 'mouth_shapes', 'nose_shapes', 'postures', 'props', 'scenes', 'skin_tones', 'users'));
+        return view('frontend.characters.create', compact('users'));
     }
 
   /**
@@ -113,59 +56,33 @@ class CharacterController extends Controller
  */
 public function store(StoreCharacterRequest $request)
 {
-    if($request->new_prompt){
+    if($request->custom_prompt){
         $request->validate([
-            'new_prompt' => 'required|string|max:2000',
+            'custom_prompt' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'script' => 'required|string',
+            'voice' => 'required|string',
         ]);
 
-        $genPrompt = " --Base image as seed for this character: " . $request->base_image . "  Keep the same face shape, head shape,  hair color, hair style, eyes, eye color, mouth, mouth shape, complexion, ears, clothing, color of clothing, build, posture, background and every other feature that makes this person unique. --Recommended adjustments" . $request->new_prompt;
-
-    // Create a new character excluding 'dress_colors' and 'props' from the request
-    $character = Character::create(
-        [
-            'name' => $request->name,
-            'custom_prompt' => $genPrompt,
-            'parwent_id' => $request->parent_id,
-            'user_id' => Auth::user()->id,
-        ]
-    );
-
-    } else {
-    // Create a new character excluding 'dress_colors' and 'props' from the request
-    $character = Character::create($request->except('dress_colors', 'props'));
-
-    // Retrieve dress colors and props from the request, defaulting to empty arrays if not provided
-    $dressColors = $request->input('dress_colors', []);
-    $props = $request->input('props', []);
-
-    // Attach dress colors to the character if any are provided
-    if (!empty($dressColors)) {
-        foreach ($dressColors as $dressColor) {
-            $character->dress_colors()->attach($dressColor);
-        }
-    }
-
-    // Attach props to the character if any are provided
-    if (!empty($props)) {
-        foreach ($props as $prop) {
-            $character->props()->attach($prop);
-        }
-    }
-}
+        $prompt = $request->custom_prompt;
+        $name = $request->name;
+        $script = $request->script;
+        $voice = $request->voice;
     
-//Check if the user has enough credits to generate a character
-$credits = new Credit();
-if ($credits->getUserCredits() < 5) {
-    //redirect back with an error message
-    //send a status with the error message
-    return response()->json(['status'=>'error','message' => 'You do not have enough credits to generate a character'], 500);
-    exit;
-}
+    //Check if the user has enough credits to generate a character
+    $credits = new Credit();
+
+    if ($credits->getUserCredits() < 5) {
+        //redirect back with an error message
+        //send a status with the error message
+        return response()->json(['status'=>'error','message' => 'You do not have enough credits to generate a character'], 500);
+        exit;
+    }
 
     try {
         // Generate character avatar using an external service
         $new_character = new GenerateCharacter();
-        $avatar = $new_character->generate($character->id);
+        $avatar = $new_character->generate($prompt);
 
         // Retrieve avatar data from the generation response
         $avatarData = $avatar->getData();
@@ -176,59 +93,122 @@ if ($credits->getUserCredits() < 5) {
         // Handle error if the image is not generated
         if ($image === null) {
             // Delete the character if image generation fails
-            $character->delete();
+            return response()->json(['error' => 'Failed to generate character'], 500);
+        }
+
+        // Save the generated image URL to the character's avatar and save it to S3
+
+     //   $path = $character->addMediaFromUrl($image)->toMediaCollection('avatar', 's3', 'photos')->getUrl();
+
+
+        $character = Character::create([
+            'name' => $name,
+            'custom_prompt' => $prompt,
+            'user_id' => Auth::user()->id,
+            'voice' => $voice,
+            'script' => $script,
+            'avatar_url' => $image,
+        ]);
+
+
+
+
+
+    } catch (\Exception $e) {
+        // Delete character and return error if image generation fails
+        return response()->json(['error' => 'Failed to generate character: '.$e ], 500);
+    }
+
+    
+
+
+
+
+/*
+    try {
+        // Generate character avatar using an external service
+        $new_character = new GenerateCharacter();
+        $avatar = $new_character->generate($prompt);
+
+        // Retrieve avatar data from the generation response
+        $avatarData = $avatar->getData();
+        // Extract the prompt and image URL from the avatar data
+        $prompt = $avatarData->prompt ?? null;
+        $image = $avatarData->dalle_response->data[0]->url ?? null;
+
+        // Handle error if the image is not generated
+        if ($image === null) {
+            // Delete the character if image generation fails
             return response()->json(['error' => 'Failed to generate character'], 500);
         }
     } catch (\Exception $e) {
         // Delete character and return error if image generation fails
-        $character->delete();
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 
     // Save the generated image URL to the character's avatar and save it to S3
     try {
+        
+        $character = Character::create([
+            'avatar_url' => $image,
+            'name' => $name,
+            'custom_prompt' => $prompt,
+            'user_id' => Auth::user()->id,
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to save character avatar: '.$e], 500);
+    }
+
+    try {
+
         $path = $character->addMediaFromUrl($image)
-                          ->toMediaCollection('avatar', 's3', 'photos')
-                          ->getUrl();
+        ->toMediaCollection('avatar', 's3', 'photos')
+        ->getUrl();
+        
         $character->custom_prompt= $prompt;
         $character->avatar_url = $path;
         $character->save();
-        
+
     } catch (\Exception $e) {
-        // Delete character and return error if image saving fails
-        DB::table('characters')->where('id', $character->id)->delete();   
-
-    return response()->json(['error' => 'Failed to save character avatar'], 500);
+        return response()->json(['error' => 'Failed to save character avatar: '.$e], 500);
     }
+/*
+    // Return a JSON response based on the request type
 
-    // If CKEditor media is associated, update the media model_id to the character's id
-    if ($media = $request->input('ck-media', false)) {
-        Media::whereIn('id', $media)->update(['model_id' => $character->id]);
-    }
+  
+   // $audio  = new GenerateAudio;
+   // $mp3Path = $audio->textToSpeech($script, $voice);
+
+//give me the full image path including the http://localhost:8000
+    
+   $clip = Clip::create([
+        'character_id' => $character->id,
+        'voice' => $voice,
+        'script' => $script,
+        'status' => 'new',
+        'image_path' => $path,
+    ]);
+
+
+   /* $clip->character_id = $character->id;
+    $clip->voice = $voice;
+    //$clip->audio_path = $mp3Path;
+    $clip->script = $script;
+    $clip->status = 'new';
+    $clip->avatar = $name;
+    $clip->save();
+ */
 
      //Deduct Credits
 
      $credit = Credit::where('email', Auth::user()->email)->first();
      $credit_balance  = $credit->points - env('IMAGE_CREDIT_DEDUCTION');
-    $credit->points = $credit_balance;
-    $credit->save();    
+     $credit->points = $credit_balance;
+     $credit->save();    
     
-    
-    // Return a JSON response based on the request type
-    if ($request->ajax()) {
-        return response()->json([
-            'success' => true,
-            'image' => $path,
-            'prompt' => $prompt,
-            'id' => $character->id
-        ]);
-
-
 
     } else {
-        //delete the character with this id if the image is not saved 
-        DB::table('characters')->where('id', $character->id)->delete();   
-        
         return response()->json(['error' => 'Failed to generate character'], 500);
     }
 }
@@ -351,7 +331,8 @@ if ($credits->getUserCredits() < 5) {
         public function refine(Request $request)
         { 
             $custom_prompt = $request->input('topic');    
-            $prompt = "Using the following theme: Stylized realism: The character's features are exaggerated for expressive purposes but remain detailed and polished. The textures on the face and clothing suggest a carefully designed world with depth. Cartoonish proportions: The large eyes, smooth contours are typical in animated 3D character designs aimed at engaging audiences with a blend of realism and cartoon elements. Soft lighting and rich textures: The use of soft light and tones, along with detailed texture work on the clothes and skin, highlights the gentle, friendly nature of the character, similar to designs found in character-driven animated films. Rewrite this prompt to generate a 3D animation character using the theme provided. Prompt: ".$custom_prompt;
+            $prompt = "You are an advanced AI system specializing in converting simple, natural language descriptions into detailed, vivid prompts for generating high-quality 3D animated characters and scenes in the style of modern animation movies. Your outputs should provide enough detail for a DALL-E-like API to create visually stunning 3d animations reminiscent of Pixar or Disney styles. You are expected to: Enhance Simplicity with Detail: Transform basic inputs into richly detailed descriptions, specifying character features, clothing textures, emotional expressions, surrounding environments, lighting, and artistic style. Contextual Clarity: Ensure each prompt vividly captures the essence of the character\'s personality, mood, and environment while maintaining clarity and coherence.
+Modern Animation Style: Always ensure the prompt reflects high-quality, modern animation styles with realistic lighting, textures, and dynamic elements. The character posing for a shot. The shot should be an eye-level shot ".$custom_prompt;
             $result = SendToOpenai::sendToOpenAI($prompt);
             return $result;
         }

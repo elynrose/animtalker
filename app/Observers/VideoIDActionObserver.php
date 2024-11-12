@@ -41,8 +41,8 @@ class VideoIDActionObserver
     {
         $data = ['action' => 'created', 'model_name' => 'Clip'];
 
-        // Retrieve the first unprocessed clip
-        $clip = $this->getUnprocessedClip();
+        // Retrieve this clip
+        $clip = Clip::find($model->id);
 
         if (! $clip) {
             return;
@@ -50,21 +50,7 @@ class VideoIDActionObserver
 
         // Retrieve the user related to the clip's character
         $user = $this->getClipUser($clip);
-
-        $credits = Credit::where('email', $user->email)->first();
-
-        // Check if the user has enough credits
-        if ($credits->points < env('CREDIT_DEDUCTION', 5)) {
-            try {
-                // Notify the user via email
-                Notification::send($user, new NotEnoughCreditsEmailNotification($data));
-            } catch (Exception $e) {
-                \Log::error('Error sending not enough credits email: ' . $e->getMessage());
-            }
-
-            return;
-        }
-
+        
         // Generate the video and update the clip status
         $response = $this->generateVideoForClip($clip, $user);
 

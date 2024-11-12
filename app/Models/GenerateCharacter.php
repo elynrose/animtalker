@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use App\Models\Character;
+use App\Models\SendToOpenai;
+use Illuminate\Http\Request;
+
 
 class GenerateCharacter extends Model
 {
@@ -17,28 +20,26 @@ class GenerateCharacter extends Model
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function generate($id) {
-        
-        $character = Character::find($id);
+    public function generate($custom_prompt) {
+        $refined_prompt = $this->refine($custom_prompt);
 
-        if($character->is_realistic==1){
-            $isRealistic = false;
-        } elseif($character->is_realistic==2){ 
-            $isRealistic = true;
-        } else {
-            $isRealistic = false;
-        }
-
-        // Generate the prompt
-        $prompt = $this->generatePrompt($character, $isRealistic);
-
-        //dd($prompt);
-        // Send the prompt to DALL-E API
-        $response = $this->sendToDalle($prompt);
+        //Send to dalle 
+        $response = $this->sendToDalle($refined_prompt);
 
         // Return the API response
-        return response()->json(['prompt' => $prompt, 'dalle_response' => $response]);
+        return response()->json(['prompt' => $refined_prompt, 'dalle_response' => $response]);
     }
+
+       //create an openai method to generate text with a given prompt
+       public function refine($custom_prompt)
+       { 
+           $prompt = "You are an advanced AI system specializing in converting simple, natural language descriptions into detailed, vivid prompts for generating pixarlike 3D animated characters and scenes in the style of modern animation movies. Your outputs should provide enough detail for a DALL-E-like API to create visually stunning 3d animations reminiscent of Pixar or Disney styles. You are expected to: Enhance Simplicity with Detail: Transform basic inputs into richly detailed descriptions, specifying character features, clothing textures, emotional expressions, surrounding environments, lighting, and artistic style. Contextual Clarity: Ensure each prompt vividly captures the essence of the character\'s personality, mood, and environment while maintaining clarity and coherence.
+Modern Animation Style: Always ensure the prompt reflects high-quality, modern animation styles with realistic lighting, textures, and dynamic elements. The character posing for a shot. The shot should be an eye-level shot. The input prompt is :".$custom_prompt;
+           $openai = new SendToOpenai;
+           $result = $openai->sendToOpenAI($prompt);
+           return $result;
+       }
+   
 
     /**
      * Send the generated prompt to the DALL-E API.
@@ -78,88 +79,12 @@ class GenerateCharacter extends Model
      *
      * @return string
      */
-    public function generatePrompt($character, $isRealistic)
-{
-    // Use a custom prompt if provided
-    if (!empty($character->custom_prompt)) {
-        return $character->custom_prompt;
+        public function generatePrompt($character, $isRealistic)
+    {
+        // Use a custom prompt if provided
+        if (!empty($character->custom_prompt)) {
+            return $character->custom_prompt;
+        }
     }
-
-    // Initialize the prompt with the character type
-    $prompt = "Create a still shot of a" . ($isRealistic ? "a highly detailed, realistic photo. The capture quality should be like a that of a Fujifilm X-T3, 1/1250sec at f/2.8, ISO 160, 84mm picture." : "  a stunning 3D animated character, as a 3D Character animation expert would do. The character should exude the same level of sophistication and charm as those seen in modern 3D animated movies. Ensure the face is detectable by a facial recognition software. The lips must be visible for animation purposes. Create only one person in the picture and no side profile, only front facing eye-level. Include the gen id and seed idin the refined prompt. ");
-
-    // Add age group and gender
-    $prompt .= (!empty($character->age_group) ? $character->age_group->age . " " : "") .
-               (!empty($character->gender) ? strtolower($character->gender->type) : "character") . " with ";
-
-    // Gather character attributes
-    $attributes = $this->formatCharacterAttributes($character);
-    $prompt .= implode(", ", $attributes);
-
-    // Append style details
-    $prompt .= $this->styleDetails($character, $isRealistic);
-
-    // Describe the background, lighting, and artistic details
-    $prompt .= $this->backgroundAndArtDetails($character, $isRealistic);
-
-    return $prompt;
-}
-
-private function formatCharacterAttributes($character)
-{
-    $attributes = [];
-
-    if (!empty($character->hair_lenght)) {
-        $attributes[] = "{$character->hair_lenght->lenght} {$character->hair_color->color} {$character->hair_style->style} hair";
-    }
-    if (!empty($character->eye_color)) {
-        $attributes[] = "{$character->eye_color->color} " . strtolower($character->eye_shape->shape) . " eyes";
-    }
-    if (!empty($character->skin_tone)) {
-        $attributes[] = "{$character->skin_tone->tone} skin";
-    }
-    if (!empty($character->head_shape)) {
-        $attributes[] = "a " . strtolower($character->head_shape->shape) . " head";
-    }
-
-    return $attributes;
-}
-
-private function styleDetails($character, $isRealistic)
-{
-    $styleDetails = "";
-    if (!empty($character->facial_expression)) {
-        $styleDetails .= "The character has a " . strtolower($character->facial_expression->expression) . " face";
-    }
-    if (!empty($character->emotion)) {
-        $styleDetails .= ", expressing " . strtolower($character->emotion->name);
-    }
-    $styleDetails .= ". ";
-
-    if (!empty($character->dress_style)) {
-        $styleDetails .= "The character is dressed in a " . strtolower($character->dress_style->style) . " style";
-    }
-
-    return $styleDetails;
-}
-
-private function backgroundAndArtDetails($character, $isRealistic)
-{
-    $details = "--Background and Lighting-- ";
-    if (!empty($character->scene)) {
-        $details .= " The character is set against a " . strtolower($character->scene->scene) . " background, ";
-    }
-    $details .= " with the character prominently placed in the foreground, facing the viewer. ";
-    $details .= " The camera maintains a ".($character->zoom->name ?? " eye-level shot");
-    $details .= " The character is well-lit with rich and high detail, ";
-    $details .= " in a " . ($isRealistic ? "hyperrealistic" : "3D animated") . " style with realistic textures and lighting effects. ";
-    $details .= " The colors are vibrant, inspired by " . ($isRealistic ? "DSLR camera quality" : "Disney's warm aesthetic") . ". ";
-    $details .= " The image ratio should be " . ($character->aspect_ratio ?? "16:9") . " aspect ratio and eye-level shot. ";
-    $details .= " ensuring that the character remains the main focus of the image throughout the scene. Character must alway look at the camera. Also ensure the face is detectable by a facial recognition software. The lips must be visible for animation purposes. Create only one person in the picture and no side profile, only front facing eye-level. Include the gen id and seed idin the refined prompt. ";
-
-    return $details;
-}
-
-    
 
 }

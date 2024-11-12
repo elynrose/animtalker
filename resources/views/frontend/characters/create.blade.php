@@ -11,6 +11,7 @@
                 <p class="display-5 mb-5">{{ trans('cruds.character.desc') }}</p>
 
                     <div class="alert alert-danger error" style="display:none;"></div>
+                    <div class="alert alert-success success" style="display:none;"></div>
                     <form method="POST" action="{{ route('frontend.characters.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
@@ -30,8 +31,8 @@
 <!---->
                         <div class="form-group mb-5" id="custom">
                             <label for="custom_prompt">{{ trans('cruds.character.fields.custom_prompt') }}</label>
-                            <textarea class="form-control mb-3" name="custom_prompt" id="custom_prompt" rows="6" oninput="autoExpand(this)" placeholder="Example: A beautiful young lady from the 16th century">{{ old('custom_prompt', '') }}</textarea>
-<p><a href="javascript();"  class="mt-2" id="refine">{{ trans('cruds.character.fields.refine_prompt') }}</a></p>
+                            <textarea class="form-control mb-3" name="custom_prompt" id="custom_prompt" rows="6"  placeholder="Example: A beautiful young lady from the 16th century">{{ old('custom_prompt', '') }}</textarea>
+                            <p> <a href="javascript();"  class="mt-2" id="refine">{{ trans('cruds.character.fields.refine_prompt') }}</a></p>
 
                             @if($errors->has('custom_prompt'))
                                 <div class="invalid-feedback">
@@ -41,48 +42,9 @@
                             <span class="help-block">{{ trans('cruds.character.fields.custom_prompt_helper') }}</span>
                         </div>
 
-                        <div class="form-group mt-4">
-                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                            <button class="btn btn-danger btn-block" id="save" type="submit">
-                                {{ trans('global.generate') }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card" id="step2">
-                <div class="card-header"> {{ trans('cruds.clip.desc') }} </div>
-                    <div class="card-body">
-                    <form method="POST" action="{{ route("frontend.clips.store") }}" enctype="multipart/form-data">
-                        @method('POST')
-                        @csrf
-                       
-                        <!--add voice selection -->
-
                         <div class="form-group">
-                            <label class="required" for="prompt">{{ trans('cruds.clip.fields.prompt') }}</label>
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="prompt" id="prompt" required>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" id="write">Write</button>
-                                </div>
-                            </div>
-                            @if($errors->has('prompt'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('prompt') }}
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
-                            <label for="script"> {{ trans('cruds.clip.fields.script') }}</label>
-                            <textarea class="form-control" name="script" id="script">{{ old('script') }}</textarea>
-                            @if($errors->has('script'))
-                                <p class="help-block text-danger">{{ $errors->first('script') }}</p>
-                            @endif
-                            <p class="helper-block" style="color:#6c757d;">
-                            </p>
+                            <label for="prompt"></label>
+                            <textarea class="form-control mb-3" name="script" id="script" rows="6"  placeholder="What do you want your character to say">{{ old('script', '') }}</textarea>
                         </div>
 
                         <div class="form-group">
@@ -101,44 +63,18 @@
                             <span class="help-block">{{ trans('cruds.clip.fields.status_helper') }}</span>
                         </div>
                     
-                        <div class="form-group">
-                            <div class="row">
-                            @foreach(App\Models\Clip::PRIVACY_RADIO as $key => $label)
-                            
-                                <div class="col-md-3">
-                                    <input type="radio" id="privacy_{{ $key }}" name="privacy" value="{{ $key }}" {{ old('privacy', '0') === (string) $key ? 'checked' : '' }}>
-                                    <label for="privacy_{{ $key }}">{{ $label }}</label>
-                                </div>
-                            @endforeach
-                            </div>
-                            @if($errors->has('privacy'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('privacy') }}
-                                </div>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.clip.fields.privacy_helper') }}</span>
-                        </div>
-                        <div class="form-group">
-                            <input type="hidden" name="character_id" id="character_id"  value="">
-                            <input type="hidden" name="image_path" id="image_path" value="">
-                            <button class="btn btn-danger btn-block btn-lg" type="submit" onclick="generating()">
-                                {{ trans('global.animate') }}
+
+                        <div class="form-group mt-4">
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                            <button class="btn btn-danger btn-block" id="save" type="submit">
+                                {{ trans('global.generate') }}
                             </button>
                         </div>
                     </form>
-
-                    </div>
+                </div>
             </div>
-
         </div>
-        <div class="col-md-4 text-center">
-            <div class="card shadow" id="character_box">
-                <div class="card-header"> {{ trans('cruds.character.title_singular') }}</div>
-                <div class="card-body sprite">
-            <p id="loading" style="display:none;"><img src="{{asset('images/loading.gif')}}" width="64" ><br> Loading ...</p>
-            <p id="img_wrap" style="display:none;"><img src="" width="100%"  alt="Generated Image" id="image"></p>
-            <div id="prompt mt-4"></div>
-        </div></div></div>
+       
     </div>
 </div>
 @endsection
@@ -146,30 +82,37 @@
 @section('scripts')
 @parent
 <script>
-function generating(){
-    $(this).html('Generating...');
-}
-$(function() {
-    $('#write').click(function() {
-        var prompt = $('#prompt').val();
-        if(prompt == ''){
+
+    $('#save').click(function(e) {
+        e.preventDefault();
+        var name = $('#name').val();
+        var prompt = $('#custom_prompt').val();
+        var script = $('#script').val();
+        var voice = $('#voice').val();
+
+        if(prompt == '' || script == '' || voice == '') {
             return;
         }
+
         //send headers
-        $('#script').val('Loading...');
+        $('#save').text('Working...');
+        $('#save').attr('disabled', true);
         $.ajax({
             headers: {
             'X-CSRF-TOKEN': "{{ csrf_token() }}"
             },
-            url: '{{ route('frontend.clips.openai') }}',
+            url: "{{ route('frontend.characters.store') }}",
             type: 'POST',
             data: {
-                topic: prompt
+                name: name,
+                custom_prompt: prompt,
+                script: script,
+                voice: voice,
+                user_id: {{ Auth::id() }},
             },
             success: function(response) {
-                console.log(response);
-                //parse the response and display the first choice in the textarea
-                $('#script').val(response);
+                
+               location.href = '/clips';
             },
             error: function(xhr, status, error) {
                 console.log(xhr.responseText);
@@ -177,218 +120,6 @@ $(function() {
             }
         });
     });
-    });
 
-    $(document).ready(function(){
-
-        //if button data-value is empty, hide it
-        $('button').each(function(){
-            if($(this).data('value') == ''){
-                $(this).hide();
-            }
-        });
-        // Ensure all buttons that aren't meant to submit the form have type="button"
-        $('button').not('[type="submit"]').attr('type', 'button');
-
-        // Function to handle button group selections and assign the selected value to the hidden input
-        function handleButtonGroup(buttonClass, hiddenFieldId) {
-            $(buttonClass).on('click', function() {
-                $(buttonClass).removeClass('active');  // Remove 'active' class from all buttons in the group
-                $(this).addClass('active');            // Add 'active' class to the clicked button
-                $(hiddenFieldId).val(parseInt($(this).data('value')));  // Set the hidden input value to the button's integer data-value
-            });
-        }
-
-        // Initialize button groups for each field
-        handleButtonGroup('.scene-btn', '#scene_id');
-        handleButtonGroup('.gender-btn', '#gender_id');
-        handleButtonGroup('.age-group-btn', '#age_group_id');
-        handleButtonGroup('.body-type-btn', '#body_type_id');
-        handleButtonGroup('.hair-color-btn', '#hair_color_id');
-        handleButtonGroup('.hair-length-btn', '#hair_lenght_id');
-        handleButtonGroup('.hair-style-btn', '#hair_style_id');
-        handleButtonGroup('.head-shape-btn', '#head_shape_id');
-        handleButtonGroup('.nose-shape-btn', '#nose_shape_id');
-        handleButtonGroup('.mouth-shape-btn', '#mouth_shape_id');
-        handleButtonGroup('.eye-shape-btn', '#eye_shape_id');
-        handleButtonGroup('.eye-color-btn', '#eye_color_id');
-        handleButtonGroup('.skin-tone-btn', '#skin_tone_id');
-        handleButtonGroup('.facial-expression-btn', '#facial_expression_id');
-        handleButtonGroup('.emotion-btn', '#emotion_id');
-        handleButtonGroup('.dress-style-btn', '#dress_style_id');
-        handleButtonGroup('.posture-btn', '#posture_id');
-        handleButtonGroup('.character-zoom-btn', '#character_zoom_id');
-
-        // Function to handle multiple selections for Dress Colors and Props (arrays of integers)
-        function toggleMultipleSelections(buttonClass, hiddenFieldName) {
-            $(buttonClass).on('click', function() {
-                var hiddenFieldSelector = `input[name="${hiddenFieldName}[]"]`;
-                var value = parseInt($(this).data('value')); // Ensure the value is an integer
-                if ($(this).hasClass('active')) {
-                    // If the button was already active, remove it from the list
-                    $(hiddenFieldSelector).each(function(){
-                        if (parseInt($(this).val()) == value) {
-                            $(this).remove();
-                        }
-                    });
-                    $(this).removeClass('active');
-                } else {
-                    // Otherwise, add the value to the list
-                    $('<input>').attr({
-                        type: 'hidden',
-                        name: `${hiddenFieldName}[]`,
-                        value: value
-                    }).appendTo('form');
-                    $(this).addClass('active');
-                }
-            });
-        }
-
-        toggleMultipleSelections('.dress-color-btn', 'dress_colors');
-        toggleMultipleSelections('.props-btn', 'props');
-
-        $('#img_wrap, .error, #loading, #step2').hide();
-
-        // Handle form submission
-        $('#save').on('click', function(e) {
-            e.preventDefault(); // Prevent the default form submission
-
-            // Check if the required fields are provided
-
-            var name = $('#name').val();
-            var aspectRatio = $('#aspect_ratio').val();
-            var sceneId = $('#scene_id').val();
-            var genderId = $('#gender_id').val();
-            var ageGroupId = $('#age_group_id').val();
-            var characterId = $('#character_id').val();
-
-            if (name.trim() === '') {
-                // Flash an error message
-                $('.error').text('Character name required.').show();
-                return;
-            }
-            $('.error').hide();
-            $('#step1').slideUp('slow').hide();
-            $('#step2').show();
-
-            // Continue with form submission
-            // Get the form data
-            var formData = $('form').serialize();
-            $('#loading').show();
-            // Send the form data using AJAX
-            $('#save').attr('disabled', true);
-            $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            });
-            $.ajax({
-                url: "{{ route('frontend.characters.store') }}",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-
-                    // Handle the success response
-                    if(response.status=='error'){
-                    //Parse the response
-                    response = JSON.parse(response);
-                        $('.error').text(response.error).show();
-                        $('#save').attr('disabled', false);
-                        $('#img_wrap').hide();
-                        $('#loading').hide();
-                        $('#step1').show();
-                        $('#step2').hide();
-                        return;
-                    }
-                    //get image and prompt from response from parsed json
-                    var image = response.image;
-                    var prompt = response.prompt;
-                    var id = response.id;
-                    if(image!==''){
-                    // Display the image and prompt
-                    $('#image').attr('src', image);
-                    $('#prompt').text(prompt);
-                    $('#loading').hide();
-                    $('#image_path').val(image);
-                    $('#character_id').val(id);
-                    $('#img_wrap').show();
-                    $('#save').attr('disabled', false);
-                } else {
-                    response = JSON.parse(response);
-                    $('.error').text(response.message).show();
-                }
-                },
-                error: function(xhr, status, error) {
-                    // Handle the error response
-                    var response = JSON.parse(xhr.responseText);
-                    $('.error').text(response.error).show();
-                    $('#save').attr('disabled', false);
-                    $('#img_wrap').hide();
-                    $('#loading').hide();
-                    $('#img_wrap', '#image').hide();
-                    $('#step1').show();
-                    $('#step2').hide();
-                    $('.error').text(response.message).show();
-                }
-            });
-        });
-    });
 </script>
-<script>
-                     /*       function toggleWizard() {
-                                var wizard = document.getElementById("wizard");
-                                var customPrompt = document.getElementById("custom");
-                                var button = document.querySelector("#step1 a");
-
-                                if (wizard.style.display === "none") {
-                                    wizard.style.display = "block";
-                                    customPrompt.style.display = "none";
-                                    button.textContent = "Use Custom Prompt";
-                                } else {
-                                    wizard.style.display = "none";
-                                    customPrompt.style.display = "block";
-                                    button.textContent = "Use Wizard";
-                                }
-                            }
-
-                            function autoExpand(textarea) {
-                                textarea.style.height = 'auto';
-                                textarea.style.height = textarea.scrollHeight + 'px';
-                            }
-*/
-                            //when refinePrompt is clicked, send the value in custom_prompt to the server ClipsController@refinePrompt
-
-                         
-                            $(function(){
-                                $('#refine').click(function(e) {
-                                    e.preventDefault();
-                                    var customPrompt = $('#custom_prompt').val();
-                                    if(customPrompt == ''){
-                                        return;
-                                    }
-                                    //send headers
-                                    $('#custom_prompt').val('Loading...');
-                                    $.ajax({
-                                        headers: {
-                                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                                        },
-                                        url: '{{ route('frontend.character.refine') }}',
-                                        type: 'POST',
-                                        data: {
-                                            topic: customPrompt
-                                        },
-                                        success: function(response) {
-                                            console.log(response);
-                                            //parse the response and display the first choice in the textarea
-                                            $('#custom_prompt').val(response);
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.log(xhr.responseText);
-                                            alert('An error occurred: ' + error);
-                                        }
-                                    });
-                                });
-                            });
-                                
-                        </script>
 @endsection
