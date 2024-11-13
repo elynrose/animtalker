@@ -335,8 +335,7 @@
                 </div>
             </div>
 
-            <div class="card" id="step2">
-                <div class="card-header"> {{ trans('cruds.clip.desc') }} </div>
+            <div class="card pt-5" id="step2">
                     <div class="card-body">
                     <form method="POST" action="{{ route("frontend.clips.store") }}" enctype="multipart/form-data">
                         @method('POST')
