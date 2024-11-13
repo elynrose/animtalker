@@ -50,7 +50,7 @@ class VideoIDActionObserver
 
         // Retrieve the user related to the clip's character
         $user = $this->getClipUser($clip);
-        
+
         // Generate the video and update the clip status
         $response = $this->generateVideoForClip($clip, $user);
 
@@ -160,10 +160,19 @@ class VideoIDActionObserver
 
             if (isset($data['error'])) {
                 $this->markClipAsFailed($clip);
+                //retry
+                $this->retry($clip);
             } else {
                 $this->markClipAsProcessing($clip, $data['id']);
             }
         }
+    }
+
+    protected function retry(Clip $clip)
+    {
+        $clip->update([
+            'status' => 'new',
+        ]);
     }
 
     /**
