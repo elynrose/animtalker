@@ -21,41 +21,18 @@ class StoreCharacterRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'is_realistic' => [
-                'nullable',
-            ],
-            'scene_id' => [
-                'nullable',
-                'integer',
-            ],
-            'gender_id' => [
-                'nullable',
-                'integer',
-            ],
-            'age_group_id' => [
-                'nullable',
-                'integer',
-            ],
-        
-            'caption' => [
-                'string',
-                'nullable',
-            ],
+            
             'avatar_url' => [
                 'string',
                 'nullable',
             ],
-            'art_style' => [
+            'voice' => [
                 'string',
                 'nullable',
             ],
-            'aspect_ratio' => [
+            'script' => [
                 'string',
                 'nullable',
-            ],
-            'parent_id' => [
-                'nullable',
-                'integer',
             ],
             'custom_prompt' => [
                 'string',
@@ -65,10 +42,7 @@ class StoreCharacterRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'parent_id' => [
-                'integer',
-                'nullable',
-            ],
+
         ];
     }
 }

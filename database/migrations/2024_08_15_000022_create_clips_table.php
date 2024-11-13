@@ -11,6 +11,8 @@ class CreateClipsTable extends Migration
         Schema::create('clips', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->longText('script');
+            $table->string('image_path')->nullable();
+            $table->string('custom_prompt')->nullable();
             $table->boolean('i_own_music')->default(0)->nullable();
             $table->string('status')->nullable();
             $table->string('voice')->nullable();
