@@ -11,6 +11,7 @@
                 @if(!$clips->isEmpty())
                 @foreach($clips as $clip)
                 @if($clip->character)
+                @if($clip->character && $clip->character->avatar)
                     <div class="col-md-4">
                         <div class="card mb-4">
                             
@@ -25,7 +26,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
-                                @if($clip->character && $clip->character->avatar)
+                               
                                 <div style="position:relative;">
                                     <img src="{{ $clip->character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
                                
@@ -35,7 +36,7 @@
                                 </div>
 
                                 </div>
-                                @endif
+                             
                                        
                                    
                                 <p class="card-text mt-3">
@@ -70,6 +71,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endif
                 @endforeach
             </div>
