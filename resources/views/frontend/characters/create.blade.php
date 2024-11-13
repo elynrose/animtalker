@@ -77,7 +77,7 @@
                         </div>
 
                     
--->
+
                         
 
                         <div id="accordion">
@@ -99,7 +99,7 @@
                                     </div>
                                  </div>
                             </div>
-
+-->
                             <!-- Scene Section -->
                             <div class="card mb-3">
                                 <div class="card-header" id="sceneHeading">
@@ -249,12 +249,12 @@
                                         @endforeach
                                         <input type="hidden" name="facial_expression_id" id="facial_expression_id">
 
-                                        <!-- Emotion -->
+                                        <!-- Emotion 
                                         <h6 class="mt-3">Emotion</h6>
                                         @foreach($emotions as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 emotion-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
-                                        <input type="hidden" name="emotion_id" id="emotion_id">
+                                        <input type="hidden" name="emotion_id" id="emotion_id">-->
                                     </div>
                                 </div>
                             </div>
@@ -294,7 +294,7 @@
                                 </div>
                             </div>
 
-                            <!-- Posture and Zoom Section -->
+                            <!-- Posture and Zoom Section 
                             <div class="card mb-3">
                                 <div class="card-header" id="postureZoomHeading">
                                     <h5 class="mb-0">
@@ -303,16 +303,16 @@
                                         </button>
                                     </h5>
                                 </div>
-                                <div id="postureZoomCollapse" class="collapse" aria-labelledby="postureZoomHeading" data-parent="#accordion">
+                                 <div id="postureZoomCollapse" class="collapse" aria-labelledby="postureZoomHeading" data-parent="#accordion">
                                     <div class="card-body">
-                                        <!-- Posture -->
+                                       Posture 
                                         <h6 class="mb-3">Posture</h6>
                                         @foreach($postures as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 posture-btn" data-value="{{ $id }}">{{ $entry }}</button>
                                         @endforeach
                                         <input type="hidden" name="posture_id" id="posture_id">
 
-                                        <!-- Character Zoom -->
+                                       Character Zoom 
                                         <h6 class="mt-3">Character Zoom</h6>
                                         @foreach($character_zooms as $id => $entry)
                                             <button type="button" class="btn btn-outline-primary mb-2 character-zoom-btn" data-value="{{ $id }}">{{ $entry }}</button>
@@ -321,7 +321,7 @@
                                     </div>
                                 </div>
                             </div>
-
+-->
                         </div>
 </div>
                         <div class="form-group mt-4">
