@@ -21,17 +21,52 @@ class UpdateCharacterRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'is_realistic' => [
+                'nullable',
+            ],
+            'scene_id' => [
+                'nullable',
+                'integer',
+            ],
+            'gender_id' => [
+                'nullable',
+                'integer',
+            ],
+            'age_group_id' => [
+                'nullable',
+                'integer',
+            ],
+            'dress_colors.*' => [
+                'integer',
+            ],
+            'dress_colors' => [
+                'array',
+            ],
+            'props.*' => [
+                'integer',
+            ],
+            'props' => [
+                'array',
+            ],
+            'caption' => [
+                'string',
+                'nullable',
+            ],
             'avatar_url' => [
                 'string',
                 'nullable',
             ],
-            'voice' => [
+            'art_style' => [
                 'string',
                 'nullable',
             ],
-            'script' => [
+            'aspect_ratio' => [
                 'string',
                 'nullable',
+            ],
+            'parent_id' => [
+                'nullable',
+                'integer',
             ],
             'custom_prompt' => [
                 'string',
@@ -40,6 +75,10 @@ class UpdateCharacterRequest extends FormRequest
             'user_id' => [
                 'required',
                 'integer',
+            ],
+            'parent_id' => [
+                'integer',
+                'nullable',
             ],
         ];
     }

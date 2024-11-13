@@ -14,8 +14,6 @@
             @endcan
             <div class="row">
                 @foreach($characters as $character)
-                @if($character->avatar && method_exists($character->avatar, 'getUrl'))
-
                     <div class="col-md-3 mb-5">
 
                         <div class="card mb-6">
@@ -29,17 +27,18 @@
                             <div class="card-body">
                                 <h6 class="card-title">{{ ucfirst($character->name) ?? '' }}</h6>
                              
+                                       @if($character->avatar)
                                             <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
-                                                <img src="{{ $character->avatar_url }}" class="img-responsive" width="100%">
+                                                <img src="{{ $character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
                                             </a>
-                                        
+                                        @endif  
                            <p></p>
                                 <div aria-label="Character Actions">
                                     @can('character_show')
                                         <a class="btn btn-primary btn-sm " href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
                                           <i class="fas fa-video"></i> {{ _('Animate')}} 
                                         </a>
-                                     <!--   <a class="btn btn-black" href="characters/version/{{ $character->id }}"><i class="fas fa-random"></i></a>-->
+                                        <a class="btn btn-black" href="characters/version/{{ $character->id }}"><i class="fas fa-random"></i></a>
                                     @endcan
 
                                 
@@ -47,7 +46,6 @@
                             </div>
                         </div>
                     </div>
-                    @endif 
                 @endforeach
             </div>
 

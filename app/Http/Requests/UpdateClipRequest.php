@@ -21,14 +21,6 @@ class UpdateClipRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'image_path' => [
-                'string',
-                'nullable',
-            ],
-            'custom_prompt' => [
-                'string',
-                'nullable',
-            ],
             'script' => [
                 'required',
             ],

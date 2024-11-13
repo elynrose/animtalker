@@ -8,9 +8,6 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Models\Clip;
 use App\Observers\VideoIDActionObserver;
-use App\Models\Character;
-use App\Observers\CharacterIDActionObserver;
-use App\Observers\AudioActionObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -31,8 +28,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Clip::observe(VideoIDActionObserver::class);
-        Character::observe(CharacterIDActionObserver::class);
-       // Clip::observe(AudioActionObserver::class);
 
     }
 

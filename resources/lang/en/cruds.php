@@ -334,7 +334,7 @@ return [
         ],
     ],
     'character' => [
-        'desc'    => 'Let\'s create a new character.',
+        'desc'    => 'Let\'s create a new character. Select all fields that apply.',
         'title'          => 'Characters',
         'title_singular' => 'Character',
         'realistic' => 'Realistic',
@@ -443,7 +443,7 @@ return [
         ],
     ],
     'clip' => [
-        'desc'    => 'Great! Now write what you want the character to say.',
+        'desc'    => 'Great! Now let\'s think about the script for your anime character whilst we work on it.',
         'title'          => 'Clips',
         'title_singular' => 'Clip',
         'generate' => 'Generate Clip',

@@ -34,9 +34,12 @@ class Clip extends Model implements HasMedia
 
 
     public const VOICE = [
-        'alloy' => 'Male',
-        'nova' => 'Female',
-        'shimmer' => 'Unisex',
+        'alloy' => 'Alloy - Male',
+        'echo' => 'Steve - Male',
+        'fable' => 'Maxim - Male',
+        'onyx' => 'Michael - Male',
+        'nova' => 'Sarah - Female',
+        'shimmer' => 'Zack - Unisex',
     ];
 
     protected $dates = [
@@ -88,8 +91,6 @@ class Clip extends Model implements HasMedia
 
     protected $fillable = [
         'character_id',
-        'custom_prompt',
-        'image_path',
         'script',
         'i_own_music',
         'status',
@@ -115,10 +116,9 @@ class Clip extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb')->fit('crop', 519, 519);
-        $this->addMediaConversion('preview')->fit('crop', 1920, 1080);
+        $this->addMediaConversion('thumb')->fit('crop', 50, 50);
+        $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
-
 
     public function character()
     {
@@ -138,27 +138,5 @@ class Clip extends Model implements HasMedia
     public function getVideoAttribute()
     {
         return $this->getMedia('video')->last();
-    }
-
-    public function getAvatarAttribute()
-    {
-        $file = $this->getMedia('avatar')->last();
-        if ($file) {
-            $file->url       = $file->getUrl();
-            $file->thumbnail = $file->getUrl('thumb');
-            $file->preview   = $file->getUrl('preview');
-        } else {
-            $file = new \stdClass();
-            $file->url = null;
-            $file->thumbnail = null;
-            $file->preview = null;
-        }
-
-        return $file;
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 }

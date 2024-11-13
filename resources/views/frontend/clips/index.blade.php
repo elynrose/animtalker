@@ -10,6 +10,7 @@
             <div class="row">
                 @if(!$clips->isEmpty())
                 @foreach($clips as $clip)
+                @if($clip->character)
                     <div class="col-md-4">
                         <div class="card mb-4">
                             
@@ -24,8 +25,9 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $clip->character->name ?? '' }}</h5>
 
+                                @if($clip->character && $clip->character->avatar)
                                 <div style="position:relative;">
-                                    <img src="{{ $clip->character->avatar_url }}" class="img-responsive" width="100%">
+                                    <img src="{{ $clip->character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
                                
                                     <!--bottom half overlay, show on hover-->
                                 <div class="overlay_{{ $clip->id }}" style="padding:10px;position:absolute;bottom:0;left:10;right:10;background-color:rgba(0,0,0,0.5);overflow:hidden;height:auto;width:100%;transition: .5s ease;">
@@ -33,7 +35,7 @@
                                 </div>
 
                                 </div>
-                                
+                                @endif
                                        
                                    
                                 <p class="card-text mt-3">
@@ -68,6 +70,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
 @endif
