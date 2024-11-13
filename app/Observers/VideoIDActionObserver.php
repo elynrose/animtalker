@@ -159,7 +159,7 @@ class VideoIDActionObserver
             }
 
             if (isset($data['error'])) {
-                $this->markClipAsFailed($clip);
+               // $this->markClipAsFailed($clip);
                 //retry
                 $this->retry($clip);
             } else {
@@ -170,9 +170,7 @@ class VideoIDActionObserver
 
     protected function retry(Clip $clip)
     {
-        $clip->update([
-            'status' => 'new',
-        ]);
+        $clip->update(['status' => 'new']);
     }
 
     /**
