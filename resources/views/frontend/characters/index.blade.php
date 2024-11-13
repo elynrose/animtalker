@@ -14,6 +14,8 @@
             @endcan
             <div class="row">
                 @foreach($characters as $character)
+                @if(is_object($character->avatar) && method_exists($character->avatar, 'getUrl'))
+
                     <div class="col-md-3 mb-5">
 
                         <div class="card mb-6">
@@ -46,6 +48,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
 
