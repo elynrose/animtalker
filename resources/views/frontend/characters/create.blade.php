@@ -81,7 +81,7 @@
                         
 
                         <div id="accordion">
-                        <div class="card">
+                           <!-- <div class="card">
                                 <div class="card-header">
                                     <h6>{{ trans('cruds.character.fields.aspect_ratio') }}</h6>
                                 </div>
@@ -98,7 +98,7 @@
                                     </div>
                                     </div>
                                  </div>
-                            </div>
+                            </div>-->
 
                             <!-- Scene Section -->
                             <div class="card mb-3">
