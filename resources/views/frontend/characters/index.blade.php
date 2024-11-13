@@ -30,7 +30,7 @@
                                 <h6 class="card-title">{{ ucfirst($character->name) ?? '' }}</h6>
                              
                                             <a href="{{ route('frontend.myclips.create', ['id'=>$character->id]) }}">
-                                                <img src="{{ $character->avatar->getUrl('thumb') }}" class="img-responsive" width="100%">
+                                                <img src="{{ $character->avatar_url }}" class="img-responsive" width="100%">
                                             </a>
                                         
                            <p></p>
